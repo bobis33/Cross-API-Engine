@@ -39,23 +39,23 @@ namespace utl {
 
                 std::cout << getColorForDuration(duration)
                           << formatLogMessage(LogLevel::INFO, message + " took " + std::to_string(duration) + " ms")
-                          << LOG_LEVEL_COLOR[RESET];
+                          << LOG_LEVEL_COLOR[COLOR_RESET];
             }
 
             static void logWarning(const std::string &message) {
-                std::cout << LOG_LEVEL_COLOR[WARNING]
+                std::cout << LOG_LEVEL_COLOR[COLOR_WARNING]
                           << formatLogMessage(LogLevel::WARNING, message)
-                          << LOG_LEVEL_COLOR[RESET];
+                          << LOG_LEVEL_COLOR[COLOR_RESET];
             }
 
             static void logInfo(const std::string &message) {
-                std::cout << LOG_LEVEL_COLOR[INFO]
+                std::cout << LOG_LEVEL_COLOR[COLOR_INFO]
                           << formatLogMessage(LogLevel::INFO, message)
-                          << LOG_LEVEL_COLOR[RESET];
+                          << LOG_LEVEL_COLOR[COLOR_RESET];
             }
 
         private:
-            enum ColorIndex : uint8_t { ERROR, INFO, WARNING, RESET };
+            enum ColorIndex : uint8_t { COLOR_ERROR, COLOR_INFO, COLOR_WARNING, COLOR_RESET };
 
             static constexpr std::array<const char *, 4> LOG_LEVEL_COLOR = {
                 "\033[31m", // ERROR/slow execution
@@ -70,8 +70,8 @@ namespace utl {
             ~Logger() = default;
 
             [[nodiscard]] static const char *getColorForDuration(const float duration) {
-                return duration < 20.0f ? LOG_LEVEL_COLOR[INFO]
-                                        : (duration < 90.0F ? LOG_LEVEL_COLOR[WARNING] : LOG_LEVEL_COLOR[ERROR]);
+                return duration < 20.0f ? LOG_LEVEL_COLOR[COLOR_INFO]
+                                        : (duration < 90.0F ? LOG_LEVEL_COLOR[COLOR_WARNING] : LOG_LEVEL_COLOR[COLOR_ERROR]);
             }
 
             [[nodiscard]] static std::string formatLogMessage(LogLevel level, const std::string &message) {
