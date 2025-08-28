@@ -1,8 +1,8 @@
 #include <fstream>
 #include <string>
 #ifdef _WIN32
-#include <windows.h>
-#include <psapi.h>
+    #include <windows.h>
+    #include <psapi.h>
 #else
     #include <unistd.h>
 #endif
@@ -47,7 +47,7 @@ void ven::MemoryMonitor::updateProcessMemory()
     if (GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS *>(&pmc), sizeof(pmc)))
     {
         // pmc.WorkingSetSize = m�moire physique utilis�e en octets
-        process_memory_usage = static_cast<double>(pmc.WorkingSetSize) / (1024.0 * 1024.0);
+        process_memory_usage = static_cast<double>(pmc.WorkingSetSize) / (KB_TO_MB * KB_TO_MB);
     }
 #else
     std::ifstream file("/proc/self/statm");
@@ -57,6 +57,6 @@ void ven::MemoryMonitor::updateProcessMemory()
     }
     long rss = 0;
     file >> rss;
-    process_memory_usage = rss * sysconf(_SC_PAGESIZE) / (1024.0 * 1024.0);
+    process_memory_usage = rss * sysconf(_SC_PAGESIZE) / (KB_TO_MB * KB_TO_MB);
 #endif
 }
