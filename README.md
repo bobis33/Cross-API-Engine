@@ -12,8 +12,8 @@ It is useful to do benchmarks during development or to support multiple platform
 
 Make sure you have the following dependencies installed on your system:
 
-- [CMake 3.27](https://cmake.org/)
-- [C++20](https://en.cppreference.com/w/cpp/20)
+- [CMake 4.0.0](https://cmake.org/)
+- [C++23](https://en.cppreference.com/w/cpp/23)
 - [Vulkan SDK](https://www.vulkan.org/)
 
 ## External Libraries

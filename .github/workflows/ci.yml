@@ -28,37 +28,33 @@ jobs:
             build_test: scripts/unix/build.sh release --tests
             binary_test: cmake-build-release/bin/cae-tests
             deps: |
-              wget https://github.com/Kitware/CMake/releases/download/v4.0.0/cmake-4.0.0-linux-x86_64.tar.gz
-              tar -xzf cmake-4.0.0-linux-x86_64.tar.gz
-              sudo cp -r cmake-4.0.0-linux-x86_64/bin/* /usr/local/bin/
-              sudo cp -r cmake-4.0.0-linux-x86_64/share/* /usr/local/share/
-              sudo apt update && sudo apt install -y cmake libxkbcommon-dev xorg-dev libwayland-dev libvulkan-dev vulkan-tools
+              ./scripts/unix/install-cmake.sh
+              sudo apt update && sudo apt install -y cmake libxkbcommon-dev xorg-dev libwayland-dev libvulkan-dev
 
 
-          - os: macos-14
+          - os: macos-15
             shell: bash
             build: scripts/unix/build.sh release
             binary: cmake-build-release/bin/cae
             build_test: scripts/unix/build.sh release --tests
             binary_test: cmake-build-release/bin/cae-tests
             deps: |
-              brew install vulkan-tools vulkan-headers
+              brew install vulkan-headers vulkan-tools
               brew upgrade cmake
 
-          ##- os: windows-2025
-          ##  shell: powershell
-          ##  build: |
-          ##    cmake -S . -G "Visual Studio 17 2022" -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
-          ##    cmake --build cmake-build-release --config Release
-          ##  binary: cmake-build-release\bin\cae.exe
-          ## build_test: |
-          ##    cmake -S . -G "Visual Studio 17 2022" -B cmake-build-tests -DBUILD_TESTS=ON
-          ##    cmake --build cmake-build-tests
-          ##  binary_test: cmake-build-tests\bin\Debug\cae-tests.exe
-          ##  deps: |
-          ##    choco install cmake -y
-          ##    choco install llvm -y
-          ##    choco install vulkan-sdk -y
+          - os: windows-2025
+            shell: powershell
+            build: |
+              cmake -S . -G "Ninja" -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
+              cmake --build cmake-build-release --config Release
+            binary: cmake-build-release\bin\cae.exe
+            build_test: |
+              cmake -S . -G "Ninja" -B cmake-build-tests -DBUILD_TESTS=ON
+              cmake --build cmake-build-tests
+            binary_test: cmake-build-tests\bin\cae-tests.exe
+            deps: |
+              choco install cmake -y
+              ./scripts/windows/install-vulkan-sdk.ps1
 
     runs-on: ${{ matrix.os }}
     defaults:
