@@ -1,19 +1,20 @@
 ///
 /// @file IWindow.hpp
 /// @brief This file contains the Window interface
-/// @namespace CAE
+/// @namespace cae
 ///
 
 #pragma once
 
 #include "CAE/Interfaces/IPlugin.hpp"
 
-namespace CAE {
+namespace cae
+{
 
     ///
     /// @interface IWindow
     /// @brief Interface for window
-    /// @namespace CAE
+    /// @namespace cae
     ///
     class IWindow : public IPlugin {
 
@@ -22,4 +23,4 @@ namespace CAE {
 
     }; // interface IWindow
 
-} // namespace CAE
+} // namespace cae

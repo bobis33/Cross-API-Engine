@@ -1,12 +1,13 @@
 ///
 /// @file IPlugin.hpp
 /// @brief This file contains the IPlugin interface
-/// @namespace CAE
+/// @namespace cae
 ///
 
 #pragma once
 
-namespace CAE {
+namespace cae
+{
 
     enum class PluginType : uint8_t {
         RENDERER = 0,
@@ -17,7 +18,7 @@ namespace CAE {
     ///
     /// @interface IPlugin
     /// @brief Interface for plugins
-    /// @namespace CAE
+    /// @namespace cae
     ///
     class IPlugin {
 
@@ -28,4 +29,4 @@ namespace CAE {
 
     }; // interface IPlugin
 
-} // namespace CAE
+} // namespace cae

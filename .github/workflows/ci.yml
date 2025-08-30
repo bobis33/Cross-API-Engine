@@ -31,7 +31,6 @@ jobs:
               ./scripts/unix/install-cmake.sh
               sudo apt update && sudo apt install -y cmake libxkbcommon-dev xorg-dev libwayland-dev libvulkan-dev
 
-
           - os: macos-15
             shell: bash
             build: scripts/unix/build.sh release

@@ -1,18 +1,18 @@
 ///
 /// @file Application.hpp
 /// @brief This file contains the Application class declaration
-/// @namespace CAE
+/// @namespace cae
 ///
 
 #pragma once
 
-namespace CAE
+namespace cae
 {
 
     ///
     /// @class Application
     /// @brief Main class
-    /// @namespace CAE
+    /// @namespace cae
     ///
     class Application
     {
@@ -28,4 +28,4 @@ namespace CAE
 
     }; // class Application
 
-} // namespace CAE
+} // namespace cae

@@ -1,26 +1,22 @@
 ///
 /// @file PluginManager.hpp
 /// @brief This file contains the PluginManager class declaration
-/// @namespace CAE
+/// @namespace cae
 ///
 
 #pragma once
 
-#include <string>
-#include <memory>
-#include <ranges>
 #include <unordered_map>
 
 #include "Interfaces/IPlugin.hpp"
 
-
-namespace CAE
+namespace cae
 {
 
     ///
     /// @class PluginManager
     /// @brief Class for managing plugins
-    /// @namespace CAE
+    /// @namespace cae
     ///
     class PluginManager
     {
@@ -49,4 +45,4 @@ namespace CAE
 
     }; // class PluginManager
 
-} // namespace CAE
+} // namespace cae

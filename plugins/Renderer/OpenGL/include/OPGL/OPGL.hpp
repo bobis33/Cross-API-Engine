@@ -1,20 +1,20 @@
 ///
 /// @file OPGL.hpp
 /// @brief This file contains the OPGL class declaration
-/// @namespace CAE
+/// @namespace cae
 ///
 
 #pragma once
 
 #include "CAE/Interfaces/IRenderer.hpp"
 
-namespace CAE
+namespace cae
 {
 
     ///
     /// @class OPGL
     /// @brief Class for the OpenGL plugin
-    /// @namespace CAE
+    /// @namespace cae
     ///
     class OPGL final : public IRenderer
     {
@@ -33,4 +33,4 @@ namespace CAE
 
     }; // class OPGL
 
-} // namespace CAE
+} // namespace cae

@@ -1,21 +1,20 @@
 ///
 /// @file VULKN.hpp
 /// @brief This file contains the VULKN class declaration
-/// @namespace CAE
+/// @namespace cae
 ///
 
 #pragma once
 
 #include "CAE/Interfaces/IRenderer.hpp"
 
-
-namespace CAE
+namespace cae
 {
 
     ///
     /// @class VULKN
     /// @brief Class for the Vulkan plugin
-    /// @namespace CAE
+    /// @namespace cae
     ///
     class VULKN final : public IRenderer
     {
@@ -34,4 +33,4 @@ namespace CAE
 
     }; // class VULKN
 
-} // namespace CAE
+} // namespace cae

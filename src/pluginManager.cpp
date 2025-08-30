@@ -1,18 +1,19 @@
+#include <memory>
+#include <ranges>
+
 #ifdef _WIN32
     #include <windows.h>
 #else
     #include <dlfcn.h>
 #endif
 
-#include <memory>
-
 #include "CAE/PluginManager.hpp"
 #include "Utils/Logger.hpp"
 
 
-using EntryPointFn = std::unique_ptr<CAE::IPlugin>(*)();
+using EntryPointFn = std::unique_ptr<cae::IPlugin>(*)();
 
-CAE::PluginManager::~PluginManager() {
+cae::PluginManager::~PluginManager() {
     std::vector<std::string> paths;
     paths.reserve(m_handles.size());
     for (const auto &path: m_handles | std::views::keys) {
@@ -23,7 +24,7 @@ CAE::PluginManager::~PluginManager() {
     }
 }
 
-CAE::IPlugin* CAE::PluginManager::loadPlugin(const std::string& path) {
+cae::IPlugin* cae::PluginManager::loadPlugin(const std::string& path) {
 #ifdef _WIN32
     LibHandle handle = LoadLibraryA(path.c_str());
 #else
@@ -52,9 +53,8 @@ CAE::IPlugin* CAE::PluginManager::loadPlugin(const std::string& path) {
     return rawPtr;
 }
 
-void CAE::PluginManager::unloadPlugin(const std::string& path) {
-    auto it = m_plugins.find(path);
-    if (it != m_plugins.end()) {
+void cae::PluginManager::unloadPlugin(const std::string& path) {
+    if (const auto it = m_plugins.find(path); it != m_plugins.end()) {
         utl::Logger::logInfo(
             "Unloading plugin:\t name: " + std::string(it->second->getName()) +
             "\t type:" + std::to_string(static_cast<uint8_t>(it->second->getType())) +

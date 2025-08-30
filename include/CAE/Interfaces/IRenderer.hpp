@@ -1,19 +1,20 @@
 ///
 /// @file IRenderer.hpp
 /// @brief This file contains the Renderer interface
-/// @namespace CAE
+/// @namespace cae
 ///
 
 #pragma once
 
 #include "CAE/Interfaces/IPlugin.hpp"
 
-namespace CAE {
+namespace cae
+{
 
     ///
     /// @interface IRenderer
     /// @brief Interface for renderer
-    /// @namespace CAE
+    /// @namespace cae
     ///
     class IRenderer : public IPlugin {
 
@@ -22,4 +23,4 @@ namespace CAE {
 
     }; // interface IRenderer
 
-} // namespace CAE
+} // namespace cae
