@@ -18,7 +18,7 @@ namespace cae
     {
 
         public:
-            Application() = default;
+            Application();
             ~Application() = default;
 
             Application(const Application &) = delete;
