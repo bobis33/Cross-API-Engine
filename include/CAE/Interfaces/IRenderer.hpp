@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "CAE/Interfaces/IPlugin.hpp"
+#include "Utils/Interfaces/IPlugin.hpp"
 
 namespace cae
 {
@@ -16,7 +16,7 @@ namespace cae
     /// @brief Interface for renderer
     /// @namespace cae
     ///
-    class IRenderer : public IPlugin {
+    class IRenderer : public utl::IPlugin {
 
         public:
             ~IRenderer() override = default;

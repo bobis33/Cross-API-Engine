@@ -8,21 +8,25 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 set(LIBRARY_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/lib")
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
+
+file(GLOB_RECURSE SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE HEADERS "${INCLUDE_DIR}/*.hpp")
+
 include(MakeVersion)
 include(MakeDoc)
 include(ClangTidy)
 include(ClangFormat)
-add_subdirectory(third-party)
-add_subdirectory(modules)
-add_subdirectory(plugins)
 ## include(MakeShaders)
+
+add_subdirectory(third-party)
+## add_subdirectory(modules)
+add_subdirectory(plugins)
 add_subdirectory(tests)
-file(GLOB_RECURSE SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE HEADERS "${INCLUDE_DIR}/*.hpp")
+
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-add_dependencies(${PROJECT_NAME} cae-third-party cae-modules) ## add shaders
+add_dependencies(${PROJECT_NAME} cae-third-party) ## add shaders
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE cae-modules)
+target_link_libraries(${PROJECT_NAME} PRIVATE utils)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 if (NOT WIN32)
     set(WARNING_FLAGS

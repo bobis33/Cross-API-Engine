@@ -28,8 +28,8 @@ namespace cae
         VULKN(VULKN &&) = delete;
         VULKN &operator=(VULKN &&) = delete;
 
-        [[nodiscard]] const char* getName() const override { return "Vulkan"; }
-        [[nodiscard]] PluginType getType() const override { return PluginType::RENDERER; }
+        [[nodiscard]] const std::string getName() const override { return "Vulkan"; }
+        [[nodiscard]] const utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
 
     }; // class VULKN
 

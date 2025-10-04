@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "CAE/Interfaces/IPlugin.hpp"
+#include "Utils/Interfaces/IPlugin.hpp"
 
 namespace cae
 {
@@ -16,7 +16,7 @@ namespace cae
     /// @brief Interface for window
     /// @namespace cae
     ///
-    class IWindow : public IPlugin {
+    class IWindow : public utl::IPlugin {
 
         public:
             ~IWindow() override = default;
