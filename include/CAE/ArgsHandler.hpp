@@ -34,8 +34,8 @@ namespace cae
             ArgsHandler(ArgsHandler &&) = delete;
             ArgsHandler &operator=(ArgsHandler &&) = delete;
 
-            ArgsConfig ParseArgs(int argc, const char *const argv[]);
-            EnvConfig ParseEnv(const char *const envp[]);
+            ArgsConfig ParseArgs(int argc, const char *const *argv);
+            EnvConfig ParseEnv(const char *const *envp);
 
         private:
 

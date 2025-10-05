@@ -27,7 +27,7 @@ static const std::unordered_map<std::string, std::function<void()>> ARGS_MAP = {
     {"--version", []() { std::cout << VERSION_MSG; }}
 };
 
-cae::ArgsConfig cae::ArgsHandler::ParseArgs(const int argc, const char *const argv[])
+cae::ArgsConfig cae::ArgsHandler::ParseArgs(const int argc, const char *const *argv)
 {
     if (argc <= 1)
     {
@@ -42,7 +42,7 @@ cae::ArgsConfig cae::ArgsHandler::ParseArgs(const int argc, const char *const ar
     throw std::runtime_error("Unknown argument: " + arg1 + ". Use -h or --help to see available options.");
 }
 
-cae::EnvConfig cae::ArgsHandler::ParseEnv(const char *const envp[])
+cae::EnvConfig cae::ArgsHandler::ParseEnv(const char *const *envp)
 {
     (void)envp; // Currently unused
     return {};

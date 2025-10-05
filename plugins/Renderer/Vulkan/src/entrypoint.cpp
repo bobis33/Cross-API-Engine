@@ -4,8 +4,8 @@
 
 extern "C"
 {
-    std::unique_ptr<cae::IRenderer> entryPoint()
+    cae::IRenderer *entryPoint()
     {
-        return std::make_unique<cae::VULKN>();
+        return std::make_unique<cae::VULKN>().release();
     }
 }

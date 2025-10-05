@@ -8,6 +8,7 @@
 
 #include "CAE/Interfaces/IRenderer.hpp"
 
+
 namespace cae
 {
 
@@ -28,8 +29,8 @@ namespace cae
         OPGL(OPGL &&) = delete;
         OPGL &operator=(OPGL &&) = delete;
 
-        [[nodiscard]] const char* getName() const override { return "OpenGL"; }
-        [[nodiscard]] PluginType getType() const override { return PluginType::RENDERER; }
+        [[nodiscard]] const std::string getName() const override { return "OpenGL"; }
+        [[nodiscard]] const utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
 
     }; // class OPGL
 
