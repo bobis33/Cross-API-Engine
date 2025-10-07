@@ -3,10 +3,10 @@
 #include <vector>
 
 #ifdef _WIN32
-    #include <windows.h>
-    #define PLUGINS_EXTENSION ".dll"
+#include <windows.h>
+#define PLUGINS_EXTENSION ".dll"
 #else
-    #define PLUGINS_EXTENSION ".so"
+#define PLUGINS_EXTENSION ".so"
 #endif
 
 #include "CAE/Application.hpp"
@@ -16,22 +16,34 @@
 
 cae::Application::Application()
 {
-    try {
+    try
+    {
         const std::filesystem::path pluginDir{PLUGINS_DIR};
         utl::PluginLoader pluginManager;
         std::vector<std::string> loadedPlugins;
-        for (const auto& entry : std::filesystem::directory_iterator(pluginDir)) {
-            if (!entry.is_regular_file() || entry.path().extension() != PLUGINS_EXTENSION) { continue; }
-            if (const std::string pluginPath = entry.path().string(); pluginManager.loadPlugin<utl::IPlugin>(pluginPath) != nullptr) {
+        for (const auto &entry : std::filesystem::directory_iterator(pluginDir))
+        {
+            if (!entry.is_regular_file() || entry.path().extension() != PLUGINS_EXTENSION)
+            {
+                continue;
+            }
+            if (const std::string pluginPath = entry.path().string();
+                pluginManager.loadPlugin<utl::IPlugin>(pluginPath) != nullptr)
+            {
                 loadedPlugins.push_back(entry.path().filename().string());
-            } else {
+            }
+            else
+            {
                 utl::Logger::log("Failed to load plugin: " + pluginPath, utl::LogLevel::WARNING);
             }
         }
-        if (loadedPlugins.empty()) {
+        if (loadedPlugins.empty())
+        {
             utl::Logger::log("No plugins loaded from directory: " + pluginDir.string(), utl::LogLevel::WARNING);
         }
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception &e)
+    {
         std::cerr << "Error: " << e.what() << '\n';
     }
 }

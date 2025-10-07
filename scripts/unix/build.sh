@@ -94,7 +94,7 @@ if [[ "$RUN_TESTS" == "OFF" &&
 fi
 
 if [[ "$RUN_FORMAT" == "ON" ]]; then
-    BUILD_TARGETS+=("clang-format" "clang-format-check")
+    BUILD_TARGETS+=("cae-clang-format")
 fi
 if [[ "$RUN_TESTS" == "ON" ]]; then
     BUILD_TARGETS+=("cae-tests")

@@ -5,8 +5,5 @@
 
 extern "C"
 {
-    cae::IRenderer *entryPoint()
-    {
-        return std::make_unique<cae::OPGL>().release();
-    }
+    cae::IRenderer *entryPoint() { return std::make_unique<cae::OPGL>().release(); }
 }
