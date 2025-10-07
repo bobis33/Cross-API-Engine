@@ -8,7 +8,6 @@
 
 #include "CAE/Interfaces/IRenderer.hpp"
 
-
 namespace cae
 {
 
@@ -20,17 +19,17 @@ namespace cae
     class OPGL final : public IRenderer
     {
 
-    public:
-        OPGL() = default;
-        ~OPGL() override = default;
+        public:
+            OPGL() = default;
+            ~OPGL() override = default;
 
-        OPGL(const OPGL &) = delete;
-        OPGL &operator=(const OPGL &) = delete;
-        OPGL(OPGL &&) = delete;
-        OPGL &operator=(OPGL &&) = delete;
+            OPGL(const OPGL &) = delete;
+            OPGL &operator=(const OPGL &) = delete;
+            OPGL(OPGL &&) = delete;
+            OPGL &operator=(OPGL &&) = delete;
 
-        [[nodiscard]] const std::string getName() const override { return "OpenGL"; }
-        [[nodiscard]] const utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
+            [[nodiscard]] const std::string getName() const override { return "OpenGL"; }
+            [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
 
     }; // class OPGL
 

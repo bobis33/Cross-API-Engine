@@ -11,7 +11,7 @@ namespace cae
 
     struct ArgsConfig
     {
-        bool run{false};
+            bool run{false};
     };
     struct EnvConfig
     {
@@ -34,11 +34,10 @@ namespace cae
             ArgsHandler(ArgsHandler &&) = delete;
             ArgsHandler &operator=(ArgsHandler &&) = delete;
 
-            ArgsConfig ParseArgs(int argc, const char *const *argv);
-            EnvConfig ParseEnv(const char *const *envp);
+            static ArgsConfig ParseArgs(int argc, const char *const *argv);
+            static EnvConfig ParseEnv(const char *const *envp);
 
         private:
-
     }; // class ArgsHandler
 
 } // namespace cae

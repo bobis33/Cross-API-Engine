@@ -16,7 +16,8 @@ namespace cae
     /// @brief Interface for renderer
     /// @namespace cae
     ///
-    class IRenderer : public utl::IPlugin {
+    class IRenderer : public utl::IPlugin
+    {
 
         public:
             ~IRenderer() override = default;

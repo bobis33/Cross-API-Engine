@@ -16,7 +16,8 @@ namespace cae
     /// @brief Interface for window
     /// @namespace cae
     ///
-    class IWindow : public utl::IPlugin {
+    class IWindow : public utl::IPlugin
+    {
 
         public:
             ~IWindow() override = default;
