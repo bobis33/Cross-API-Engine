@@ -17,6 +17,7 @@ subgraph main
         A -->|.so/.dylib/.dll| C[INetwork]
         A -->|.so/.dylib/.dll| D[IRenderer]
         A -->|.so/.dylib/.dll| E[IWindow]
+        A -->|.so/.dylib/.dll| P[IInput]
     end
 
     subgraph Plugins
@@ -37,12 +38,12 @@ subgraph main
             J[WIN32]
             M[WayLand]
             N[Cocoa]
-            subgraph Input devices
-                P[IInput]
-                Q[KeyBoard]
-                R[Mouse]
-                S[Controller]
-            end
+        end
+        subgraph Input devices
+            P[IInput]
+            Q[KeyBoard]
+            R[Mouse]
+            S[Controller]
         end
     end
 
@@ -53,7 +54,6 @@ subgraph main
     C -.-> O
     D -.-> H
     D -.-> I
-    E -.-> P
     E -.-> J
     E -.-> M
     E -.-> N

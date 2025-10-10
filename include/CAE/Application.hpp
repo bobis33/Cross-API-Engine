@@ -5,6 +5,7 @@
 ///
 
 #pragma once
+#include "Engine/Engine.hpp"
 
 namespace cae
 {
@@ -26,6 +27,8 @@ namespace cae
             Application(Application &&) = delete;
             Application &operator=(Application &&) = delete;
 
+        private:
+            std::unique_ptr<Engine> m_engine;
     }; // class Application
 
 } // namespace cae

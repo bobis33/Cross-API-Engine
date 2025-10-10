@@ -2,19 +2,12 @@
 #include <string>
 #include <vector>
 
-#ifdef _WIN32
-#include <windows.h>
-#define PLUGINS_EXTENSION ".dll"
-#else
-#define PLUGINS_EXTENSION ".so"
-#endif
-
 #include "CAE/Application.hpp"
 #include "Utils/Interfaces/IPlugin.hpp"
 #include "Utils/Logger.hpp"
 #include "Utils/PluginLoader.hpp"
 
-cae::Application::Application()
+cae::Application::Application() : m_engine(std::make_unique<Engine>())
 {
     try
     {

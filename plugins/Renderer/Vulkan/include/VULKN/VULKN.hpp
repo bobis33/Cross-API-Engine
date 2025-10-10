@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "CAE/Interfaces/IRenderer.hpp"
+#include "Interfaces/IRenderer.hpp"
 
 namespace cae
 {
@@ -30,6 +30,7 @@ namespace cae
 
             [[nodiscard]] std::string getName() const override { return "Vulkan"; }
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
+            [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
     }; // class VULKN
 

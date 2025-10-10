@@ -1,1 +1,5 @@
+add_subdirectory(Audio)
+add_subdirectory(Input)
+add_subdirectory(Network)
 add_subdirectory(Renderer)
+add_subdirectory(Window)
