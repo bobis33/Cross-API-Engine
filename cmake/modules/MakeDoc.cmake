@@ -14,6 +14,10 @@ doxygen_add_docs(doxygen
         "${CMAKE_SOURCE_DIR}/src"
         "${CMAKE_SOURCE_DIR}/modules/Utils/src/*.cpp"
         "${CMAKE_SOURCE_DIR}/modules/Utils/include/*.hpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Renderer/OpenGL/src/*.cpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Renderer/OpenGL/include/*.hpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/src/*.cpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/include/*.hpp"
 )
 add_custom_command(TARGET doxygen POST_BUILD
         WORKING_DIRECTORY ${DOXYGEN_DIR}
@@ -22,7 +26,8 @@ add_custom_command(TARGET doxygen POST_BUILD
 )
 add_custom_command(TARGET doxygen POST_BUILD
         WORKING_DIRECTORY "${DOXYGEN_DIR}/latex"
-        COMMAND ${CMAKE_MAKE_PROGRAM} > /dev/null && ${CMAKE_COMMAND} -E copy refman.pdf "${CMAKE_SOURCE_DIR}/documentation/CAE.pdf"
+        COMMAND make > /dev/null
+        COMMAND ${CMAKE_COMMAND} -E copy refman.pdf "${CMAKE_SOURCE_DIR}/documentation/CAE.pdf"
         BYPRODUCTS "${CMAKE_SOURCE_DIR}/documentation/CAE.pdf"
         VERBATIM
 )

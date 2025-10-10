@@ -63,7 +63,7 @@ subgraph main
 end
 ```
 
-### Prerequisites
+## Prerequisites
 
 Make sure you have the following dependencies installed on your system:
 

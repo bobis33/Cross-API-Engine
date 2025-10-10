@@ -13,3 +13,6 @@
 [submodule "third-party/utils"]
 	path = third-party/utils
 	url = git@github.com:bobis33/cpp-lib-utils.git
+[submodule "third-party/doxygen-awesome-css"]
+	path = third-party/doxygen-awesome-css
+	url = git@github.com:jothepro/doxygen-awesome-css.git

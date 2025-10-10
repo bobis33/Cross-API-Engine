@@ -1,0 +1,59 @@
+name: 'CD - Doxygen documentation'
+run-name: 'Doxygen documentation - "${{ github.ref_name }}"'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
+    timeout-minutes: 10
+    steps:
+
+      - uses: actions/checkout@v5.0.0
+        with:
+          ref: ${{ github.head_ref }}
+          repository: '${{ github.repository }}'
+          fetch-depth: 1
+          submodules: true
+
+      - name: 'Install dependencies'
+        run: |
+          ./scripts/unix/ubuntu/install-dependencies.sh doc
+          ./scripts/unix/install-cmake.sh
+          sudo apt update && sudo apt install -y cmake libxkbcommon-dev xorg-dev libwayland-dev libudev-dev
+
+      - name: 'Generate documentation'
+        run: ./scripts/unix/build.sh release --doc
+
+      - name: 'Prepare site folder'
+        run: |
+          mkdir -p ./_site
+          cp -r documentation/.doxygen/html/* ./_site/
+
+      - name: 'Upload artifact for pages'
+        uses: actions/upload-pages-artifact@v4.0.0
+        with:
+          path: ./_site
+
+  deploy:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
+    needs: build
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: 'github-pages'
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+
+      - name: 'Deploy to GitHub Pages'
+        id: deployment
+        uses: actions/deploy-pages@v4
