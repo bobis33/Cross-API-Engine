@@ -19,9 +19,11 @@ file(GLOB_RECURSE FILES_TO_FORMAT
         "${CMAKE_SOURCE_DIR}/src/*.cpp"
         "${CMAKE_SOURCE_DIR}/include/*.hpp"
         "${CMAKE_SOURCE_DIR}/plugins/Renderer/OpenGL/src/*.cpp"
-        "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/src/*.cpp"
         "${CMAKE_SOURCE_DIR}/plugins/Renderer/OpenGL/include/*.hpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/src/*.cpp"
         "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/include/*.hpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Window/GLFW/src/*.cpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Window/GLFW/include/*.hpp"
 )
 
 file(GLOB_RECURSE SOURCES "${SOURCE_DIR}/*.cpp")
@@ -31,7 +33,6 @@ include(MakeVersion)
 include(MakeDoc)
 include(ClangTidy)
 include(ClangFormat)
-## include(MakeShaders)
 
 add_subdirectory(third-party)
 add_subdirectory(modules)
@@ -39,7 +40,7 @@ add_subdirectory(plugins)
 add_subdirectory(tests)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-add_dependencies(${PROJECT_NAME} cae-third-party cae-modules) ## add shaders
+add_dependencies(${PROJECT_NAME} cae-third-party cae-modules)
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE cae-modules)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
