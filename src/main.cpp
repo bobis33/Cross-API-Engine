@@ -6,17 +6,20 @@
 
 int main(const int argc, const char *const *argv, const char *const *envp)
 {
+    std::unique_ptr<cae::Application> app = nullptr;
+    cae::ArgsConfig argsConfig;
+
     utl::Logger::init();
-    cae::ArgsHandler argsHandler{};
     try
     {
-        auto [run] = cae::ArgsHandler::ParseArgs(argc, argv);
-        auto env = cae::ArgsHandler::ParseEnv(envp);
-        if (!run)
+        argsConfig = cae::ArgsHandler::ParseArgs(argc, argv);
+        if (!argsConfig.run)
         {
             return EXIT_SUCCESS;
         }
-        cae::Application app;
+        app = std::make_unique<cae::Application>(argsConfig, cae::ArgsHandler::ParseEnv(envp));
+        app->start();
+        app->stop();
     }
     catch (const std::exception &e)
     {

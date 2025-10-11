@@ -3,7 +3,7 @@ project(cae-vulkan
         LANGUAGES C CXX
 )
 
-find_package(Vulkan REQUIRED)
+include(MakeVulkanSDK)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
@@ -19,7 +19,8 @@ add_library(${PROJECT_NAME} SHARED
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
+        "${Vulkan_HEADERS}"
 )
 target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan cae-modules)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${Vulkan_LIBS} cae-modules)

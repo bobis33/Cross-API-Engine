@@ -12,6 +12,7 @@ namespace cae
     struct ArgsConfig
     {
             bool run{false};
+            std::string config_path{""};
     };
     struct EnvConfig
     {

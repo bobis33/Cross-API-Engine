@@ -22,6 +22,7 @@ namespace cae
         public:
             ~IRenderer() override = default;
 
+            virtual void initialize(void *nativeWindowHandle) = 0;
     }; // interface IRenderer
 
 } // namespace cae

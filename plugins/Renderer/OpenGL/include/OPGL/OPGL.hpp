@@ -32,6 +32,6 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
+            void initialize(void *nativeWindowHandle) override {}
     }; // class OPGL
-
 } // namespace cae
