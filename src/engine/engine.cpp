@@ -1,8 +1,7 @@
 #include "CAE/Engine/Engine.hpp"
 #include "Utils/Logger.hpp"
 
-cae::Engine::Engine(EngineConfig &config,
-                    const std::function<std::shared_ptr<IAudio>()> &audioFactory,
+cae::Engine::Engine(EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                     const std::function<std::shared_ptr<IInput>()> &inputFactory,
                     const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
@@ -16,10 +15,12 @@ cae::Engine::Engine(EngineConfig &config,
     utl::Logger::log("\tNetwork host: " + config.network_host, utl::LogLevel::INFO);
     utl::Logger::log("\tNetwork port: " + std::to_string(config.network_port), utl::LogLevel::INFO);
     utl::Logger::log("\tRenderer vsync: " + std::string(config.renderer_vsync ? "true" : "false"), utl::LogLevel::INFO);
-    utl::Logger::log("\tRenderer frame rate limit: " + std::to_string(config.renderer_frame_rate_limit), utl::LogLevel::INFO);
+    utl::Logger::log("\tRenderer frame rate limit: " + std::to_string(config.renderer_frame_rate_limit),
+                     utl::LogLevel::INFO);
     utl::Logger::log("\tWindow width: " + std::to_string(config.window_width), utl::LogLevel::INFO);
     utl::Logger::log("\tWindow height: " + std::to_string(config.window_height), utl::LogLevel::INFO);
-    utl::Logger::log("\tWindow fullscreen: " + std::string(config.window_fullscreen ? "true" : "false"), utl::LogLevel::INFO);
+    utl::Logger::log("\tWindow fullscreen: " + std::string(config.window_fullscreen ? "true" : "false"),
+                     utl::LogLevel::INFO);
     utl::Logger::log("\tWindow name: " + config.window_name, utl::LogLevel::INFO);
     m_windowPlugin->create(config.window_name, {.width = config.window_width, .height = config.window_height});
 }

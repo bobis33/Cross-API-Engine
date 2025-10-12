@@ -1,14 +1,16 @@
 #include <filesystem>
 #include <fstream>
+#include <string>
 
 #include <nlohmann/json.hpp>
 
 #include "CAE/Application.hpp"
+#include "CAE/Generated/Version.hpp"
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
 
-std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_ptr<utl::PluginLoader> &loader)
+static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_ptr<utl::PluginLoader> &loader)
 {
     const std::filesystem::path pluginDir{PLUGINS_DIR};
     std::vector<std::shared_ptr<utl::IPlugin>> loadedPlugins;
@@ -20,8 +22,7 @@ std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_ptr<utl
             continue;
         }
         const std::string pluginPath = entry.path().string();
-        auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath);
-        if (plugin != nullptr)
+        if (auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath); plugin != nullptr)
         {
             loadedPlugins.push_back(plugin);
         }
@@ -38,34 +39,24 @@ std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_ptr<utl
     return loadedPlugins;
 }
 
-cae::EngineConfig parseJsonConf(const std::string &path)
+static cae::EngineConfig parseJsonConf(const std::string &path)
 {
-    if (path.empty())
-    {
-        return {};
-    }
     const fs::path filePath(path);
-    std::cout << filePath.string() << "\n";
     if (!fs::exists(filePath))
     {
-        std::cerr << "Config file not found: " + std::string(filePath) << std::endl;
+        std::cerr << "Config file not found: " + std::string(filePath) << '\n';
         return {};
     }
-
     if (!fs::is_regular_file(filePath))
     {
-        std::cerr << "Config path is not a regular file: " + std::string(filePath) << std::endl;
+        std::cerr << "Config path is not a regular file: " + std::string(filePath) << '\n';
         return {};
     }
 
-    if (const auto ext = filePath.extension().string(); ext != ".json" && ext != ".JSON")
-    {
-        std::cerr << "Config file must have a .json extension: " + std::string(filePath) << std::endl;
-        return {};
-    }
     std::ifstream file(filePath);
-    if (!file.is_open()) {
-        std::cerr << "Failed to open config file: " + std::string(filePath) << std::endl;
+    if (!file.is_open())
+    {
+        std::cerr << "Failed to open config file: " + std::string(filePath) << '\n';
         return {};
     }
 
@@ -76,7 +67,7 @@ cae::EngineConfig parseJsonConf(const std::string &path)
     }
     catch (const json::parse_error &e)
     {
-        std::cerr << "Failed to parse JSON config (" + std::string(filePath) + "): " + std::string(e.what()) << std::endl;
+        std::cerr << "Failed to parse JSON config (" + std::string(filePath) + "): " + std::string(e.what()) << '\n';
         return {};
     }
     cae::EngineConfig config;
@@ -144,45 +135,54 @@ cae::EngineConfig parseJsonConf(const std::string &path)
 cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &envConfig)
     : m_pluginLoader(std::make_unique<utl::PluginLoader>())
 {
-    std::shared_ptr<IWindow> windowPlugin = nullptr;
-    std::shared_ptr<IRenderer> rendererPlugin = nullptr;
-    AppConfig appConfig;
+    utl::Logger::log("PROJECT INFO:", utl::LogLevel::INFO);
+    std::cout << "\tName: " PROJECT_NAME "\n"
+              << "\tVersion: " PROJECT_VERSION "\n"
+              << "\tBuild type: " BUILD_TYPE "\n"
+              << "\tGit tag: " GIT_TAG "\n"
+              << "\tGit commit hash: " GIT_COMMIT_HASH "\n";
 
     try
     {
-        appConfig.envConfig = envConfig;
+        m_appConfig.envConfig = envConfig;
 
-        if (argsConfig.config_path != "")
+        if (!argsConfig.config_path.empty())
         {
-            appConfig.engineConfig = parseJsonConf(argsConfig.config_path);
+            m_appConfig.engineConfig = parseJsonConf(argsConfig.config_path);
         }
-        for (auto &plugin : loadPlugins(m_pluginLoader))
-        {
-            if (const auto renderer = std::dynamic_pointer_cast<IRenderer>(plugin))
-            {
-                if (renderer->getName() == "Vulkan")
-                {
-                    rendererPlugin = renderer;
-                }
-            }
-            if (const auto window = std::dynamic_pointer_cast<IWindow>(plugin))
-            {
-                if (window->getName() == "GLFW")
-                {
-                    windowPlugin = window;
-                }
-            }
-        }
-        m_engine = std::make_unique<Engine>(appConfig.engineConfig,
-                                            []() { return nullptr; }, []() { return nullptr; },
-                                            []() { return nullptr; }, [rendererPlugin]() { return rendererPlugin; },
-                                            [windowPlugin]() { return windowPlugin; });
+        setupEngine("Vulkan", "GLFW");
     }
-
     catch (const std::exception &e)
     {
         std::cerr << "Error: " << e.what() << '\n';
     }
+}
+
+void cae::Application::setupEngine(const std::string &rendererName, const std::string &windowName)
+{
+    std::shared_ptr<IWindow> windowPlugin = nullptr;
+    std::shared_ptr<IRenderer> rendererPlugin = nullptr;
+
+    for (auto &plugin : loadPlugins(m_pluginLoader))
+    {
+        if (const auto renderer = std::dynamic_pointer_cast<IRenderer>(plugin))
+        {
+            if (renderer->getName() == rendererName)
+            {
+                rendererPlugin = renderer;
+            }
+        }
+        if (const auto window = std::dynamic_pointer_cast<IWindow>(plugin))
+        {
+            if (window->getName() == windowName)
+            {
+                windowPlugin = window;
+            }
+        }
+    }
+    m_engine = std::make_unique<Engine>(
+        m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
+        [rendererPlugin]() { return rendererPlugin; }, [windowPlugin]() { return windowPlugin; });
 }
 
 void cae::Application::start() const { m_engine->run(); }

@@ -11,11 +11,13 @@ namespace cae
 
     struct ArgsConfig
     {
-            bool run{false};
-            std::string config_path{""};
+            bool run = false;
+            std::string config_path;
     };
     struct EnvConfig
     {
+            std::string user_name;
+            std::string pwd;
     };
 
     ///

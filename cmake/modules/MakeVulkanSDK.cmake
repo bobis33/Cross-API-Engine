@@ -1,5 +1,3 @@
-## TODO: can we tag latest release?
-## TODO: working for MacOS and Windows?
 find_package(Vulkan 1.4)
 if (Vulkan_FOUND)
     set(Vulkan_HEADERS Vulkan::Headers)

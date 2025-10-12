@@ -1,33 +1,9 @@
-#include <functional>
 #include <iostream>
-
-#ifdef _WIN32
-#define APP_EXTENSION ".exe"
-#else
-#define APP_EXTENSION ""
-#endif
 
 #include <Utils/Env.hpp>
 
 #include "CAE/ArgsHandler.hpp"
-#include "CAE/Generated/Version.hpp"
-
-static constexpr std::string_view HELP_MSG = "Usage: " PROJECT_NAME APP_EXTENSION " [options]\n\n"
-                                             "Options:\n"
-                                             "  -h, --help              Show this help message\n"
-                                             "  -v, --version           Show version information\n"
-                                             "  -c, --config <path>     Specify JSON configuration file\n";
-
-static constexpr std::string_view VERSION_MSG = PROJECT_NAME
-    " v" PROJECT_VERSION " " BUILD_TYPE " (" GIT_TAG ", commit " GIT_COMMIT_HASH ") " __DATE__ " " __TIME__ "\n";
-
-static const std::unordered_map<std::string, std::function<void()>> ARGS_MAP = {
-    {"-h", []() { std::cout << HELP_MSG; }},
-    {"--help", []() { std::cout << HELP_MSG; }},
-    {"-v", []() { std::cout << VERSION_MSG; }},
-    {"--version", []() { std::cout << VERSION_MSG; }},
-    {"-c", []() {}},
-    {"--config", []() {}}};
+#include "CAE/Common.hpp"
 
 cae::ArgsConfig cae::ArgsHandler::ParseArgs(const int argc, const char *const *argv)
 {
@@ -35,7 +11,9 @@ cae::ArgsConfig cae::ArgsHandler::ParseArgs(const int argc, const char *const *a
     config.run = true;
 
     if (argc <= 1)
+    {
         return config;
+    }
 
     for (int i = 1; i < argc; ++i)
     {
@@ -43,20 +21,22 @@ cae::ArgsConfig cae::ArgsHandler::ParseArgs(const int argc, const char *const *a
 
         if (arg == "-h" || arg == "--help")
         {
-            std::cout << HELP_MSG;
+            std::cout << Message::HELP_MSG;
             config.run = false;
             return config;
         }
         if (arg == "-v" || arg == "--version")
         {
-            std::cout << VERSION_MSG;
+            std::cout << Message::VERSION_MSG;
             config.run = false;
             return config;
         }
         if (arg == "-c" || arg == "--config")
         {
             if (i + 1 >= argc)
+            {
                 throw std::runtime_error("Missing value for argument " + arg);
+            }
 
             config.config_path = argv[++i];
         }
@@ -71,6 +51,17 @@ cae::ArgsConfig cae::ArgsHandler::ParseArgs(const int argc, const char *const *a
 
 cae::EnvConfig cae::ArgsHandler::ParseEnv(const char *const *envp)
 {
-    auto envMap = utl::getEnvMap(envp);
-    return {};
+    EnvConfig config;
+    const auto envMap = utl::getEnvMap(envp);
+
+    if (envMap.contains("USER"))
+    {
+        config.user_name = envMap.at("USER");
+    }
+    if (envMap.contains("PWD"))
+    {
+        config.pwd = envMap.at("PWD");
+    }
+
+    return config;
 }

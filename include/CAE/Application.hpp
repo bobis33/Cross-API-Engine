@@ -16,8 +16,8 @@ namespace cae
 
     struct AppConfig
     {
-        EngineConfig engineConfig;
-        EnvConfig envConfig;
+            EngineConfig engineConfig;
+            EnvConfig envConfig;
     };
 
     ///
@@ -41,11 +41,12 @@ namespace cae
             void stop();
 
         private:
+            void setupEngine(const std::string &rendererName, const std::string &windowName);
+
             std::unique_ptr<utl::PluginLoader> m_pluginLoader = nullptr;
             std::unique_ptr<Engine> m_engine = nullptr;
 
-            EngineConfig m_appConfig;
-            EnvConfig m_envConfig;
+            AppConfig m_appConfig;
     }; // class Application
 
 } // namespace cae

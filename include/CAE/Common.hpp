@@ -6,6 +6,17 @@
 
 #pragma once
 
+#include <cstdint>
+#include <string_view>
+
+#ifdef _WIN32
+#define APP_EXTENSION ".exe"
+#else
+#define APP_EXTENSION ""
+#endif
+
+#include "CAE/Generated/Version.hpp"
+
 namespace cae
 {
     namespace Audio
@@ -13,6 +24,18 @@ namespace cae
         inline constexpr auto VOLUME = 50.F;
         inline constexpr auto MUTED = false;
     } // namespace Audio
+
+    namespace Message
+    {
+        static constexpr std::string_view HELP_MSG = "Usage: " PROJECT_NAME APP_EXTENSION " [options]\n\n"
+                                                     "Options:\n"
+                                                     "  -h, --help              Show this help message\n"
+                                                     "  -v, --version           Show version information\n"
+                                                     "  -c, --config <path>     Specify JSON configuration file\n";
+        static constexpr std::string_view VERSION_MSG =
+            PROJECT_NAME " v" PROJECT_VERSION " " BUILD_TYPE " (" GIT_TAG ", commit " GIT_COMMIT_HASH ") " __DATE__
+            " " __TIME__ "\n";
+    } // namespace Message
 
     namespace Network
     {
