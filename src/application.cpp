@@ -44,19 +44,19 @@ static cae::EngineConfig parseJsonConf(const std::string &path)
     const fs::path filePath(path);
     if (!fs::exists(filePath))
     {
-        std::cerr << "Config file not found: " + std::string(filePath) << '\n';
+        std::cerr << "Config file not found: " << filePath << '\n';
         return {};
     }
     if (!fs::is_regular_file(filePath))
     {
-        std::cerr << "Config path is not a regular file: " + std::string(filePath) << '\n';
+        std::cerr << "Config path is not a regular file: " << filePath << '\n';
         return {};
     }
 
     std::ifstream file(filePath);
     if (!file.is_open())
     {
-        std::cerr << "Failed to open config file: " + std::string(filePath) << '\n';
+        std::cerr << "Failed to open config file: " << filePath << '\n';
         return {};
     }
 
@@ -67,11 +67,11 @@ static cae::EngineConfig parseJsonConf(const std::string &path)
     }
     catch (const json::parse_error &e)
     {
-        std::cerr << "Failed to parse JSON config (" + std::string(filePath) + "): " + std::string(e.what()) << '\n';
+        std::cerr << "Failed to parse JSON config (" << filePath << "): " + std::string(e.what()) << '\n';
         return {};
     }
     cae::EngineConfig config;
-    utl::Logger::log("Loading config: " + std::string(filePath), utl::LogLevel::INFO);
+    utl::Logger::log("Loading config: " + filePath.string(), utl::LogLevel::INFO);
     if (j.contains("audio"))
     {
         const auto &audio = j["audio"];

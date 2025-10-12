@@ -1,3 +1,4 @@
+include(FetchContent)
 find_package(Vulkan 1.4)
 if (Vulkan_FOUND)
     set(Vulkan_HEADERS Vulkan::Headers)
@@ -5,34 +6,20 @@ if (Vulkan_FOUND)
     set(Vulkan_BIN_DIR "")
     return()
 endif ()
-set(VULKAN_VERSION "1.4.328.1")
-set(VULKAN_SDK_BASE_URL "https://sdk.lunarg.com/sdk/download/${VULKAN_VERSION}")
-if (WIN32)
-    set(VULKAN_SDK_URL "${VULKAN_SDK_BASE_URL}/windows/VulkanSDK-${VULKAN_VERSION}-Installer.exe")
-elseif (APPLE)
-    set(VULKAN_SDK_URL "${VULKAN_SDK_BASE_URL}/mac/vulkansdk-macos-${VULKAN_VERSION}.zip")
-else ()
-    set(VULKAN_SDK_URL "${VULKAN_SDK_BASE_URL}/linux/vulkansdk-linux-x86_64-${VULKAN_VERSION}.tar.xz")
-endif ()
-include(FetchContent)
-set(VULKAN_SDK_DIR "${CMAKE_BINARY_DIR}/VulkanSDK")
-message(STATUS "Downloading Vulkan SDK from ${VULKAN_SDK_URL}")
+set(VULKAN_VERSION "1.4.329")
+
 FetchContent_Declare(
-        VulkanSDK
-        URL "${VULKAN_SDK_URL}"
-        SOURCE_DIR "${VULKAN_SDK_DIR}"
+        VulkanHeaders
+        GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Headers.git
+        GIT_TAG v1.4.329
+        GIT_SHALLOW TRUE
 )
-FetchContent_MakeAvailable(VulkanSDK)
-if (WIN32)
-    set(Vulkan_HEADERS "${VULKAN_SDK_DIR}/Include")
-    set(Vulkan_LIBS "${VULKAN_SDK_DIR}/Lib/vulkan-1.lib")
-    set(Vulkan_BIN_DIR "${VULKAN_SDK_DIR}/Bin/")
-elseif (APPLE)
-    set(Vulkan_HEADERS "${VULKAN_SDK_DIR}/macOS/include")
-    set(Vulkan_LIBS "${VULKAN_SDK_DIR}/macOS/lib/libvulkan.dylib")
-    set(Vulkan_BIN_DIR "${VULKAN_SDK_DIR}/macOS/bin/")
-else ()
-    set(Vulkan_HEADERS "${VULKAN_SDK_DIR}/x86_64/include")
-    set(Vulkan_LIBS "${VULKAN_SDK_DIR}/x86_64/lib/libvulkan.so")
-    set(Vulkan_BIN_DIR "${VULKAN_SDK_DIR}/x86_64/bin/")
-endif ()
+FetchContent_MakeAvailable(VulkanHeaders)
+
+FetchContent_Declare(
+        VulkanLoader
+        GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Loader.git
+        GIT_TAG v1.4.329
+        GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(VulkanLoader)
