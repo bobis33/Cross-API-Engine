@@ -1,7 +1,8 @@
 #include "CAE/Engine/Engine.hpp"
-#include "CAE/Common.hpp"
+#include "Utils/Logger.hpp"
 
-cae::Engine::Engine(const std::function<std::shared_ptr<IAudio>()> &audioFactory,
+cae::Engine::Engine(EngineConfig &config,
+                    const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                     const std::function<std::shared_ptr<IInput>()> &inputFactory,
                     const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
@@ -9,7 +10,18 @@ cae::Engine::Engine(const std::function<std::shared_ptr<IAudio>()> &audioFactory
     : m_audioPlugin(audioFactory()), m_inputPlugin(inputFactory()), m_networkPlugin(networkFactory()),
       m_rendererPlugin(rendererFactory()), m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>())
 {
-    m_windowPlugin->create(Window::NAME, {.width = Window::WIDTH, .height = Window::HEIGHT});
+    utl::Logger::log("Loading engine with configuration:", utl::LogLevel::INFO);
+    utl::Logger::log("\tAudio master volume: " + std::to_string(config.audio_master_volume), utl::LogLevel::INFO);
+    utl::Logger::log("\tAudio muted: " + std::string(config.audio_muted ? "true" : "false"), utl::LogLevel::INFO);
+    utl::Logger::log("\tNetwork host: " + config.network_host, utl::LogLevel::INFO);
+    utl::Logger::log("\tNetwork port: " + std::to_string(config.network_port), utl::LogLevel::INFO);
+    utl::Logger::log("\tRenderer vsync: " + std::string(config.renderer_vsync ? "true" : "false"), utl::LogLevel::INFO);
+    utl::Logger::log("\tRenderer frame rate limit: " + std::to_string(config.renderer_frame_rate_limit), utl::LogLevel::INFO);
+    utl::Logger::log("\tWindow width: " + std::to_string(config.window_width), utl::LogLevel::INFO);
+    utl::Logger::log("\tWindow height: " + std::to_string(config.window_height), utl::LogLevel::INFO);
+    utl::Logger::log("\tWindow fullscreen: " + std::string(config.window_fullscreen ? "true" : "false"), utl::LogLevel::INFO);
+    utl::Logger::log("\tWindow name: " + config.window_name, utl::LogLevel::INFO);
+    m_windowPlugin->create(config.window_name, {.width = config.window_width, .height = config.window_height});
 }
 
 void cae::Engine::run() const
@@ -22,6 +34,7 @@ void cae::Engine::run() const
 
 void cae::Engine::stop()
 {
+    utl::Logger::log("Stopping engine...", utl::LogLevel::INFO);
     m_windowPlugin->close();
 
     m_audioPlugin = nullptr;

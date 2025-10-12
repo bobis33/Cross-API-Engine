@@ -7,17 +7,35 @@
 #pragma once
 
 #include <functional>
-#include <memory>
 
+#include <Utils/Clock.hpp>
+
+#include "CAE/Common.hpp"
 #include "Interfaces/IAudio.hpp"
 #include "Interfaces/INetwork.hpp"
 #include "Interfaces/IRenderer.hpp"
 #include "Interfaces/IWindow.hpp"
 #include "Interfaces/Input/IInput.hpp"
-#include "Utils/Clock.hpp"
 
 namespace cae
 {
+
+    struct EngineConfig
+    {
+        float audio_master_volume = Audio::VOLUME;
+        bool audio_muted = Audio::MUTED;
+
+        std::string network_host = Network::HOST;
+        uint16_t network_port = Network::PORT;
+
+        bool renderer_vsync = Renderer::VSYNC;
+        uint16_t renderer_frame_rate_limit = Renderer::FRAME_RATE_LIMIT;
+
+        uint16_t window_width = Window::WIDTH;
+        uint16_t window_height = Window::HEIGHT;
+        bool window_fullscreen = Window::FULLSCREEN;
+        std::string window_name = Window::NAME;
+    };
 
     ///
     /// @class Engine
@@ -28,7 +46,8 @@ namespace cae
     {
 
         public:
-            Engine(const std::function<std::shared_ptr<IAudio>()> &audioFactory,
+            Engine(EngineConfig &config,
+                   const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                    const std::function<std::shared_ptr<IInput>()> &inputFactory,
                    const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                    const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,

@@ -1,13 +1,11 @@
-#include <GLFW/glfw3.h>
-#include <stdexcept>
+#include <Utils/Image.hpp>
+#include <Utils/Logger.hpp>
 
 #include "GLFW/GLFW.hpp"
-#include "Utils/Image.hpp"
-#include "Utils/Logger.hpp"
 
 void cae::GLFW::frameBufferResizeCallback(GLFWwindow *window, int width, int height)
 {
-    const auto self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
+    auto *const self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
     self->m_frameBufferResized = true;
     self->m_frameBufferSize = {static_cast<uint16_t>(width), static_cast<uint16_t>(height)};
 }

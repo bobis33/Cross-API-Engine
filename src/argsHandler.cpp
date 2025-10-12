@@ -1,6 +1,5 @@
 #include <functional>
 #include <iostream>
-#include <unordered_map>
 
 #ifdef _WIN32
 #define APP_EXTENSION ".exe"
@@ -8,7 +7,7 @@
 #define APP_EXTENSION ""
 #endif
 
-#include "Utils/Env.hpp"
+#include <Utils/Env.hpp>
 
 #include "CAE/ArgsHandler.hpp"
 #include "CAE/Generated/Version.hpp"

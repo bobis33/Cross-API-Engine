@@ -6,12 +6,19 @@
 
 #pragma once
 
+#include <Utils/PluginLoader.hpp>
+
 #include "CAE/ArgsHandler.hpp"
-#include "Engine/Engine.hpp"
-#include "Utils/PluginLoader.hpp"
+#include "CAE/Engine/Engine.hpp"
 
 namespace cae
 {
+
+    struct AppConfig
+    {
+        EngineConfig engineConfig;
+        EnvConfig envConfig;
+    };
 
     ///
     /// @class Application
@@ -22,7 +29,7 @@ namespace cae
     {
 
         public:
-            Application(ArgsConfig argsConfig, EnvConfig envConfig);
+            Application(const ArgsConfig &argsConfig, const EnvConfig &envConfig);
             ~Application() = default;
 
             Application(const Application &) = delete;
@@ -36,6 +43,9 @@ namespace cae
         private:
             std::unique_ptr<utl::PluginLoader> m_pluginLoader = nullptr;
             std::unique_ptr<Engine> m_engine = nullptr;
+
+            EngineConfig m_appConfig;
+            EnvConfig m_envConfig;
     }; // class Application
 
 } // namespace cae

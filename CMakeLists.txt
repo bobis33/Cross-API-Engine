@@ -41,7 +41,10 @@ add_subdirectory(tests)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 add_dependencies(${PROJECT_NAME} cae-third-party cae-modules)
-target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE
+        ${INCLUDE_DIR}
+        "${CMAKE_SOURCE_DIR}/third-party/nlohmann-json/single_include"
+)
 target_link_libraries(${PROJECT_NAME} PRIVATE cae-modules)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 if (NOT WIN32)
