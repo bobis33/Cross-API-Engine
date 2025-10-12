@@ -29,7 +29,7 @@ jobs:
             binary_test: cmake-build-release/bin/cae-tests
             deps: |
               ./scripts/unix/install-cmake.sh
-              sudo apt update && sudo apt install -y cmake libxkbcommon-dev xorg-dev libwayland-dev libvulkan-dev
+              sudo apt update && sudo apt install -y cmake libxkbcommon-dev xorg-dev libwayland-dev
 
           - os: macos-15
             shell: bash
@@ -37,9 +37,7 @@ jobs:
             binary: cmake-build-release/bin/cae
             build_test: scripts/unix/build.sh release --tests
             binary_test: cmake-build-release/bin/cae-tests
-            deps: |
-              brew install vulkan-headers vulkan-tools
-              brew upgrade cmake
+            deps: brew upgrade cmake
 
           - os: windows-2025
             shell: powershell
@@ -51,9 +49,7 @@ jobs:
               cmake -S . -G "Ninja" -B cmake-build-tests -DBUILD_TESTS=ON
               cmake --build cmake-build-tests
             binary_test: cmake-build-tests\bin\cae-tests.exe
-            deps: |
-              choco install cmake -y
-              ./scripts/windows/install-vulkan-sdk.ps1
+            deps: choco install cmake -y
 
     runs-on: ${{ matrix.os }}
     defaults:
@@ -65,7 +61,7 @@ jobs:
           ref: ${{ github.head_ref }}
           repository: '${{ github.repository }}'
           fetch-depth: 1
-          submodules: true
+          submodules: recursive
 
       - name: install dependencies
         run: ${{ matrix.deps }}
