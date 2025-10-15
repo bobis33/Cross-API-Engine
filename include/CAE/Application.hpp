@@ -43,6 +43,8 @@ namespace cae
         private:
             void setupEngine(const std::string &rendererName, const std::string &windowName);
 
+            static EngineConfig parseEngineConf(const std::string &path);
+
             std::unique_ptr<utl::PluginLoader> m_pluginLoader = nullptr;
             std::unique_ptr<Engine> m_engine = nullptr;
 

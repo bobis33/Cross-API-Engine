@@ -21,7 +21,7 @@ namespace cae
 {
     namespace Audio
     {
-        inline constexpr auto VOLUME = 50.F;
+        inline constexpr auto VOLUME = 1.F;
         inline constexpr auto MUTED = false;
     } // namespace Audio
 
@@ -31,10 +31,9 @@ namespace cae
                                                      "Options:\n"
                                                      "  -h, --help              Show this help message\n"
                                                      "  -v, --version           Show version information\n"
-                                                     "  -c, --config <path>     Specify JSON configuration file\n";
-        static constexpr std::string_view VERSION_MSG =
-            PROJECT_NAME " v" PROJECT_VERSION " " BUILD_TYPE " (" GIT_TAG ", commit " GIT_COMMIT_HASH ") " __DATE__
-            " " __TIME__ "\n";
+                                                     "  -c, --config <path>     Specify JSON configuration file";
+        static constexpr std::string_view VERSION_MSG = PROJECT_NAME
+            " v" PROJECT_VERSION " " BUILD_TYPE " (" GIT_TAG ", commit " GIT_COMMIT_HASH ") " __DATE__ " " __TIME__;
     } // namespace Message
 
     namespace Network

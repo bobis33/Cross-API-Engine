@@ -9,6 +9,8 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/third-party/utils/cmake/modul
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 set(LIBRARY_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/lib")
+set(PLUGIN_DIR "${LIBRARY_OUTPUT_PATH}/plugins")
+add_compile_definitions(PLUGINS_DIR="${PLUGIN_DIR}")
 
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
@@ -83,4 +85,3 @@ if (MSVC)
 else ()
     target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS} -O3)
 endif ()
-add_compile_definitions(PLUGINS_DIR="${LIBRARY_OUTPUT_PATH}")

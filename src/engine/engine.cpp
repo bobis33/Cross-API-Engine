@@ -1,7 +1,8 @@
-#include "CAE/Engine/Engine.hpp"
-#include "Utils/Logger.hpp"
+#include <Utils/Logger.hpp>
 
-cae::Engine::Engine(EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
+#include "CAE/Engine/Engine.hpp"
+
+cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                     const std::function<std::shared_ptr<IInput>()> &inputFactory,
                     const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,

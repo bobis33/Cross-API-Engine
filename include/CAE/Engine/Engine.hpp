@@ -46,7 +46,7 @@ namespace cae
     {
 
         public:
-            Engine(EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
+            Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                    const std::function<std::shared_ptr<IInput>()> &inputFactory,
                    const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                    const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
