@@ -37,7 +37,7 @@ namespace cae
             virtual bool setIcon(const std::string &path) const = 0;
 
             virtual bool shouldClose() const = 0;
-            virtual void pollEvents() const = 0;
+            virtual void pollEvents() = 0;
 
             virtual bool wasResized() const = 0;
             virtual void resetResizedFlag() = 0;

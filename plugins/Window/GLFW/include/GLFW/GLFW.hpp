@@ -43,7 +43,7 @@ namespace cae
             [[nodiscard]] bool setIcon(const std::string &path) const override;
 
             [[nodiscard]] bool shouldClose() const override { return glfwWindowShouldClose(m_window) != 0; }
-            void pollEvents() const override { glfwPollEvents(); }
+            void pollEvents() override { glfwPollEvents(); }
 
             bool wasResized() const override { return m_frameBufferResized; }
             void resetResizedFlag() override { m_frameBufferResized = false; }
