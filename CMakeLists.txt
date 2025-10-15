@@ -9,6 +9,8 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/third-party/utils/cmake/modul
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 set(LIBRARY_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/lib")
+set(PLUGIN_DIR "${LIBRARY_OUTPUT_PATH}/plugins")
+add_compile_definitions(PLUGINS_DIR="${PLUGIN_DIR}")
 
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
@@ -19,9 +21,11 @@ file(GLOB_RECURSE FILES_TO_FORMAT
         "${CMAKE_SOURCE_DIR}/src/*.cpp"
         "${CMAKE_SOURCE_DIR}/include/*.hpp"
         "${CMAKE_SOURCE_DIR}/plugins/Renderer/OpenGL/src/*.cpp"
-        "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/src/*.cpp"
         "${CMAKE_SOURCE_DIR}/plugins/Renderer/OpenGL/include/*.hpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/src/*.cpp"
         "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/include/*.hpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Window/GLFW/src/*.cpp"
+        "${CMAKE_SOURCE_DIR}/plugins/Window/GLFW/include/*.hpp"
 )
 
 file(GLOB_RECURSE SOURCES "${SOURCE_DIR}/*.cpp")
@@ -31,7 +35,6 @@ include(MakeVersion)
 include(MakeDoc)
 include(ClangTidy)
 include(ClangFormat)
-## include(MakeShaders)
 
 add_subdirectory(third-party)
 add_subdirectory(modules)
@@ -39,8 +42,11 @@ add_subdirectory(plugins)
 add_subdirectory(tests)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-add_dependencies(${PROJECT_NAME} cae-third-party cae-modules) ## add shaders
-target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
+add_dependencies(${PROJECT_NAME} cae-third-party cae-modules)
+target_include_directories(${PROJECT_NAME} PRIVATE
+        ${INCLUDE_DIR}
+        "${CMAKE_SOURCE_DIR}/third-party/nlohmann-json/single_include"
+)
 target_link_libraries(${PROJECT_NAME} PRIVATE cae-modules)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 if (NOT WIN32)
@@ -79,4 +85,3 @@ if (MSVC)
 else ()
     target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS} -O3)
 endif ()
-add_compile_definitions(PLUGINS_DIR="${LIBRARY_OUTPUT_PATH}")

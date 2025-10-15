@@ -64,7 +64,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         --tests)
             RUN_TESTS=ON
-            CMAKE_CMD+=(-DBUILD_TESTS=ON)
+            CMAKE_CMD+=(-DBUILD_CAE_TESTS=ON)
             ;;
         --format)
             RUN_FORMAT=ON

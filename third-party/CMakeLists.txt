@@ -1,13 +1,8 @@
-#======================================= GoogleTest =======================================#
+#==================================== GoogleTest =====================================#
 add_library(cae-third-party INTERFACE)
-if (BUILD_TESTS)
+if (BUILD_CAE_TESTS)
     add_subdirectory(googletest)
 endif()
-#======================================= GLFW =======================================#
-set(GLFW_BUILD_DOCS OFF)
-set(GLFW_BUILD_TESTS OFF)
-set(GLFW_BUILD_EXAMPLES OFF)
-add_subdirectory(glfw)
 #======================================= ImGui =======================================#
 ## set(IMGUI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/imgui")
 ## add_library(imgui STATIC

@@ -6,17 +6,36 @@
 
 #pragma once
 
-#include <memory>
+#include <functional>
 
+#include <Utils/Clock.hpp>
+
+#include "CAE/Common.hpp"
 #include "Interfaces/IAudio.hpp"
 #include "Interfaces/INetwork.hpp"
 #include "Interfaces/IRenderer.hpp"
 #include "Interfaces/IWindow.hpp"
 #include "Interfaces/Input/IInput.hpp"
-#include "Utils/Clock.hpp"
 
 namespace cae
 {
+
+    struct EngineConfig
+    {
+            float audio_master_volume = Audio::VOLUME;
+            bool audio_muted = Audio::MUTED;
+
+            std::string network_host = Network::HOST;
+            uint16_t network_port = Network::PORT;
+
+            bool renderer_vsync = Renderer::VSYNC;
+            uint16_t renderer_frame_rate_limit = Renderer::FRAME_RATE_LIMIT;
+
+            uint16_t window_width = Window::WIDTH;
+            uint16_t window_height = Window::HEIGHT;
+            bool window_fullscreen = Window::FULLSCREEN;
+            std::string window_name = Window::NAME;
+    };
 
     ///
     /// @class Engine
@@ -27,7 +46,11 @@ namespace cae
     {
 
         public:
-            Engine();
+            Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
+                   const std::function<std::shared_ptr<IInput>()> &inputFactory,
+                   const std::function<std::shared_ptr<INetwork>()> &networkFactory,
+                   const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
+                   const std::function<std::shared_ptr<IWindow>()> &windowFactory);
             ~Engine() = default;
 
             Engine(const Engine &) = delete;
@@ -35,15 +58,25 @@ namespace cae
             Engine(Engine &&) = delete;
             Engine &operator=(Engine &&) = delete;
 
-        private:
-            std::unique_ptr<IAudio> m_audioPlugin;
-            std::unique_ptr<IInput> m_inputPlugin;
-            std::unique_ptr<INetwork> m_networkPlugin;
-            std::unique_ptr<IRenderer> m_rendererPlugin;
-            std::unique_ptr<IWindow> m_windowPlugin;
+            [[nodiscard]] const std::shared_ptr<IAudio> &getAudio() const { return m_audioPlugin; }
+            [[nodiscard]] const std::shared_ptr<IInput> &getInput() const { return m_inputPlugin; }
+            [[nodiscard]] const std::shared_ptr<INetwork> &getNetwork() const { return m_networkPlugin; }
+            [[nodiscard]] const std::shared_ptr<IRenderer> &getRenderer() const { return m_rendererPlugin; }
+            [[nodiscard]] const std::shared_ptr<IWindow> &getWindow() const { return m_windowPlugin; }
 
-            std::unique_ptr<utl::Clock> m_clock;
+            [[nodiscard]] const std::unique_ptr<utl::Clock> &getClock() { return m_clock; }
+
+            void run() const;
+            void stop();
+
+        private:
+            std::shared_ptr<IAudio> m_audioPlugin = nullptr;
+            std::shared_ptr<IInput> m_inputPlugin = nullptr;
+            std::shared_ptr<INetwork> m_networkPlugin = nullptr;
+            std::shared_ptr<IRenderer> m_rendererPlugin = nullptr;
+            std::shared_ptr<IWindow> m_windowPlugin = nullptr;
+
+            std::unique_ptr<utl::Clock> m_clock = nullptr;
 
     }; // class Engine
-
 } // namespace cae

@@ -29,6 +29,18 @@ namespace cae
             ~IWindow() override = default;
 
             virtual bool create(const std::string &name, WindowSize size) = 0;
+            virtual void close() = 0;
+
+            virtual void *getNativeHandle() const = 0;
+            virtual WindowSize getWindowSize() const = 0;
+
+            virtual bool setIcon(const std::string &path) const = 0;
+
+            virtual bool shouldClose() const = 0;
+            virtual void pollEvents() const = 0;
+
+            virtual bool wasResized() const = 0;
+            virtual void resetResizedFlag() = 0;
 
     private:
     }; // interface IWindow

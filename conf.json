@@ -1,0 +1,23 @@
+{
+  "audio": {
+    "masterVolume": 0.8,
+    "muted": false
+  },
+  "network": {
+    "host": "127.0.0.1",
+    "port": 4242
+  },
+  "renderer": {
+    "vsync": false,
+    "frameRateLimit": 90
+  },
+  "user": {
+    "name": "User"
+  },
+  "window": {
+    "name": "CAE - Cross API Engine",
+    "width": 1920,
+    "height": 1080,
+    "fullscreen": false
+  }
+}

@@ -23,6 +23,8 @@ INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include \
                          @CMAKE_CURRENT_SOURCE_DIR@/plugins/Renderer/OpenGL/src \
                          @CMAKE_CURRENT_SOURCE_DIR@/plugins/Renderer/Vulkan/include \
                          @CMAKE_CURRENT_SOURCE_DIR@/plugins/Renderer/Vulkan/src \
+                         @CMAKE_CURRENT_SOURCE_DIR@/plugins/Window/GLFW/include \
+                         @CMAKE_CURRENT_SOURCE_DIR@/plugins/Window/GLFW/src \
                          @CMAKE_CURRENT_SOURCE_DIR@/CONTRIBUTING.md \
                          @CMAKE_CURRENT_SOURCE_DIR@/README.md
 FILE_PATTERNS          = *.hpp \

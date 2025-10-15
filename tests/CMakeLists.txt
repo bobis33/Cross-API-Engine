@@ -1,5 +1,5 @@
-option(BUILD_TESTS "Build tests" OFF)
-if (NOT BUILD_TESTS)
+option(BUILD_CAE_TESTS "Build tests" OFF)
+if (NOT BUILD_CAE_TESTS)
     return()
 endif()
 
@@ -10,9 +10,14 @@ project(cae-tests
 
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/include/*.hpp)
+
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+
 target_link_libraries(${PROJECT_NAME} PRIVATE gtest gtest_main)
-target_include_directories(${PROJECT_NAME} PRIVATE ${gtest_SOURCE_DIR}/googletest/include ${INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE
+        ${INCLUDE_DIR}
+        "${gtest_SOURCE_DIR}/googletest/include"
+)
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
