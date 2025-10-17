@@ -10,7 +10,8 @@
 
 namespace cae
 {
-    enum class GamepadButton : uint8_t {
+    enum class GamepadButton : uint8_t
+    {
         A = 0,
         B,
         X,
@@ -28,7 +29,8 @@ namespace cae
         DPadRight
     };
 
-    enum class GamepadAxis : uint8_t {
+    enum class GamepadAxis : uint8_t
+    {
         LeftX = 0,
         LeftY,
         RightX,

@@ -13,8 +13,8 @@ namespace cae
 
     struct WindowSize
     {
-        uint16_t width;
-        uint16_t height;
+            uint16_t width;
+            uint16_t height;
     };
 
     ///
@@ -42,7 +42,7 @@ namespace cae
             virtual bool wasResized() const = 0;
             virtual void resetResizedFlag() = 0;
 
-    private:
+        private:
     }; // interface IWindow
 
 } // namespace cae

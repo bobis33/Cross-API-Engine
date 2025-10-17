@@ -4,32 +4,28 @@ project(cae
         DESCRIPTION "Cross-API graphics engine"
         LANGUAGES C CXX
 )
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/third-party/utils/cmake/modules")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/third-party/utils/cmake/modules")
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 set(LIBRARY_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/lib")
 set(PLUGIN_DIR "${LIBRARY_OUTPUT_PATH}/plugins")
+set(PATH_VERSION "${PROJECT_SOURCE_DIR}/include/CAE/Generated/Version.hpp")
+set(TEMPLATE_PATH "${PROJECT_SOURCE_DIR}/third-party/utils/cmake/config/Version.hpp.in")
+
 add_compile_definitions(PLUGINS_DIR="${PLUGIN_DIR}")
 
-set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
-set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
-
-set(PATH_VERSION "${CMAKE_SOURCE_DIR}/include/CAE/Generated/Version.hpp")
-set(TEMPLATE_PATH "${CMAKE_SOURCE_DIR}/third-party/utils/cmake/config/Version.hpp.in")
-file(GLOB_RECURSE FILES_TO_FORMAT
-        "${CMAKE_SOURCE_DIR}/src/*.cpp"
-        "${CMAKE_SOURCE_DIR}/include/*.hpp"
-        "${CMAKE_SOURCE_DIR}/plugins/Renderer/OpenGL/src/*.cpp"
-        "${CMAKE_SOURCE_DIR}/plugins/Renderer/OpenGL/include/*.hpp"
-        "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/src/*.cpp"
-        "${CMAKE_SOURCE_DIR}/plugins/Renderer/Vulkan/include/*.hpp"
-        "${CMAKE_SOURCE_DIR}/plugins/Window/GLFW/src/*.cpp"
-        "${CMAKE_SOURCE_DIR}/plugins/Window/GLFW/include/*.hpp"
+file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/include/*.hpp")
+file(GLOB_RECURSE PROJECT_FILES
+        ${SOURCES}
+        ${HEADERS}
+        "${PROJECT_SOURCE_DIR}/modules/*.cpp"
+        "${PROJECT_SOURCE_DIR}/modules/*.hpp"
+        "${PROJECT_SOURCE_DIR}/plugins/*.cpp"
+        "${PROJECT_SOURCE_DIR}/plugins/*.hpp"
 )
-
-file(GLOB_RECURSE SOURCES "${SOURCE_DIR}/*.cpp")
-file(GLOB_RECURSE HEADERS "${INCLUDE_DIR}/*.hpp")
+set(FILES_TO_FORMAT ${PROJECT_FILES})
 
 include(MakeVersion)
 include(MakeDoc)
@@ -44,8 +40,8 @@ add_subdirectory(tests)
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 add_dependencies(${PROJECT_NAME} cae-third-party cae-modules)
 target_include_directories(${PROJECT_NAME} PRIVATE
-        ${INCLUDE_DIR}
-        "${CMAKE_SOURCE_DIR}/third-party/nlohmann-json/single_include"
+        "${PROJECT_SOURCE_DIR}/include"
+        "${PROJECT_SOURCE_DIR}/third-party/nlohmann-json/single_include"
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE cae-modules)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)

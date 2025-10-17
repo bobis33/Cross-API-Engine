@@ -15,17 +15,14 @@ PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
 PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
 PROJECT_BRIEF          = "@CMAKE_PROJECT_DESCRIPTION@"
 
-STRIP_FROM_PATH        = @CMAKE_CURRENT_SOURCE_DIR_LINUX@ \
-                         @PROJECT_SOURCE_DIR_LINUX@
+STRIP_FROM_PATH        = @CMAKE_CURRENT_SOURCE_DIR@ \
+                         @PROJECT_SOURCE_DIR@
 INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include \
                          @CMAKE_CURRENT_SOURCE_DIR@/src \
-                         @CMAKE_CURRENT_SOURCE_DIR@/plugins/Renderer/OpenGL/include \
-                         @CMAKE_CURRENT_SOURCE_DIR@/plugins/Renderer/OpenGL/src \
-                         @CMAKE_CURRENT_SOURCE_DIR@/plugins/Renderer/Vulkan/include \
-                         @CMAKE_CURRENT_SOURCE_DIR@/plugins/Renderer/Vulkan/src \
-                         @CMAKE_CURRENT_SOURCE_DIR@/plugins/Window/GLFW/include \
-                         @CMAKE_CURRENT_SOURCE_DIR@/plugins/Window/GLFW/src \
+                         @CMAKE_CURRENT_SOURCE_DIR@/plugins \
+                         @CMAKE_CURRENT_SOURCE_DIR@/modules \
                          @CMAKE_CURRENT_SOURCE_DIR@/CONTRIBUTING.md \
+                         @CMAKE_CURRENT_SOURCE_DIR@/LICENSE.md \
                          @CMAKE_CURRENT_SOURCE_DIR@/README.md
 FILE_PATTERNS          = *.hpp \
                          *.cpp \

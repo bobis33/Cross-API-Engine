@@ -47,7 +47,6 @@ namespace cae
             void resetResizedFlag() override { m_frameBufferResized = false; }
 
         private:
-
             void *m_window = nullptr;
             WindowSize m_frameBufferSize;
             mutable bool m_frameBufferResized = false;
