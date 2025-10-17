@@ -13,8 +13,14 @@ namespace cae
 
     struct WindowSize
     {
-        uint16_t width;
-        uint16_t height;
+            uint16_t width;
+            uint16_t height;
+    };
+
+    struct NativeWindowHandle
+    {
+            void *window;
+            void *display;
     };
 
     ///
@@ -31,18 +37,18 @@ namespace cae
             virtual bool create(const std::string &name, WindowSize size) = 0;
             virtual void close() = 0;
 
-            virtual void *getNativeHandle() const = 0;
+            virtual NativeWindowHandle getNativeHandle() const = 0;
             virtual WindowSize getWindowSize() const = 0;
 
             virtual bool setIcon(const std::string &path) const = 0;
 
             virtual bool shouldClose() const = 0;
-            virtual void pollEvents() const = 0;
+            virtual void pollEvents() = 0;
 
             virtual bool wasResized() const = 0;
             virtual void resetResizedFlag() = 0;
 
-    private:
+        private:
     }; // interface IWindow
 
 } // namespace cae

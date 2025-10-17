@@ -10,57 +10,52 @@ It is useful to do benchmarks during development or to support multiple platform
 
 ```mermaid
 flowchart LR
-subgraph main
-    subgraph App
-        A[Engine]
-        A -->|.so/.dylib/.dll| B[IAudio]
-        A -->|.so/.dylib/.dll| C[INetwork]
-        A -->|.so/.dylib/.dll| D[IRenderer]
-        A -->|.so/.dylib/.dll| E[IWindow]
-        A -->|.so/.dylib/.dll| P[IInput]
+    subgraph CORE["🧠 Engine Core"]
+        Engine["Engine"]
     end
 
-    subgraph Plugins
-        subgraph audio impl
-            F[WASAPI]
-            K[ALSA]
-            L[CoreAudio]
-        end
-        subgraph network impl
-            G[Winsock2]
-            O[Berkeley Sockets]
-        end
-        subgraph renderer impl
-            H[OpenGL]
-            I[Vulkan]
-        end
-        subgraph window impl
-            J[WIN32]
-            M[WayLand]
-            N[Cocoa]
-        end
-        subgraph Input devices
-            P[IInput]
-            Q[KeyBoard]
-            R[Mouse]
-            S[Controller]
-        end
+    subgraph Interfaces["⚙️ Interfaces"]
+        Engine --> IAudio["IAudio"]
+        Engine --> INetwork["INetwork"]
+        Engine --> IRenderer["IRenderer"]
+        Engine --> IWindow["IWindow"]
+        Engine --> IInput["IInput"]
     end
 
-    B -.-> F
-    B -.-> K
-    B -.-> L
-    C -.-> G
-    C -.-> O
-    D -.-> H
-    D -.-> I
-    E -.-> J
-    E -.-> M
-    E -.-> N
-    P -.-> S
-    P -.-> R
-    P -.-> Q
-end
+    subgraph AUDIO["🔊 Audio Plugins"]
+        WASAPI["WASAPI / XAudio2 (Windows)"]
+        Pulse["Pulse / ALSA (Linux)"]
+        CoreAudio["CoreAudio (macOS)"]
+    end
+    IAudio --> WASAPI & Pulse & CoreAudio
+
+    subgraph NETWORK["🌐 Network Plugins"]
+        WinSock["WinSock (Windows)"]
+        POSIX["POSIX Sockets (Linux/macOS)"]
+    end
+    INetwork --> WinSock & POSIX
+
+    subgraph RENDERER["🎨 Renderer Plugins"]
+        DirectX["DirectX (Windows)"]
+        Vulkan["Vulkan (Cross-platform)"]
+        OpenGL["OpenGL (Cross-platform)"]
+        Metal["Metal (macOS)"]
+    end
+    IRenderer --> DirectX & Vulkan & OpenGL & Metal
+
+    subgraph WINDOW["🪟 Window System Plugins"]
+        Win32["Win32 (Windows)"]
+        X11["X11 / Wayland (Linux)"]
+        Cocoa["Cocoa (macOS)"]
+    end
+    IWindow --> Win32 & X11 & Cocoa
+
+    subgraph INPUT["🎮 Input Plugins"]
+        Keyboard["Keyboard"]
+        Mouse["Mouse"]
+        Controller["Gamepad / Controller"]
+    end
+    IInput --> Keyboard & Mouse & Controller
 ```
 
 ## Prerequisites

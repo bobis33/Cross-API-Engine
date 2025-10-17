@@ -10,7 +10,8 @@
 
 namespace cae
 {
-    enum class MouseButton : uint8_t {
+    enum class MouseButton : uint8_t
+    {
         Left = 0,
         Right,
         Middle,

@@ -3,12 +3,8 @@ project(cae-opengl
         LANGUAGES C CXX
 )
 
-set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
-
-file(GLOB_RECURSE SOURCE "${SRC_DIR}/*.cpp")
-file(GLOB_RECURSE HEADERS
-        "${PROJECT_SOURCE_DIR}/include/*.hpp"
-)
+file(GLOB_RECURSE SOURCE "${PROJECT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/include/*.hpp")
 
 add_library(${PROJECT_NAME} SHARED
         ${SOURCE}

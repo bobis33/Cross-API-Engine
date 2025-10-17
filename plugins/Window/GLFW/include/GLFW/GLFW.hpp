@@ -8,6 +8,15 @@
 
 #include <GLFW/glfw3.h>
 
+#if defined(_WIN32)
+#define GLFW_EXPOSE_NATIVE_WIN32
+#elif defined(__linux__)
+#define GLFW_EXPOSE_NATIVE_X11
+#elif defined(__APPLE__)
+#define GLFW_EXPOSE_NATIVE_COCOA
+#endif
+#include <GLFW/glfw3native.h>
+
 #include "Interfaces/IWindow.hpp"
 
 namespace cae
@@ -37,13 +46,13 @@ namespace cae
             bool create(const std::string &name, WindowSize size) override;
             void close() override;
 
-            [[nodiscard]] void *getNativeHandle() const override { return m_window; }
+            [[nodiscard]] NativeWindowHandle getNativeHandle() const override;
             [[nodiscard]] WindowSize getWindowSize() const override;
 
             [[nodiscard]] bool setIcon(const std::string &path) const override;
 
             [[nodiscard]] bool shouldClose() const override { return glfwWindowShouldClose(m_window) != 0; }
-            void pollEvents() const override { glfwPollEvents(); }
+            void pollEvents() override { glfwPollEvents(); }
 
             bool wasResized() const override { return m_frameBufferResized; }
             void resetResizedFlag() override { m_frameBufferResized = false; }

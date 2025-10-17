@@ -29,8 +29,7 @@ namespace cae
             virtual bool isKeyPressed(KeyCode keyCode) const = 0;
 
         private:
-
-        std::array<KeyState, static_cast<size_t>(KeyCode::Count)> m_keyMap{};
+            std::array<KeyState, static_cast<size_t>(KeyCode::Count)> m_keyMap{};
     }; // interface IKeyboard
 
 } // namespace cae
