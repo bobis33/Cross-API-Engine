@@ -44,7 +44,8 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine("OpenGL", "GLFW");
+        m_engine = setupEngine(m_pluginLoader, m_appConfig.engineConfig, "OpenGL", "X11");
+        m_cmd = std::make_unique<CommandLine>(m_engine);
     }
     catch (const std::exception &e)
     {
@@ -52,12 +53,14 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
     }
 }
 
-void cae::Application::setupEngine(const std::string &rendererName, const std::string &windowName)
+std::unique_ptr<cae::Engine> cae::Application::setupEngine(const std::unique_ptr<utl::PluginLoader> &pluginLoader,
+                                                           const EngineConfig &config, const std::string &rendererName,
+                                                           const std::string &windowName)
 {
     std::shared_ptr<IWindow> windowPlugin = nullptr;
     std::shared_ptr<IRenderer> rendererPlugin = nullptr;
 
-    for (auto &plugin : loadPlugins(m_pluginLoader))
+    for (auto &plugin : loadPlugins(pluginLoader))
     {
         if (const auto renderer = std::dynamic_pointer_cast<IRenderer>(plugin))
         {
@@ -82,15 +85,20 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     {
         utl::Logger::log("No renderer plugin found with name: " + windowName, utl::LogLevel::WARNING);
     }
-    m_engine = std::make_unique<Engine>(
-        m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
+    return std::make_unique<Engine>(
+        config, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
         [rendererPlugin]() { return rendererPlugin; }, [windowPlugin]() { return windowPlugin; });
 }
 
-void cae::Application::start() const { m_engine->run(); }
+void cae::Application::start() const
+{
+    m_cmd->run();
+    m_engine->run();
+}
 
 void cae::Application::stop()
 {
+    m_cmd->stop();
     m_engine->stop();
 
     m_pluginLoader = nullptr;

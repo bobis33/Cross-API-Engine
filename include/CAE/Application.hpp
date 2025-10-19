@@ -9,6 +9,7 @@
 #include <Utils/PluginLoader.hpp>
 
 #include "CAE/ArgsHandler.hpp"
+#include "CAE/Cmd/CommandLine.hpp"
 #include "CAE/Engine/Engine.hpp"
 
 namespace cae
@@ -41,12 +42,15 @@ namespace cae
             void stop();
 
         private:
-            void setupEngine(const std::string &rendererName, const std::string &windowName);
+            static std::unique_ptr<Engine> setupEngine(const std::unique_ptr<utl::PluginLoader> &pluginLoader,
+                                                       const EngineConfig &config, const std::string &rendererName,
+                                                       const std::string &windowName);
 
             static EngineConfig parseEngineConf(const std::string &path);
 
             std::unique_ptr<utl::PluginLoader> m_pluginLoader = nullptr;
             std::unique_ptr<Engine> m_engine = nullptr;
+            std::unique_ptr<CommandLine> m_cmd = nullptr;
 
             AppConfig m_appConfig;
 

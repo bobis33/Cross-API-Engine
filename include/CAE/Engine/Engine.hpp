@@ -65,8 +65,9 @@ namespace cae
 
             [[nodiscard]] const std::unique_ptr<utl::Clock> &getClock() { return m_clock; }
 
-            void run() const;
+            void run();
             void stop();
+            void restart();
 
         private:
             std::shared_ptr<IAudio> m_audioPlugin = nullptr;
@@ -76,6 +77,9 @@ namespace cae
             std::shared_ptr<IWindow> m_windowPlugin = nullptr;
 
             std::unique_ptr<utl::Clock> m_clock = nullptr;
+
+            EngineConfig m_config;
+            bool m_restart = false;
 
     }; // class Engine
 

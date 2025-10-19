@@ -13,7 +13,6 @@
 
 namespace cae
 {
-
     ///
     /// @class OPGL
     /// @brief Class for the OpenGL plugin
