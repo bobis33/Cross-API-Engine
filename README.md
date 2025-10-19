@@ -9,7 +9,7 @@ It allows developers to switch between different rendering backends such as Open
 It is useful to do benchmarks during development or to support multiple platforms with different graphics APIs.
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph CORE["🧠 Engine Core"]
         Engine["Engine"]
     end

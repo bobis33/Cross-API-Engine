@@ -53,7 +53,7 @@ namespace cae
             [[nodiscard]] bool shouldClose() const override { return glfwWindowShouldClose(m_window) != 0; }
             void pollEvents() override { glfwPollEvents(); }
 
-            bool wasResized() const override { return m_frameBufferResized; }
+            [[nodiscard]] bool wasResized() const override { return m_frameBufferResized; }
             void resetResizedFlag() override { m_frameBufferResized = false; }
 
         private:

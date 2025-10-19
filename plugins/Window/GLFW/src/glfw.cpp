@@ -3,7 +3,7 @@
 
 #include "GLFW/GLFW.hpp"
 
-void cae::GLFW::frameBufferResizeCallback(GLFWwindow *window, int width, int height)
+void cae::GLFW::frameBufferResizeCallback(GLFWwindow *window, const int width, const int height)
 {
     auto *const self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
     self->m_frameBufferResized = true;
@@ -20,7 +20,6 @@ bool cae::GLFW::create(const std::string &name, const WindowSize size)
     }
 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     m_window = glfwCreateWindow(size.width, size.height, name.c_str(), nullptr, nullptr);
     if (m_window == nullptr)
     {
@@ -31,7 +30,6 @@ bool cae::GLFW::create(const std::string &name, const WindowSize size)
     }
     glfwSetWindowUserPointer(m_window, this);
     glfwSetFramebufferSizeCallback(m_window, frameBufferResizeCallback);
-
     return true;
 }
 
@@ -60,7 +58,7 @@ cae::NativeWindowHandle cae::GLFW::getNativeHandle() const
     handle.window = glfwGetWin32Window(m_window);
     handle.display = GetModuleHandle(nullptr);
 #elif defined(__linux__)
-    handle.window = (void *)(uintptr_t)glfwGetX11Window(m_window);
+    handle.window = reinterpret_cast<void *>(glfwGetX11Window(m_window));
     handle.display = glfwGetX11Display();
 #elif defined(__APPLE__)
     handle.window = glfwGetCocoaWindow(m_window);
