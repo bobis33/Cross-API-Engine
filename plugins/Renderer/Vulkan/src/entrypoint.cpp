@@ -4,5 +4,5 @@
 
 extern "C"
 {
-    cae::IRenderer *entryPoint() { return std::make_unique<cae::VULKN>().release(); }
+    PLUGIN_EXPORT cae::IRenderer *entryPoint() { return std::make_unique<cae::VULKN>().release(); }
 }

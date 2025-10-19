@@ -15,6 +15,7 @@ bool cae::GLFW::create(const std::string &name, const WindowSize size)
     m_window = nullptr;
     if (glfwInit() == 0)
     {
+        utl::Logger::log("Failed to init glfw", utl::LogLevel::WARNING);
         return false;
     }
 

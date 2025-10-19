@@ -5,5 +5,5 @@
 
 extern "C"
 {
-    cae::IWindow *entryPoint() { return std::make_unique<cae::X11>().release(); }
+    PLUGIN_EXPORT cae::IWindow *entryPoint() { return std::make_unique<cae::X11>().release(); }
 }

@@ -44,7 +44,7 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine("Vulkan", "X11");
+        setupEngine("Vulkan", "GLFW");
     }
     catch (const std::exception &e)
     {
@@ -73,6 +73,14 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
                 windowPlugin = window;
             }
         }
+    }
+    if (windowPlugin == nullptr)
+    {
+        utl::Logger::log("No window plugin found with name: " + rendererName, utl::LogLevel::WARNING);
+    }
+    if (rendererPlugin == nullptr)
+    {
+        utl::Logger::log("No renderer plugin found with name: " + windowName, utl::LogLevel::WARNING);
     }
     m_engine = std::make_unique<Engine>(
         m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
