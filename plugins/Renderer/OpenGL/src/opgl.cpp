@@ -1,42 +1,53 @@
 #include <array>
-#include <iostream>
 #include <stdexcept>
 
 #include "OPGL/OPGL.hpp"
 
 void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle)
 {
-#if defined(__linux__)
-    m_display = static_cast<Display *>(nativeWindowHandle.display);
-    m_window = reinterpret_cast<::Window>(nativeWindowHandle.window);
-
-    if ((m_display == nullptr) || (m_window == 0U))
+    if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE)
     {
-        throw std::runtime_error("Invalid native window handle");
+        throw std::runtime_error("Failed to bind OpenGL API");
     }
 
-    static int visualAttribs[] = {GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None};
-    XVisualInfo *vi = glXChooseVisual(m_display, DefaultScreen(m_display), visualAttribs);
-    if (vi == nullptr)
-    {
-        throw std::runtime_error("No appropriate GLX visual found");
-    }
+    m_eglDisplay = eglGetDisplay(nativeWindowHandle.display);
+    if (m_eglDisplay == EGL_NO_DISPLAY) {
+        throw std::runtime_error("Failed to get EGL display");
+}
 
-    m_context = glXCreateContext(m_display, vi, nullptr, GL_TRUE);
-    if (m_context == nullptr)
-    {
-        throw std::runtime_error("glXCreateContext failed");
-    }
+    if (eglInitialize(m_eglDisplay, nullptr, nullptr) == EGL_FALSE) {
+        throw std::runtime_error("Failed to initialize EGL");
+}
 
-    if (glXMakeCurrent(m_display, m_window, m_context) == 0)
-    {
-        throw std::runtime_error("glXMakeCurrent failed");
-    }
+    const EGLint configAttribs[] = {
+        EGL_RED_SIZE, 8,
+        EGL_GREEN_SIZE, 8,
+        EGL_BLUE_SIZE, 8,
+        EGL_DEPTH_SIZE, 24,
+        EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+        EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT,
+        EGL_NONE
+    };
 
-    if (gladLoadGLLoader((GLADloadproc)glXGetProcAddress) == 0)
-    {
+    EGLConfig config;
+    EGLint numConfigs;
+    if (eglChooseConfig(m_eglDisplay, configAttribs, &config, 1, &numConfigs) == EGL_FALSE || numConfigs == 0)
+        throw std::runtime_error("Failed to choose EGL config");
+
+    m_surface = eglCreateWindowSurface(m_eglDisplay, config, reinterpret_cast<EGLNativeWindowType>(nativeWindowHandle.window), nullptr);
+    if (m_surface == EGL_NO_SURFACE)
+        throw std::runtime_error("Failed to create EGL surface");
+
+    constexpr EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
+    m_context = eglCreateContext(m_eglDisplay, config, EGL_NO_CONTEXT, contextAttribs);
+    if (m_context == EGL_NO_CONTEXT)
+        throw std::runtime_error("Failed to create EGL context");
+
+    if (eglMakeCurrent(m_eglDisplay, m_surface, m_surface, m_context) == EGL_FALSE)
+        throw std::runtime_error("Failed to make EGL context current");
+
+    if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(eglGetProcAddress)) == 0)
         throw std::runtime_error("Failed to initialize GLAD");
-    }
 
     glEnable(GL_DEPTH_TEST);
     glClearColor(1.f, 1.f, 1.f, 1.f);
@@ -44,8 +55,6 @@ void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle)
     createShaderProgram();
     createTriangle();
 
-    std::cout << "[OPGL] OpenGL initialized\n";
-#endif
 }
 
 void cae::OPGL::createShaderProgram()
@@ -66,7 +75,7 @@ void cae::OPGL::createShaderProgram()
         const GLuint shader = glCreateShader(type);
         glShaderSource(shader, 1, &src, nullptr);
         glCompileShader(shader);
-        GLint success;
+        GLint success = 0;
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
@@ -85,9 +94,9 @@ void cae::OPGL::createShaderProgram()
     glAttachShader(gShaderProgram, fragment);
     glLinkProgram(gShaderProgram);
 
-    GLint success;
+    GLint success = 0;
     glGetProgramiv(gShaderProgram, GL_LINK_STATUS, &success);
-    if (!success)
+    if (success == 0)
     {
         char log[512];
         glGetProgramInfoLog(gShaderProgram, 512, nullptr, log);
@@ -121,7 +130,6 @@ void cae::OPGL::createTriangle()
 
 void cae::OPGL::draw(const WindowSize &windowSize)
 {
-#if defined(__linux__)
     glViewport(0, 0, windowSize.width, windowSize.height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(gShaderProgram);
@@ -129,6 +137,5 @@ void cae::OPGL::draw(const WindowSize &windowSize)
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
 
-    glXSwapBuffers(m_display, m_window);
-#endif
+    eglSwapBuffers(m_eglDisplay, m_surface);
 }

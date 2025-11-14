@@ -60,7 +60,7 @@ namespace cae
             static void frameBufferResizeCallback(GLFWwindow *window, int width, int height);
 
             GLFWwindow *m_window = nullptr;
-            WindowSize m_frameBufferSize;
+            WindowSize m_frameBufferSize{};
             bool m_frameBufferResized = false;
 
     }; // class GLFW

@@ -10,10 +10,7 @@
 
 #include "glad/glad.h"
 
-#if defined(__linux__)
-#include <GL/glx.h>
-#include <X11/Xlib.h>
-#endif
+#include <EGL/egl.h>
 
 #include "Interfaces/IRenderer.hpp"
 
@@ -43,11 +40,12 @@ namespace cae
             void draw(const WindowSize &windowSize) override;
 
         private:
-#if defined(__linux__)
-            Display *m_display = nullptr;
-            Window m_window = 0;
-            GLXContext m_context = nullptr;
-#endif
+    #if defined(__linux__)
+            EGLDisplay m_eglDisplay = EGL_NO_DISPLAY;
+            EGLSurface m_surface = EGL_NO_SURFACE;
+            EGLContext m_context = EGL_NO_CONTEXT;
+
+    #endif
 
             GLuint gVAO = 0;
             GLuint gVBO = 0;

@@ -23,7 +23,6 @@ namespace cae
             ~IRenderer() override = default;
 
             virtual void initialize(const NativeWindowHandle &nativeWindowHandle) = 0;
-
             virtual void draw(const WindowSize &windowSize) = 0;
     }; // interface IRenderer
 
