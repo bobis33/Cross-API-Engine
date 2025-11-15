@@ -6,16 +6,17 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 
-#include "glad/glad.h"
+#include "OPGL/glad/glad.h"
 
-#include <EGL/egl.h>
-
+#include "Context/IContext.hpp"
 #include "Interfaces/IRenderer.hpp"
 
 namespace cae
 {
+
     ///
     /// @class OPGL
     /// @brief Class for the OpenGL plugin
@@ -36,16 +37,14 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            void initialize(const NativeWindowHandle &nativeWindowHandle) override;
+            void initialize(const NativeWindowHandle &window) override;
             void draw(const WindowSize &windowSize) override;
 
-        private:
-    #if defined(__linux__)
-            EGLDisplay m_eglDisplay = EGL_NO_DISPLAY;
-            EGLSurface m_surface = EGL_NO_SURFACE;
-            EGLContext m_context = EGL_NO_CONTEXT;
+            void setVSyncEnabled(bool enabled) override;
+            [[nodiscard]] bool isVSyncEnabled() const override;
 
-    #endif
+        private:
+            std::unique_ptr<IContext> m_context;
 
             GLuint gVAO = 0;
             GLuint gVBO = 0;

@@ -22,11 +22,11 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(VulkanLoader)
 
-file(GLOB_RECURSE SOURCE "${PROJECT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/include/*.hpp")
 
 add_library(${PROJECT_NAME} SHARED
-        ${SOURCE}
+        ${SOURCES}
         ${HEADERS}
 )
 

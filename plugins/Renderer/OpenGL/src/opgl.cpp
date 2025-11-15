@@ -2,60 +2,49 @@
 #include <stdexcept>
 
 #include "OPGL/OPGL.hpp"
-
-void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle)
+#if defined(__linux__)
+#include "OPGL/Context/EGLContextLinux.hpp"
+#elif defined(_WIN32)
+#include "OPGL/Context/WGLContextWindows.hpp"
+#elif defined(__APPLE__)
+#include "OPGL/Context/NSGLContextMac.hpp"
+#endif
+void cae::OPGL::initialize(const NativeWindowHandle &window)
 {
-    if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE)
-    {
-        throw std::runtime_error("Failed to bind OpenGL API");
-    }
-
-    m_eglDisplay = eglGetDisplay(nativeWindowHandle.display);
-    if (m_eglDisplay == EGL_NO_DISPLAY) {
-        throw std::runtime_error("Failed to get EGL display");
-}
-
-    if (eglInitialize(m_eglDisplay, nullptr, nullptr) == EGL_FALSE) {
-        throw std::runtime_error("Failed to initialize EGL");
-}
-
-    const EGLint configAttribs[] = {
-        EGL_RED_SIZE, 8,
-        EGL_GREEN_SIZE, 8,
-        EGL_BLUE_SIZE, 8,
-        EGL_DEPTH_SIZE, 24,
-        EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-        EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT,
-        EGL_NONE
-    };
-
-    EGLConfig config;
-    EGLint numConfigs;
-    if (eglChooseConfig(m_eglDisplay, configAttribs, &config, 1, &numConfigs) == EGL_FALSE || numConfigs == 0)
-        throw std::runtime_error("Failed to choose EGL config");
-
-    m_surface = eglCreateWindowSurface(m_eglDisplay, config, reinterpret_cast<EGLNativeWindowType>(nativeWindowHandle.window), nullptr);
-    if (m_surface == EGL_NO_SURFACE)
-        throw std::runtime_error("Failed to create EGL surface");
-
-    constexpr EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
-    m_context = eglCreateContext(m_eglDisplay, config, EGL_NO_CONTEXT, contextAttribs);
-    if (m_context == EGL_NO_CONTEXT)
-        throw std::runtime_error("Failed to create EGL context");
-
-    if (eglMakeCurrent(m_eglDisplay, m_surface, m_surface, m_context) == EGL_FALSE)
-        throw std::runtime_error("Failed to make EGL context current");
-
-    if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(eglGetProcAddress)) == 0)
-        throw std::runtime_error("Failed to initialize GLAD");
+#if defined(__linux__)
+    m_context = std::make_unique<EGLContextLinux>();
+#elif defined(_WIN32)
+    m_context = std::make_unique<WGLContextWindows>();
+#elif defined(__APPLE__)
+    m_context = std::make_unique<NSGLContextMac>();
+#else
+    static_assert(false, "Unsupported platform");
+#endif
+    m_context->initialize(window);
 
     glEnable(GL_DEPTH_TEST);
     glClearColor(1.f, 1.f, 1.f, 1.f);
 
     createShaderProgram();
     createTriangle();
-
 }
+
+void cae::OPGL::draw(const WindowSize &windowSize)
+{
+    glViewport(0, 0, windowSize.width, windowSize.height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glUseProgram(gShaderProgram);
+    glBindVertexArray(gVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindVertexArray(0);
+
+    m_context->swapBuffers();
+}
+
+void cae::OPGL::setVSyncEnabled(bool enabled) { m_context->setVSyncEnabled(enabled); }
+
+bool cae::OPGL::isVSyncEnabled() const { return m_context->isVSyncEnabled(); }
 
 void cae::OPGL::createShaderProgram()
 {
@@ -126,16 +115,4 @@ void cae::OPGL::createTriangle()
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-}
-
-void cae::OPGL::draw(const WindowSize &windowSize)
-{
-    glViewport(0, 0, windowSize.width, windowSize.height);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(gShaderProgram);
-    glBindVertexArray(gVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    glBindVertexArray(0);
-
-    eglSwapBuffers(m_eglDisplay, m_surface);
 }

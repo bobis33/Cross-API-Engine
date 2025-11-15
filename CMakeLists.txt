@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 4.0.0)
+
 project(cae
         VERSION 0.0.0
         DESCRIPTION "Cross-API graphics engine"
         LANGUAGES C CXX
 )
+
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/third-party/utils/cmake/modules")
 
@@ -45,7 +47,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE cae-modules)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-if (NOT WIN32)
+if (NOT WIN32 AND NOT APPLE)
     set(WARNING_FLAGS
             -Wall
             -Wextra

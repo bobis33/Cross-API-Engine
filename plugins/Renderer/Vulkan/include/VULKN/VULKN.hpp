@@ -34,5 +34,8 @@ namespace cae
 
             void initialize(const NativeWindowHandle &nativeWindowHandle) override {}
             void draw(const WindowSize &windowSize) override {};
+
+            void setVSyncEnabled(bool enabled) override {}
+            [[nodiscard]] bool isVSyncEnabled() const override { return false; }
     }; // class VULKN
 } // namespace cae
