@@ -39,7 +39,7 @@ add_subdirectory(modules)
 add_subdirectory(plugins)
 add_subdirectory(tests)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME} ${SOURCES})
 add_dependencies(${PROJECT_NAME} cae-third-party cae-modules)
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"

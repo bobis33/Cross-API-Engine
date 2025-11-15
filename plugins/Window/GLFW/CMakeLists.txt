@@ -24,12 +24,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glfw)
 
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/include/*.hpp")
 
-add_library(${PROJECT_NAME} SHARED
-        ${SOURCES}
-        ${HEADERS}
-)
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")
 target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
