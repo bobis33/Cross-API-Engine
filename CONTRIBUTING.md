@@ -1,3 +1,32 @@
+# Contributing to Cross API Engine
+
+This guide ensures contributions are **consistent, readable, and maintainable**.
+
+---
+
+## Contribution workflow
+We strictly use **GitHub Issues** and **Pull Requests** (PRs).
+No direct commits to `main` are allowed.
+
+### Create / Find an Issue
+Before contributing, make sure there is an **open issue** for your task.
+If not, **create one** using the provided templates:
+
+- **Bug Report**
+- **Feature Request**
+
+### Branching & PR Naming
+Each contribution must be developed in a dedicated branch.
+Branches and Pull Requests must follow this naming convention:
+```
+<Type>/<Scope>/<Sub-scope>
+```
+- **Type** → `Feature` | `Fix` | `Refactor` | `Docs` | `Test` | `CI`
+- **Scope** → `Core` | `Audio` | `Input` | `Network` | `Renderer` | `Window`
+
+This ensures consistency across branches and PRs, making it easy to identify the purpose of each contribution at a glance.
+
+
 ## Commit Norms
 
 | Commit Type | Description                                                                                                               |
