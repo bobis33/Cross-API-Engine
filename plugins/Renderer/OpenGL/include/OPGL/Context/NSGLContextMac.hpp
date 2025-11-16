@@ -1,25 +1,26 @@
 ///
-/// @file EGLContext.hpp
-/// @brief This file contains the EGLContextLinux class declaration
+/// @file NSGLContextMac.hpp
+/// @brief This file contains the NSGLContextMac class declaration
 /// @namespace cae
 ///
 
 #pragma once
 
-#include "OPGL/glad/glad.h"
-
-#include "IContext.hpp"
-#include "Interfaces/IWindow.hpp"
-
 #if defined(__APPLE__)
+#include "IContext.hpp"
 
 namespace cae
 {
 
-    class NSGLContextMac : public IContext
+    ///
+    /// @class NSGLContextMac
+    /// @brief Implementation of IContext for macOS using NSGL
+    /// @namespace cae
+    ///
+    class NSGLContextMac final : public IContext
     {
         public:
-            NSGLContextMac();
+            NSGLContextMac() = default;
             ~NSGLContextMac() override;
 
             void initialize(const NativeWindowHandle &window) override;
@@ -31,7 +32,7 @@ namespace cae
 
         private:
             void *m_context = nullptr;
-    };
+    }; // class NSGLContextMac
 
 } // namespace cae
 #endif

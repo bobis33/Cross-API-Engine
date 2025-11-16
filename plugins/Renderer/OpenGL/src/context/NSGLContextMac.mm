@@ -1,8 +1,10 @@
+#if defined(__APPLE__)
+
 #import <AppKit/AppKit.h>
 
-#include "OPGL/Context/NSGLContextMac.hpp"
+#include "OPGL/glad/glad.h"
 
-cae::NSGLContextMac::NSGLContextMac() {}
+#include "OPGL/Context/NSGLContextMac.hpp"
 
 cae::NSGLContextMac::~NSGLContextMac() {
     if (m_context) {
@@ -30,7 +32,6 @@ void cae::NSGLContextMac::initialize(const NativeWindowHandle &window) {
     [(NSOpenGLContext*)m_context setView:nsview];
     [(NSOpenGLContext*)m_context makeCurrentContext];
 
-    // load GL functions (macOS n'a pas de NSGLGetProcAddress)
     if (!gladLoadGL()) {
         throw std::runtime_error("Failed to initialize GLAD");
     }
@@ -41,7 +42,7 @@ void cae::NSGLContextMac::swapBuffers() {
         [(NSOpenGLContext*)m_context flushBuffer];
 }
 
-void cae::NSGLContextMac::setVSyncEnabled(bool enabled) {
+void cae::NSGLContextMac::setVSyncEnabled(const bool enabled) {
     if (m_context) {
         GLint sync = enabled ? 1 : 0;
         [(NSOpenGLContext*)m_context setValues:&sync forParameter:NSOpenGLContextParameterSwapInterval];
@@ -56,3 +57,5 @@ bool cae::NSGLContextMac::isVSyncEnabled() const {
     }
     return false;
 }
+
+#endif // defined(__APPLE__)
