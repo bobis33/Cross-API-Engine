@@ -24,12 +24,17 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
                      utl::LogLevel::INFO);
     utl::Logger::log("\tWindow name: " + config.window_name, utl::LogLevel::INFO);
     m_windowPlugin->create(config.window_name, {.width = config.window_width, .height = config.window_height});
+    m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle());
 }
 
 void cae::Engine::run() const
 {
+
     while (!m_windowPlugin->shouldClose())
     {
+        std::cout << "FPS:" << 1.0F / m_clock->getDeltaSeconds() << "\n";
+        m_clock->restart();
+        m_rendererPlugin->draw(m_windowPlugin->getWindowSize());
         m_windowPlugin->pollEvents();
     }
 }

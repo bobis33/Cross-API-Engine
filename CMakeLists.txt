@@ -37,7 +37,7 @@ add_subdirectory(modules)
 add_subdirectory(plugins)
 add_subdirectory(tests)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME} ${SOURCES})
 add_dependencies(${PROJECT_NAME} cae-third-party cae-modules)
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
@@ -45,7 +45,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE cae-modules)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-if (NOT WIN32)
+if (NOT WIN32 AND NOT APPLE)
     set(WARNING_FLAGS
             -Wall
             -Wextra

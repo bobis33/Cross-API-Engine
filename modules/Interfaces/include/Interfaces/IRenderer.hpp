@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Utils/Interfaces/IPlugin.hpp"
+#include "Interfaces/IWindow.hpp"
 
 namespace cae
 {
@@ -22,7 +22,11 @@ namespace cae
         public:
             ~IRenderer() override = default;
 
-            virtual void initialize(void *nativeWindowHandle) = 0;
+            virtual void initialize(const NativeWindowHandle &nativeWindowHandle) = 0;
+            virtual void draw(const WindowSize &windowSize) = 0;
+
+            virtual void setVSyncEnabled(bool enabled) = 0;
+            virtual bool isVSyncEnabled() const = 0;
     }; // interface IRenderer
 
 } // namespace cae

@@ -44,7 +44,7 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine("Vulkan", "GLFW");
+        setupEngine("OpenGL", "GLFW");
     }
     catch (const std::exception &e)
     {

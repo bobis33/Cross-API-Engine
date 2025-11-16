@@ -32,6 +32,10 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            void initialize(void *nativeWindowHandle) override {}
+            void initialize(const NativeWindowHandle &nativeWindowHandle) override {}
+            void draw(const WindowSize &windowSize) override {};
+
+            void setVSyncEnabled(bool enabled) override {}
+            [[nodiscard]] bool isVSyncEnabled() const override { return false; }
     }; // class VULKN
 } // namespace cae

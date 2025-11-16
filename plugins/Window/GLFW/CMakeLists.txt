@@ -3,11 +3,19 @@ project(cae-glfw
         LANGUAGES C CXX
 )
 
+if (APPLE)
+    enable_language(OBJC)
+    enable_language(OBJCXX)
+endif()
+
 include(FetchContent)
 
-set(GLFW_BUILD_DOCS OFF)
-set(GLFW_BUILD_TESTS OFF)
+set(BUILD_SHARED_LIBS OFF)
 set(GLFW_BUILD_EXAMPLES OFF)
+set(GLFW_BUILD_TESTS OFF)
+set(GLFW_BUILD_DOCS OFF)
+set(GLFW_VULKAN_STATIC OFF)
+set(GLFW_BUILD_WAYLAND OFF)
 
 FetchContent_Declare(
         glfw
@@ -17,13 +25,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glfw)
 
-file(GLOB_RECURSE SOURCE "${PROJECT_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/include/*.hpp")
+file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
-add_library(${PROJECT_NAME} SHARED
-        ${SOURCE}
-        ${HEADERS}
-)
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")
 target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})

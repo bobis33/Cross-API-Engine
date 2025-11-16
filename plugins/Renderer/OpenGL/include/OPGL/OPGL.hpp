@@ -6,6 +6,12 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include "OPGL/glad/glad.h"
+
+#include "Context/IContext.hpp"
 #include "Interfaces/IRenderer.hpp"
 
 namespace cae
@@ -18,7 +24,6 @@ namespace cae
     ///
     class OPGL final : public IRenderer
     {
-
         public:
             OPGL() = default;
             ~OPGL() override = default;
@@ -32,6 +37,20 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            void initialize(void *nativeWindowHandle) override {}
+            void initialize(const NativeWindowHandle &window) override;
+            void draw(const WindowSize &windowSize) override;
+
+            void setVSyncEnabled(bool enabled) override;
+            [[nodiscard]] bool isVSyncEnabled() const override;
+
+        private:
+            std::unique_ptr<IContext> m_context;
+
+            GLuint gVAO = 0;
+            GLuint gVBO = 0;
+            GLuint gShaderProgram = 0;
+
+            void createShaderProgram();
+            void createTriangle();
     }; // class OPGL
 } // namespace cae

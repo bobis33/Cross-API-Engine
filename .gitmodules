@@ -1,9 +1,6 @@
 [submodule "third-party/googletest"]
 	path = third-party/googletest
 	url = git@github.com:google/googletest.git
-[submodule "third-party/imgui"]
-	path = third-party/imgui
-	url = git@github.com:ocornut/imgui.git
 [submodule "third-party/utils"]
 	path = third-party/utils
 	url = git@github.com:bobis33/cpp-lib-utils.git
