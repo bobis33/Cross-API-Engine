@@ -32,7 +32,7 @@ void cae::Engine::run() const
 
     while (!m_windowPlugin->shouldClose())
     {
-        std::cout << "FPS:" << 1.0F / m_clock->getDeltaSeconds() << "\n";
+        utl::Logger::log(std::format("FPS: {}", 1.0F / m_clock->getDeltaSeconds()), utl::LogLevel::INFO);
         m_clock->restart();
         m_rendererPlugin->draw(m_windowPlugin->getWindowSize());
         m_windowPlugin->pollEvents();

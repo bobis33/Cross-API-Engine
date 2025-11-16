@@ -1,5 +1,5 @@
 #include <array>
-#include <stdexcept>
+#include <memory>
 
 #include "OPGL/OPGL.hpp"
 #if defined(__linux__)
@@ -23,7 +23,7 @@ void cae::OPGL::initialize(const NativeWindowHandle &window)
     m_context->initialize(window);
 
     glEnable(GL_DEPTH_TEST);
-    glClearColor(1.f, 1.f, 1.f, 1.f);
+    glClearColor(1.F, 1.F, 1.F, 1.F);
 
     createShaderProgram();
     createTriangle();
@@ -42,7 +42,7 @@ void cae::OPGL::draw(const WindowSize &windowSize)
     m_context->swapBuffers();
 }
 
-void cae::OPGL::setVSyncEnabled(bool enabled) { m_context->setVSyncEnabled(enabled); }
+void cae::OPGL::setVSyncEnabled(const bool enabled) { m_context->setVSyncEnabled(enabled); }
 
 bool cae::OPGL::isVSyncEnabled() const { return m_context->isVSyncEnabled(); }
 
@@ -59,7 +59,7 @@ void cae::OPGL::createShaderProgram()
         out vec4 FragColor;
         void main() { FragColor = vec4(ourColor,1.0); })";
 
-    auto compileShader = [](GLenum type, const char *src) -> GLuint
+    auto compileShader = [](const GLenum type, const char *src) -> GLuint
     {
         const GLuint shader = glCreateShader(type);
         glShaderSource(shader, 1, &src, nullptr);
@@ -98,8 +98,8 @@ void cae::OPGL::createShaderProgram()
 
 void cae::OPGL::createTriangle()
 {
-    constexpr std::array vertices = {-0.5f, -0.5f, 1.f,  0.f,  0.f, 0.5f, -0.5f, 0.f,
-                                     1.f,   0.f,   0.0f, 0.5f, 0.f, 0.f,  1.f};
+    constexpr std::array vertices = {-0.5F, -0.5F, 1.F,  0.F,  0.F, 0.5F, -0.5F, 0.F,
+                                     1.F,   0.F,   0.0F, 0.5F, 0.F, 0.F,  1.F};
 
     glGenVertexArrays(1, &gVAO);
     glGenBuffers(1, &gVBO);

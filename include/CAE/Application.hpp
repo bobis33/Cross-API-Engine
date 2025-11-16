@@ -49,6 +49,7 @@ namespace cae
             std::unique_ptr<Engine> m_engine = nullptr;
 
             AppConfig m_appConfig;
+
     }; // class Application
 
 } // namespace cae

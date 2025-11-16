@@ -26,5 +26,7 @@ namespace cae
 
             virtual void setVSyncEnabled(bool enabled) = 0;
             [[nodiscard]] virtual bool isVSyncEnabled() const = 0;
+
     }; // interface IContext
+
 } // namespace cae

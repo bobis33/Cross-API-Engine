@@ -32,7 +32,9 @@ namespace cae
 
         private:
             void *m_context = nullptr;
+
     }; // class NSGLContextMac
 
 } // namespace cae
+
 #endif

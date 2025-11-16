@@ -6,9 +6,6 @@
 
 #pragma once
 
-#include <memory>
-#include <string>
-
 #include "OPGL/glad/glad.h"
 
 #include "Context/IContext.hpp"
@@ -52,5 +49,7 @@ namespace cae
 
             void createShaderProgram();
             void createTriangle();
+
     }; // class OPGL
+
 } // namespace cae

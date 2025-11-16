@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Utils/Interfaces/IPlugin.hpp"
+#include <Utils/Interfaces/IPlugin.hpp>
 
 namespace cae
 {

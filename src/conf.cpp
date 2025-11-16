@@ -38,7 +38,7 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
         std::cerr << "Failed to parse JSON config (" << filePath << "): " + std::string(e.what()) << '\n';
         return {};
     }
-    cae::EngineConfig config;
+    EngineConfig config;
     utl::Logger::log("Loading config: " + filePath.string(), utl::LogLevel::INFO);
     if (j.contains("audio"))
     {

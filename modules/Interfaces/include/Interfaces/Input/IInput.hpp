@@ -12,7 +12,6 @@
 #include "Interfaces/Input/IGamepad.hpp"
 #include "Interfaces/Input/IKeyboard.hpp"
 #include "Interfaces/Input/IMouse.hpp"
-#include "Utils/Interfaces/IPlugin.hpp"
 
 namespace cae
 {

@@ -1,7 +1,6 @@
 #include <memory>
 
 #include "GLFW/GLFW.hpp"
-#include "Interfaces/IWindow.hpp"
 
 extern "C"
 {

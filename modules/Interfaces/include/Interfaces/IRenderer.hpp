@@ -27,6 +27,7 @@ namespace cae
 
             virtual void setVSyncEnabled(bool enabled) = 0;
             virtual bool isVSyncEnabled() const = 0;
+
     }; // interface IRenderer
 
 } // namespace cae

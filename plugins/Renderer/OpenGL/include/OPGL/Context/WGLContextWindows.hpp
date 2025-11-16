@@ -38,6 +38,7 @@ namespace cae
             HWND m_hwnd = nullptr;
             HDC m_hdc = nullptr;
             HGLRC m_hglrc = nullptr;
+
     }; // class WGLContextWindows
 
 } // namespace cae

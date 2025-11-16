@@ -14,7 +14,6 @@
 #include "Interfaces/IAudio.hpp"
 #include "Interfaces/INetwork.hpp"
 #include "Interfaces/IRenderer.hpp"
-#include "Interfaces/IWindow.hpp"
 #include "Interfaces/Input/IInput.hpp"
 
 namespace cae
@@ -79,4 +78,5 @@ namespace cae
             std::unique_ptr<utl::Clock> m_clock = nullptr;
 
     }; // class Engine
+
 } // namespace cae

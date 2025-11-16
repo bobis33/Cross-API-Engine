@@ -64,4 +64,5 @@ namespace cae
             bool m_frameBufferResized = false;
 
     }; // class GLFW
+
 } // namespace cae

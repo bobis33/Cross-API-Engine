@@ -61,4 +61,5 @@ namespace cae
             bool m_shouldClose = false;
 
     }; // class GLFW
+
 } // namespace cae
