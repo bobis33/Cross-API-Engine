@@ -18,7 +18,7 @@ namespace cae
 
     ///
     /// @interface IInput
-    /// @brief Interface for audio
+    /// @brief Interface for inputs
     /// @namespace cae
     ///
     class IInput : public utl::IPlugin
@@ -31,10 +31,10 @@ namespace cae
             virtual const std::unique_ptr<IMouse> &getMouse() const = 0;
             virtual const std::vector<std::unique_ptr<IGamepad>> &getGamepads() const = 0;
 
-        private:
-            std::unique_ptr<IKeyboard> m_keyboard;
-            std::unique_ptr<IMouse> m_mouse;
-            std::vector<std::unique_ptr<IGamepad>> m_gamepads;
+            virtual void setGamepads(std::vector<std::unique_ptr<IGamepad>> &gamepads) = 0;
+            virtual void setKeyboard(std::unique_ptr<IKeyboard> &keyboard) = 0;
+            virtual void setMouse(std::unique_ptr<IMouse> &mouse) = 0;
+
     }; // interface IInput
 
 } // namespace cae

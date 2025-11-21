@@ -48,7 +48,13 @@ namespace cae
             virtual bool wasResized() const = 0;
             virtual void resetResizedFlag() = 0;
 
+            // virtual bool isFullScreen() const = 0;
+            // virtual void setFullScreen(bool fullScreen) const = 0;
+
         private:
+
+            // std::unique_ptr<IInput> m_inputManager;
+
     }; // interface IWindow
 
 } // namespace cae

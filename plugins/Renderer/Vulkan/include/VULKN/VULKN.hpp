@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/IRenderer.hpp"
+#include "Interfaces/Renderer/IRenderer.hpp"
 
 namespace cae
 {

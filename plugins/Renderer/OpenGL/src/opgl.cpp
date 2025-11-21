@@ -9,6 +9,7 @@
 #elif defined(__APPLE__)
 #include "OPGL/Context/NSGLContextMac.hpp"
 #endif
+
 void cae::OPGL::initialize(const NativeWindowHandle &window)
 {
 #if defined(__linux__)
