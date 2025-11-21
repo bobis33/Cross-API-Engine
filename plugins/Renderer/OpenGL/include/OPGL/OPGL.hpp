@@ -9,7 +9,7 @@
 #include "OPGL/glad/glad.h"
 
 #include "Context/IContext.hpp"
-#include "Interfaces/IRenderer.hpp"
+#include "Interfaces/Renderer/IRenderer.hpp"
 
 namespace cae
 {

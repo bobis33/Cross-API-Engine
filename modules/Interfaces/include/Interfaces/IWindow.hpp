@@ -48,6 +48,9 @@ namespace cae
             virtual bool wasResized() const = 0;
             virtual void resetResizedFlag() = 0;
 
+            // virtual bool isFullScreen() const = 0;
+            // virtual void setFullScreen() const = 0;
+
         private:
     }; // interface IWindow
 

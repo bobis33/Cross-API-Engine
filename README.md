@@ -9,6 +9,18 @@ Rather than focusing only on graphics API abstraction, the objective is to creat
 This enables rapid experimentation, platform portability, performance benchmarking, and true freedom in engine architecture research.
 
 [![](https://mermaid.ink/img/pako:eNqdUsFuwjAM_ZXKuxYEha5NDpMQ44A0bRKXSVt3yEigETSpQipgiH-fk8IK2uhhUQ_v-T3bqZ0DzDUXQGGx1tt5zowNnmaZCvBsqs-lYWUeZIBfpurolTJ-mU3evfzRqO6MynIt58xKrVBH9ssxUUupBIo1uNKF4g25KBV0Og-nxD-vM1VWmAWbiw3WbciN3r7adFRxqZ3dg1brVJWVdVYPWq3Pwm61WTnzCbbaZ_jHwgjj_GfcmvAqFddbZ6_R7fF5clqo3a-F3xlCo1eiw9kGV27YngZxEId1lN7F8Rl3tpLbnEbl7rJEM9p_FIIQlkZyoNZUIoRCmII5CgfXIgObiwKfA0XImZtbpo6YUzL1pnVxTjO6WuZAF2y9QVaVnFnxKBm-g-Inavwkx7pSFmjcI74I0APsgPaTpDskaRRFZJDcpymJQtgDHabdtJ-kJI2jQb-XkuHwGMKX79tDhZB-QtAe36OcHL8BzX_24Q?type=png)](https://mermaid.live/edit#pako:eNqdUsFuwjAM_ZXKuxYEha5NDpMQ44A0bRKXSVt3yEigETSpQipgiH-fk8IK2uhhUQ_v-T3bqZ0DzDUXQGGx1tt5zowNnmaZCvBsqs-lYWUeZIBfpurolTJ-mU3evfzRqO6MynIt58xKrVBH9ssxUUupBIo1uNKF4g25KBV0Og-nxD-vM1VWmAWbiw3WbciN3r7adFRxqZ3dg1brVJWVdVYPWq3Pwm61WTnzCbbaZ_jHwgjj_GfcmvAqFddbZ6_R7fF5clqo3a-F3xlCo1eiw9kGV27YngZxEId1lN7F8Rl3tpLbnEbl7rJEM9p_FIIQlkZyoNZUIoRCmII5CgfXIgObiwKfA0XImZtbpo6YUzL1pnVxTjO6WuZAF2y9QVaVnFnxKBm-g-Inavwkx7pSFmjcI74I0APsgPaTpDskaRRFZJDcpymJQtgDHabdtJ-kJI2jQb-XkuHwGMKX79tDhZB-QtAe36OcHL8BzX_24Q)
+
+## Supported Platforms
+| Platform | Compiler | Status |
+|----------|----------|--------|
+| Windows  | MSVC     | ✅      |
+| Linux    | g++      | ✅      |
+| MacOS    | g++      | ✅      |
+| iOS      |          | ❌      |
+| tvOS     |          | ❌      |
+| Android  |          | ❌      |
+| Web      |          | ❌      |
+
 ## Prerequisites
 
 Make sure you have the following dependencies installed on your system:
@@ -16,11 +28,17 @@ Make sure you have the following dependencies installed on your system:
 - [CMake 4.0.0](https://cmake.org/)
 - [C++23](https://en.cppreference.com/w/cpp/23)
 
+## Usage
+
+```bash
+./cae
+```
+
 ## External Libraries
 
-- [**Google Test**](https://github.com/google/googletest): A testing framework for C++.
-- [**Doxygen Awesome CSS**](https://github.com/jothepro/doxygen-awesome-css): A custom CSS theme for Doxygen documentation.
-- [**nlohmann-json**](https://github.com/nlohmann/json): A JSON library for C++.
+- [Google Test](https://github.com/google/googletest): A testing framework for C++.
+- [Doxygen Awesome CSS](https://github.com/jothepro/doxygen-awesome-css): A custom CSS theme for Doxygen documentation.
+- [nlohmann-json](https://github.com/nlohmann/json): A JSON library for C++.
 
 ## Contributing
 

@@ -49,7 +49,9 @@ void cae::WGLContextWindows::initialize(const NativeWindowHandle &window)
 void cae::WGLContextWindows::swapBuffers()
 {
     if (m_hdc)
+    {
         ::SwapBuffers(m_hdc);
+    }
 }
 
 void cae::WGLContextWindows::setVSyncEnabled(const bool enabled)

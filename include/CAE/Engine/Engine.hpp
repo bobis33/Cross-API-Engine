@@ -13,8 +13,8 @@
 #include "CAE/Common.hpp"
 #include "Interfaces/IAudio.hpp"
 #include "Interfaces/INetwork.hpp"
-#include "Interfaces/IRenderer.hpp"
 #include "Interfaces/Input/IInput.hpp"
+#include "Interfaces/Renderer/IRenderer.hpp"
 
 namespace cae
 {
