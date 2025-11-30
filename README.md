@@ -1,10 +1,12 @@
-[![CI](https://github.com/bobis33/Cross-API-Engine/actions/workflows/ci.yml/badge.svg)](https://github.com/bobis33/Cross-API-Engine/actions/workflows/ci.yml)
-[![Gitleaks](https://github.com/bobis33/Cross-API-Engine/actions/workflows/gitleaks.yml/badge.svg)](https://github.com/bobis33/Cross-API-Engine/actions/workflows/gitleaks.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/bobis33/Cross-API-Engine/blob/main/LICENSE.md)
+<img src="https://raw.githubusercontent.com/bobis33/Cross-API-Engine/main/assets/icons/icon-192x192.png" width="50" height="50" align="left" alt="Area logo"> 
 
 # Cross-API-Engine | Modular Rendering Engine
 
-Cross-API-Engine is a fully modular and plugin-oriented engine architecture designed to decouple every subsystem — rendering, windowing, input, audio, and more — into independently loadable runtime modules.
+[![CI](https://github.com/bobis33/Cross-API-Engine/actions/workflows/ci.yml/badge.svg)](https://github.com/bobis33/Cross-API-Engine/actions/workflows/ci.yml)
+[![Gitleaks](https://github.com/bobis33/Cross-API-Engine/actions/workflows/gitleaks.yml/badge.svg)](https://github.com/bobis33/Cross-API-Engine/actions/workflows/gitleaks.yml)
+[![License](https://img.shields.io/github/license/bobis33/Cross-API-Engine.svg)](https://github.com/bobis33/Cross-API-Engine/blob/main/LICENSE.md)
+
+**Cross-API-Engine** is a **fully modular** and **plugin-oriented** engine architecture designed to decouple every subsystem into independently loadable runtime modules.
 Rather than focusing only on graphics API abstraction, the objective is to create an engine where every component can be swapped, extended, or replaced without modifying core code.
 This enables rapid experimentation, platform portability, performance benchmarking, and true freedom in engine architecture research.
 
@@ -61,6 +63,7 @@ Options:
 - [Google Test](https://github.com/google/googletest): A testing framework for C++.
 - [Doxygen Awesome CSS](https://github.com/jothepro/doxygen-awesome-css): A custom CSS theme for Doxygen documentation.
 - [nlohmann-json](https://github.com/nlohmann/json): A JSON library for C++.
+- [stb_image](https://github.com/nothings/stb): A single-header image loading library.
 
 ## Contributing
 
