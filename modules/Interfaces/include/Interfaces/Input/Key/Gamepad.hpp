@@ -1,5 +1,5 @@
 ///
-/// @file Mouse.hpp
+/// @file Gamepad.hpp
 /// @brief This file contains the gamepad keys
 /// @namespace cae
 ///

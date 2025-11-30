@@ -118,5 +118,4 @@ namespace cae
 
         Count
     };
-
 } // namespace cae

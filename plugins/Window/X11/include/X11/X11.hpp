@@ -60,6 +60,6 @@ namespace cae
             Atom m_wmDeleteMessage = 0;
             bool m_shouldClose = false;
 
-    }; // class GLFW
+    }; // class X11
 
 } // namespace cae

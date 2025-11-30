@@ -5,13 +5,12 @@ project(cae
         LANGUAGES C CXX
 )
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/third-party/utils/cmake/modules")
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 set(LIBRARY_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/lib")
 set(PLUGIN_DIR "${LIBRARY_OUTPUT_PATH}/plugins")
 set(PATH_VERSION "${PROJECT_SOURCE_DIR}/include/CAE/Generated/Version.hpp")
-set(TEMPLATE_PATH "${PROJECT_SOURCE_DIR}/third-party/utils/cmake/config/Version.hpp.in")
+set(TEMPLATE_PATH "${PROJECT_SOURCE_DIR}/cmake/config/Version.hpp.in")
 
 add_compile_definitions(PLUGINS_DIR="${PLUGIN_DIR}")
 

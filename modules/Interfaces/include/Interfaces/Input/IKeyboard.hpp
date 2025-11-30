@@ -8,7 +8,7 @@
 
 #include <array>
 
-#include <Utils/Interfaces/IPlugin.hpp>
+#include "Utils/Interfaces/IPlugin.hpp"
 
 #include "Key/Keyboard.hpp"
 

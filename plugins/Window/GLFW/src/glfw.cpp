@@ -1,5 +1,5 @@
-#include <Utils/Image.hpp>
-#include <Utils/Logger.hpp>
+#include "Utils/Image.hpp"
+#include "Utils/Logger.hpp"
 
 #include "GLFW/GLFW.hpp"
 

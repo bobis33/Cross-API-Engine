@@ -38,4 +38,5 @@ namespace cae
             void setVSyncEnabled(bool enabled) override {}
             [[nodiscard]] bool isVSyncEnabled() const override { return false; }
     }; // class VULKN
+
 } // namespace cae

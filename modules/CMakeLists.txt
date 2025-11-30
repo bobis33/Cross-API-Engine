@@ -1,5 +1,7 @@
 add_library(cae-modules INTERFACE)
 
+add_subdirectory(utils)
+
 target_link_libraries(cae-modules INTERFACE
         utils
 )
