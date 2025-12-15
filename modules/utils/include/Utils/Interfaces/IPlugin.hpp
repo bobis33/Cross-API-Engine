@@ -23,11 +23,12 @@ namespace utl
         AUDIO = 0,
         NETWORK = 1,
         RENDERER = 2,
-        WINDOW = 3,
+        SHADER = 3,
+        WINDOW = 4,
         UNDEFINED = 255,
     };
 
-    enum PluginPlatform : uint8_t
+    enum class PluginPlatform : uint8_t
     {
         LINUX = 0,
         MACOSX = 1,

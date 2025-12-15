@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "OPGL/OPGL.hpp"
-
+#include "Utils/Utils.hpp"
 #ifdef __linux__
 #include "OPGL/Context/EGLContextLinux.hpp"
 #elifdef _WIN32
@@ -12,8 +12,9 @@
 #include "OPGL/Context/NSGLContextMac.hpp"
 #endif
 
-void cae::OPGL::initialize(const NativeWindowHandle &window)
+void cae::OPGL::initialize(const NativeWindowHandle &window, const std::shared_ptr<IShader> shader)
 {
+    m_shader = shader;
 #ifdef __linux__
     m_context = std::make_unique<EGLContextLinux>();
 #elifdef _WIN32
@@ -51,52 +52,53 @@ bool cae::OPGL::isVSyncEnabled() const { return m_context->isVSyncEnabled(); }
 
 void cae::OPGL::createShaderProgram()
 {
-    const auto *const vertexShaderSource = R"(#version 330 core
-        layout(location=0) in vec2 aPos;
-        layout(location=1) in vec3 aColor;
-        out vec3 ourColor;
-        void main() { gl_Position = vec4(aPos,0.0,1.0); ourColor = aColor; })";
+    m_shader->addShader(
+        "vertex",
+        utl::fileToString("assets/shaders/uniform_color.vert"),
+        ShaderStage::VERTEX
+    );
 
-    const auto *const fragmentShaderSource = R"(#version 330 core
-        in vec3 ourColor;
-        out vec4 FragColor;
-        void main() { FragColor = vec4(ourColor,1.0); })";
+    m_shader->addShader(
+        "fragment",
+        utl::fileToString("assets/shaders/uniform_color.frag"),
+        ShaderStage::FRAGMENT
+    );
 
-    auto compileShader = [](const GLenum type, const char *src) -> GLuint
-    {
-        const GLuint shader = glCreateShader(type);
-        glShaderSource(shader, 1, &src, nullptr);
-        glCompileShader(shader);
-        GLint success = 0;
-        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-        if (!success)
-        {
-            char log[512];
-            glGetShaderInfoLog(shader, 512, nullptr, log);
-            throw std::runtime_error(log);
-        }
-        return shader;
-    };
+    if (!m_shader->compileAll()) {
+        throw std::runtime_error("Failed to compile shaders");
+}
 
-    const GLuint vertex = compileShader(GL_VERTEX_SHADER, vertexShaderSource);
-    const GLuint fragment = compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+    const auto& vertSPV = m_shader->getShader("vertex").spirv;
+    const auto& fragSPV = m_shader->getShader("fragment").spirv;
+
+    if (vertSPV.empty() || fragSPV.empty()) {
+        throw std::runtime_error("Shader SPIR-V is empty, compilation must have failed");
+}
 
     gShaderProgram = glCreateProgram();
-    glAttachShader(gShaderProgram, vertex);
-    glAttachShader(gShaderProgram, fragment);
+
+    const GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderBinary(1, &vertShader, GL_SHADER_BINARY_FORMAT_SPIR_V, vertSPV.data(), vertSPV.size() * sizeof(uint32_t));
+    glSpecializeShader(vertShader, "main", 0, nullptr, nullptr);
+
+    const GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderBinary(1, &fragShader, GL_SHADER_BINARY_FORMAT_SPIR_V, fragSPV.data(), fragSPV.size() * sizeof(uint32_t));
+    glSpecializeShader(fragShader, "main", 0, nullptr, nullptr);
+
+    glAttachShader(gShaderProgram, vertShader);
+    glAttachShader(gShaderProgram, fragShader);
     glLinkProgram(gShaderProgram);
 
     GLint success = 0;
     glGetProgramiv(gShaderProgram, GL_LINK_STATUS, &success);
-    if (success == 0)
-    {
+    if (success == 0) {
         char log[512];
         glGetProgramInfoLog(gShaderProgram, 512, nullptr, log);
         throw std::runtime_error(log);
     }
 
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
+    glDeleteShader(vertShader);
+    glDeleteShader(fragShader);
 }
 
 void cae::OPGL::createTriangle()

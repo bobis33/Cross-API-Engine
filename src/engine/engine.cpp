@@ -6,9 +6,10 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
                     const std::function<std::shared_ptr<IInput>()> &inputFactory,
                     const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
+                    const std::function<std::shared_ptr<IShader>()> &shaderFactory,
                     const std::function<std::shared_ptr<IWindow>()> &windowFactory)
     : m_audioPlugin(audioFactory()), m_inputPlugin(inputFactory()), m_networkPlugin(networkFactory()),
-      m_rendererPlugin(rendererFactory()), m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>())
+      m_rendererPlugin(rendererFactory()), m_shaderPlugin(shaderFactory()), m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>())
 {
     utl::Logger::log("Loading engine with configuration:", utl::LogLevel::INFO);
     utl::Logger::log("\tAudio master volume: " + std::to_string(config.audio_master_volume), utl::LogLevel::INFO);
@@ -24,7 +25,7 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
                      utl::LogLevel::INFO);
     utl::Logger::log("\tWindow name: " + config.window_name, utl::LogLevel::INFO);
     m_windowPlugin->create(config.window_name, {.width = config.window_width, .height = config.window_height});
-    m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle());
+    m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle(), m_shaderPlugin);
 }
 
 void cae::Engine::run() const

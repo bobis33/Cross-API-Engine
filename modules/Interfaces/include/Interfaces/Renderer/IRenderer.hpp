@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "Interfaces/Renderer/IModel.hpp"
+#include "Interfaces/Renderer/IShader.hpp"
 #include "Interfaces/IWindow.hpp"
 
 namespace cae
@@ -22,7 +24,13 @@ namespace cae
         public:
             ~IRenderer() override = default;
 
-            virtual void initialize(const NativeWindowHandle &nativeWindowHandle) = 0;
+            virtual std::shared_ptr<IShader> getShader() const = 0;
+            virtual std::shared_ptr<IModel> getModel() const = 0;
+
+            virtual void setShader(std::shared_ptr<IShader> shader) = 0;
+            virtual void setModel(std::shared_ptr<IModel> model) = 0;
+
+            virtual void initialize(const NativeWindowHandle &nativeWindowHandle, std::shared_ptr<IShader> shader) = 0;
             virtual void draw(const WindowSize &windowSize) = 0;
 
             virtual void setVSyncEnabled(bool enabled) = 0;

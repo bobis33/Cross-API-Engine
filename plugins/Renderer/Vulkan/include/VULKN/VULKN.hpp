@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/Renderer/IRenderer.hpp"
+#include "Interfaces/Renderer/ARenderer.hpp"
 
 namespace cae
 {
@@ -16,7 +16,7 @@ namespace cae
     /// @brief Class for the Vulkan plugin
     /// @namespace cae
     ///
-    class VULKN final : public IRenderer
+    class VULKN final : public ARenderer
     {
 
         public:
@@ -32,7 +32,7 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            void initialize(const NativeWindowHandle &nativeWindowHandle) override {}
+            void initialize(const NativeWindowHandle &nativeWindowHandle, std::shared_ptr<IShader> shader) override {}
             void draw(const WindowSize &windowSize) override {};
 
             void setVSyncEnabled(bool enabled) override {}
