@@ -1,0 +1,56 @@
+name: 'CI - CodeQL'
+run-name: 'CodeQL - "${{ github.ref_name }}"'
+permissions:
+  security-events: write
+  packages: read
+  actions: read
+  contents: read
+on:
+  push:
+    branches:
+      - "main"
+
+  pull_request:
+    branches:
+      - "**"
+
+  workflow_dispatch:
+
+jobs:
+
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language:
+          - cpp
+          - actions
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.1
+        with:
+          ref: ${{ github.ref }}
+          repository: '${{ github.repository }}'
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
+
+      - name: Run manual build steps
+        if: matrix.language == 'cpp'
+        shell: bash
+        run: |
+          ./scripts/unix/install-cmake.sh
+          sudo apt update && sudo apt install -y cmake xorg-dev libegl1-mesa-dev
+          ./scripts/unix/build.sh release
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
