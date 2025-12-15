@@ -4,6 +4,8 @@
 
 [![CI](https://github.com/bobis33/Cross-API-Engine/actions/workflows/ci.yml/badge.svg)](https://github.com/bobis33/Cross-API-Engine/actions/workflows/ci.yml)
 [![Gitleaks](https://github.com/bobis33/Cross-API-Engine/actions/workflows/gitleaks.yml/badge.svg)](https://github.com/bobis33/Cross-API-Engine/actions/workflows/gitleaks.yml)
+[![CodeQL](https://github.com/bobis33/Cross-API-Engine/actions/workflows/codeql.yml/badge.svg)](https://github.com/bobis33/Cross-API-Engine/actions/workflows/codeql.yml)
+[![Doxygen deployment](https://github.com/bobis33/Cross-API-Engine/actions/workflows/deploy-doxygen.yml/badge.svg)](https://github.com/bobis33/Cross-API-Engine/actions/workflows/deploy-doxygen.yml)
 [![License](https://img.shields.io/github/license/bobis33/Cross-API-Engine.svg)](https://github.com/bobis33/Cross-API-Engine/blob/main/LICENSE.md)
 
 **Cross-API-Engine** is a **fully modular** and **plugin-oriented** engine architecture designed to decouple every subsystem into independently loadable runtime modules.
@@ -63,7 +65,7 @@ Options:
 - [Google Test](https://github.com/google/googletest): A testing framework for C++.
 - [Doxygen Awesome CSS](https://github.com/jothepro/doxygen-awesome-css): A custom CSS theme for Doxygen documentation.
 - [nlohmann-json](https://github.com/nlohmann/json): A JSON library for C++.
-- [stb_image](https://github.com/nothings/stb): A single-header image loading library.
+- [stb](https://github.com/nothings/stb): A single-header image loading library.
 
 ## Contributing
 

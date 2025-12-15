@@ -1,0 +1,19 @@
+name: "Fullstack CodeQL config"
+
+queries:
+  - uses: security-and-quality
+
+paths:
+  - src
+  - include
+  - modules
+  - plugins
+  - .github
+
+paths-ignore:
+  - "cmake-build-*/**"
+  - "third-party/**"
+  - "tests/**"
+
+  - ".idea/**"
+  - ".vscode/**"
