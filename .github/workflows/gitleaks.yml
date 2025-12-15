@@ -1,5 +1,7 @@
 name: 'CI - Gitleaks'
 run-name: 'Gitleaks - "${{ github.ref_name }}"'
+permissions:
+  contents: read
 on:
   push:
     branches:

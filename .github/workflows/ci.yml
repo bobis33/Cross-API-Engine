@@ -1,5 +1,7 @@
 name: 'CI - CAE'
 run-name: 'CAE - "${{ github.ref_name }}"'
+permissions:
+  contents: read
 on:
   push:
     branches:

@@ -1,6 +1,7 @@
 name: 'CD - Doxygen documentation'
 run-name: 'Doxygen documentation - "${{ github.ref_name }}"'
-
+permissions:
+  contents: read
 on:
   workflow_dispatch:
 
