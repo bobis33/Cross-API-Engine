@@ -6,7 +6,7 @@
 
 #pragma once
 
-#if defined(_WIN32)
+#ifdef _WIN32
 #include <Windows.h>
 
 #include "IContext.hpp"
@@ -27,7 +27,7 @@ namespace cae
 
             void initialize(const NativeWindowHandle &window) override;
             void swapBuffers() override;
-            void setVSyncEnabled(const bool enabled) override;
+            void setVSyncEnabled(bool enabled) override;
             [[nodiscard]] bool isVSyncEnabled() const override
             {
                 // WGL does not provide a direct way to query VSync status

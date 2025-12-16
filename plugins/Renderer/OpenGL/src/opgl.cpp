@@ -4,21 +4,21 @@
 
 #include "OPGL/OPGL.hpp"
 
-#if defined(__linux__)
+#ifdef __linux__
 #include "OPGL/Context/EGLContextLinux.hpp"
-#elif defined(_WIN32)
+#elifdef _WIN32
 #include "OPGL/Context/WGLContextWindows.hpp"
-#elif defined(__APPLE__)
+#elifdef __APPLE__
 #include "OPGL/Context/NSGLContextMac.hpp"
 #endif
 
 void cae::OPGL::initialize(const NativeWindowHandle &window)
 {
-#if defined(__linux__)
+#ifdef __linux__
     m_context = std::make_unique<EGLContextLinux>();
-#elif defined(_WIN32)
+#elifdef _WIN32
     m_context = std::make_unique<WGLContextWindows>();
-#elif defined(__APPLE__)
+#elifdef __APPLE__
     m_context = std::make_unique<NSGLContextMac>();
 #else
     static_assert(false, "Unsupported platform");

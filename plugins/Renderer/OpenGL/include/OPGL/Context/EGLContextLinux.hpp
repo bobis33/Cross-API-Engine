@@ -6,7 +6,7 @@
 
 #pragma once
 
-#if defined(__linux__)
+#ifdef __linux__
 #include <EGL/egl.h>
 
 #include "IContext.hpp"

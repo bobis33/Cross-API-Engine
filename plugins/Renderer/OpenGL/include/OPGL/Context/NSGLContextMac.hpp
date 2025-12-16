@@ -6,7 +6,7 @@
 
 #pragma once
 
-#if defined(__APPLE__)
+#ifdef __APPLE__
 #include "IContext.hpp"
 
 namespace cae
@@ -27,7 +27,7 @@ namespace cae
 
             void swapBuffers() override;
 
-            void setVSyncEnabled(const bool enabled) override;
+            void setVSyncEnabled(bool enabled) override;
             [[nodiscard]] bool isVSyncEnabled() const override;
 
         private:
