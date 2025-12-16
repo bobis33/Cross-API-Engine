@@ -1,7 +1,9 @@
 #include <array>
 #include <memory>
+#include <stdexcept>
 
 #include "OPGL/OPGL.hpp"
+
 #if defined(__linux__)
 #include "OPGL/Context/EGLContextLinux.hpp"
 #elif defined(_WIN32)
