@@ -51,6 +51,7 @@ namespace cae
         private:
             static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+            std::wstring m_title;
             HWND m_hwnd = nullptr;
             HINSTANCE m_hInstance = nullptr;
             WindowSize m_frameBufferSize;

@@ -8,8 +8,18 @@ if (NOT WIN32)
     return()
 endif ()
 
+add_compile_definitions(UNICODE _UNICODE)
+
 find_library(USER32_LIB user32)
 find_library(GDI32_LIB gdi32)
+
+if(NOT USER32_LIB)
+    set(USER32_LIB "user32")
+endif()
+if(NOT GDI32_LIB)
+    set(GDI32_LIB "gdi32")
+endif()
+
 
 file(GLOB_RECURSE SOURCE "${PROJECT_SOURCE_DIR}/src/*.cpp")
 file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/include/*.hpp")
