@@ -32,15 +32,19 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            void initialize(const NativeWindowHandle &nativeWindowHandle) override {}
+            void setVSyncEnabled(bool enabled) override {}
+            void setClearColor(const Color &color) override {}
+
+            [[nodiscard]] bool isVSyncEnabled() const override { return false; }
+
+            void initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor) override {}
             void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                 const ShaderIRModule &fragment) override
             {
             }
-            void draw(const WindowSize &windowSize) override {}
+            void draw(const WindowSize &windowSize, const ShaderID &shaderId) override {}
+            void createMesh(const std::vector<float> &vertices) override {}
 
-            void setVSyncEnabled(bool enabled) override {}
-            [[nodiscard]] bool isVSyncEnabled() const override { return false; }
     }; // class VULKN
 
 } // namespace cae

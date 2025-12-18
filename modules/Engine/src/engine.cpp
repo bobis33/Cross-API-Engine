@@ -43,6 +43,7 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
 
     m_windowPlugin->create(config.window_name, {.width = config.window_width, .height = config.window_height});
     m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle());
+    m_rendererPlugin->createMesh({-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
     initShaders(shaderIRFactory, shaderFrontendFactories);
 }
 
@@ -52,7 +53,7 @@ void cae::Engine::run() const
     int fpsIndex = 0;
     while (!m_windowPlugin->shouldClose())
     {
-        m_rendererPlugin->draw(m_windowPlugin->getWindowSize());
+        m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic");
         m_windowPlugin->pollEvents();
         printFps(fpsBuffer, fpsIndex, m_clock->getDeltaSeconds());
         m_clock->restart();

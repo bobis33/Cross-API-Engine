@@ -10,11 +10,10 @@
 
 #include "Utils/Utils.hpp"
 
-#include <array>
 #include <memory>
 #include <stdexcept>
 
-void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle)
+void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor)
 {
 #ifdef __linux__
     m_context = std::make_unique<EGLContextLinux>();
@@ -27,26 +26,21 @@ void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle)
     m_context->initialize(nativeWindowHandle);
 
     glEnable(GL_DEPTH_TEST);
-    glClearColor(1.F, 1.F, 1.F, 1.F);
-    createTriangle();
+    glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 }
 
-void cae::OPGL::draw(const WindowSize &windowSize)
+void cae::OPGL::draw(const WindowSize &windowSize, const ShaderID &shaderId)
 {
     glViewport(0, 0, windowSize.width, windowSize.height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(m_programs.at("basic"));
-    glBindVertexArray(gVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glUseProgram(m_programs.at(shaderId));
+    glBindVertexArray(m_mesh.vao);
+    glDrawArrays(GL_TRIANGLES, 0, m_mesh.vertexCount);
     glBindVertexArray(0);
 
     m_context->swapBuffers();
 }
-
-void cae::OPGL::setVSyncEnabled(const bool enabled) { m_context->setVSyncEnabled(enabled); }
-
-bool cae::OPGL::isVSyncEnabled() const { return m_context->isVSyncEnabled(); }
 
 void cae::OPGL::createPipeline(const ShaderID &id, const ShaderIRModule &vertex, const ShaderIRModule &fragment)
 {
@@ -62,7 +56,7 @@ void cae::OPGL::createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
 
     GLint success = 0;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (!success)
+    if (success == 0)
     {
         char log[512];
         glGetProgramInfoLog(program, 512, nullptr, log);
@@ -75,25 +69,28 @@ void cae::OPGL::createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
     m_programs[id] = program;
 }
 
-void cae::OPGL::createTriangle()
+void cae::OPGL::createMesh(const std::vector<float> &vertices)
 {
-    constexpr std::array vertices = {-0.5F, -0.5F, 1.F,  0.F,  0.F, 0.5F, -0.5F, 0.F,
-                                     1.F,   0.F,   0.0F, 0.5F, 0.F, 0.F,  1.F};
+    Mesh mesh{};
+    mesh.vertexCount = static_cast<GLsizei>(vertices.size() / 5);
 
-    glGenVertexArrays(1, &gVAO);
-    glGenBuffers(1, &gVBO);
+    glGenVertexArrays(1, &mesh.vao);
+    glGenBuffers(1, &mesh.vbo);
 
-    glBindVertexArray(gVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, gVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
+    glBindVertexArray(mesh.vao);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), static_cast<void *>(0));
     glEnableVertexAttribArray(0);
+
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    m_mesh = mesh;
 }
 
 GLuint cae::OPGL::createGLShader(const GLenum type, const ShaderIRModule &data)

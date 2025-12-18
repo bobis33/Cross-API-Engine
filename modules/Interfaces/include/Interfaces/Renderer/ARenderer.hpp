@@ -27,7 +27,6 @@ namespace cae
         protected:
 
         private:
-
     }; // interface ARenderer
 
 } // namespace cae
