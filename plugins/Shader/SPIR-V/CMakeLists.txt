@@ -10,14 +10,18 @@ if (NOT SPIRV-Tools_FOUND)
     include(FetchContent)
     FetchContent_Declare(
             spirv-headers
-            GIT_REPOSITORY https://github.com/KhronosGroup/SPIRV-Headers.git
+            GIT_REPOSITORY "https://github.com/KhronosGroup/SPIRV-Headers.git"
             GIT_TAG main
+            GIT_SHALLOW TRUE
+            GIT_PROGRESS TRUE
     )
     FetchContent_MakeAvailable(spirv-headers)
     FetchContent_Declare(
             spirv-tools
-            GIT_REPOSITORY https://github.com/KhronosGroup/SPIRV-Tools.git
+            GIT_REPOSITORY "https://github.com/KhronosGroup/SPIRV-Tools.git"
             GIT_TAG main
+            GIT_SHALLOW TRUE
+            GIT_PROGRESS TRUE
     )
     FetchContent_MakeAvailable(spirv-tools)
 endif ()
@@ -30,8 +34,10 @@ if (NOT glslang_FOUND)
 
     FetchContent_Declare(
             glslang
-            GIT_REPOSITORY https://github.com/KhronosGroup/glslang.git
+            GIT_REPOSITORY "https://github.com/KhronosGroup/glslang.git"
             GIT_TAG main
+            GIT_SHALLOW TRUE
+            GIT_PROGRESS TRUE
     )
     FetchContent_MakeAvailable(glslang)
 endif ()
