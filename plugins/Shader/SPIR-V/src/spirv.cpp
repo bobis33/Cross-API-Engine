@@ -1,14 +1,14 @@
 #include "SPIR-V/SPIR-V.hpp"
 #include "Utils/Logger.hpp"
 
-void cae::SPIRV::addShader(const std::string& name, const std::string& source, const ShaderStage stage)
+void cae::SPIRV::addShader(const ShaderModuleDesc& pipelineDesc)
 {
     ShaderData data;
     data.type = ShaderSourceType::GLSL;
-    data.source = source;
-    data.stage = stage;
+    data.source = pipelineDesc.source;
+    data.stage = pipelineDesc.stage;
     data.entryPoint = "main";
-    m_shaders[name] = std::move(data);
+    m_shaders[pipelineDesc.id] = std::move(data);
 }
 
 bool cae::SPIRV::compileAll()

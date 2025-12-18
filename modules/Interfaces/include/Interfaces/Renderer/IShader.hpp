@@ -10,6 +10,8 @@
 
 #include "Utils/Interfaces/IPlugin.hpp"
 
+using ShaderID = std::string;
+
 enum class ShaderSourceType : uint8_t
 {
     GLSL,
@@ -27,6 +29,21 @@ enum class ShaderStage : uint8_t
     GEOMETRY,
     COMPUTE,
     UNDEFINED = 255
+};
+
+struct ShaderModuleDesc
+{
+    // ShaderSourceType type;
+    ShaderID id;
+    std::string source;
+    ShaderStage stage;
+};
+
+struct ShaderPipelineDesc
+{
+    ShaderID id;
+    ShaderID vertex;
+    ShaderID fragment;
 };
 
 struct ShaderData {
@@ -51,10 +68,10 @@ namespace cae
         public:
             ~IShader() override = default;
 
-            virtual void addShader(const std::string& name, const std::string& source, ShaderStage stage) = 0;
+            virtual void addShader(const ShaderModuleDesc& pipelineDesc) = 0;
             virtual bool compileAll() = 0;
-            virtual const ShaderData& getShader(const std::string& name) const = 0;
-            virtual bool isCompiled(const std::string& name) const = 0;
+            virtual const ShaderData& getShader(const ShaderID& name) const = 0;
+            virtual bool isCompiled(const ShaderID& name) const = 0;
 
     }; // interface IShader
 

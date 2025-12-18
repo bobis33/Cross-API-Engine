@@ -33,6 +33,7 @@ namespace cae
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
             void initialize(const NativeWindowHandle &nativeWindowHandle, std::shared_ptr<IShader> shader) override {}
+            void createPipeline(const ShaderPipelineDesc& pipeline) override {}
             void draw(const WindowSize &windowSize) override {};
 
             void setVSyncEnabled(bool enabled) override {}

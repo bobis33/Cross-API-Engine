@@ -1,6 +1,7 @@
 #include "Utils/Logger.hpp"
 
 #include "CAE/Engine/Engine.hpp"
+#include "Utils/Utils.hpp"
 
 cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                     const std::function<std::shared_ptr<IInput>()> &inputFactory,
@@ -25,12 +26,23 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
                      utl::LogLevel::INFO);
     utl::Logger::log("\tWindow name: " + config.window_name, utl::LogLevel::INFO);
     m_windowPlugin->create(config.window_name, {.width = config.window_width, .height = config.window_height});
+    const std::vector<ShaderModuleDesc> shadersPipelineDesc = {
+        {.id = "basic_vertex", .source = utl::fileToString("assets/shaders/uniform_color.vert"),
+         .stage = ShaderStage::VERTEX},
+        {.id = "basic_fragment", .source = utl::fileToString("assets/shaders/uniform_color.frag"),
+         .stage = ShaderStage::FRAGMENT}};
+    m_shaderPlugin->addShader(shadersPipelineDesc.at(0));
+    m_shaderPlugin->addShader(shadersPipelineDesc.at(1));
+    if (!m_shaderPlugin->compileAll())
+    {
+        throw std::runtime_error("Failed to compile shaders");
+    }
     m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle(), m_shaderPlugin);
+    m_rendererPlugin->createPipeline({.id = "basic", .vertex = shadersPipelineDesc.at(0).id, .fragment = shadersPipelineDesc.at(1).id});
 }
 
 void cae::Engine::run() const
 {
-
     while (!m_windowPlugin->shouldClose())
     {
         utl::Logger::log(std::format("FPS: {}", 1.0F / m_clock->getDeltaSeconds()), utl::LogLevel::INFO);

@@ -41,7 +41,7 @@ namespace cae
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::LINUX; }
 
 
-            void addShader(const std::string& name, const std::string& source, ShaderStage stage) override;
+            void addShader(const ShaderModuleDesc& pipelineDesc) override;
             bool compileAll() override;
             const ShaderData& getShader(const std::string& name) const override;
             bool isCompiled(const std::string& name) const override;

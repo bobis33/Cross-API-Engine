@@ -31,6 +31,8 @@ namespace cae
             virtual void setModel(std::shared_ptr<IModel> model) = 0;
 
             virtual void initialize(const NativeWindowHandle &nativeWindowHandle, std::shared_ptr<IShader> shader) = 0;
+            virtual void createPipeline(const ShaderPipelineDesc& pipeline) = 0;
+
             virtual void draw(const WindowSize &windowSize) = 0;
 
             virtual void setVSyncEnabled(bool enabled) = 0;
