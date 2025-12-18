@@ -34,11 +34,13 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            void initialize(const NativeWindowHandle &window) override;
+            void initialize(const NativeWindowHandle &window, const Color& clearColor) override;
             void draw(const WindowSize &windowSize) override;
 
             void setVSyncEnabled(bool enabled) override;
             [[nodiscard]] bool isVSyncEnabled() const override;
+
+            void setClearColor(const Color& color) override { glClearColor(color.r, color.g, color.b, color.a); }
 
         private:
             std::unique_ptr<IContext> m_context;

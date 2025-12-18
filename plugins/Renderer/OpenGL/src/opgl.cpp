@@ -12,7 +12,7 @@
 #include "OPGL/Context/NSGLContextMac.hpp"
 #endif
 
-void cae::OPGL::initialize(const NativeWindowHandle &window)
+void cae::OPGL::initialize(const NativeWindowHandle &window, const Color& clearColor)
 {
 #ifdef __linux__
     m_context = std::make_unique<EGLContextLinux>();
@@ -26,7 +26,7 @@ void cae::OPGL::initialize(const NativeWindowHandle &window)
     m_context->initialize(window);
 
     glEnable(GL_DEPTH_TEST);
-    glClearColor(1.F, 1.F, 1.F, 1.F);
+    glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 
     createShaderProgram();
     createTriangle();
