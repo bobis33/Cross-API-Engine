@@ -11,6 +11,7 @@ FetchContent_Declare(
         GIT_REPOSITORY "https://github.com/KhronosGroup/Vulkan-Headers.git"
         GIT_TAG ${VULKAN_VERSION}
         GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(VulkanHeaders)
 
@@ -19,6 +20,7 @@ FetchContent_Declare(
         GIT_REPOSITORY "https://github.com/KhronosGroup/Vulkan-Loader.git"
         GIT_TAG ${VULKAN_VERSION}
         GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(VulkanLoader)
 
