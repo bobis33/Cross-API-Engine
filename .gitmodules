@@ -1,12 +1,3 @@
-[submodule "third-party/googletest"]
-	path = third-party/googletest
-	url = git@github.com:google/googletest.git
 [submodule "third-party/doxygen-awesome-css"]
 	path = third-party/doxygen-awesome-css
 	url = git@github.com:jothepro/doxygen-awesome-css.git
-[submodule "third-party/nlohmann-json"]
-	path = third-party/nlohmann-json
-	url = git@github.com:nlohmann/json.git
-[submodule "third-party/stb"]
-	path = third-party/stb
-	url = git@github.com:nothings/stb.git
