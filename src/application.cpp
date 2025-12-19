@@ -44,7 +44,7 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine("OpenGL", "GLFW");
+        setupEngine("OpenGL", "Win32");
     }
     catch (const std::exception &e)
     {
