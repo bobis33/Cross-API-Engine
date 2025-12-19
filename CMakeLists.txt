@@ -35,18 +35,27 @@ include(MakeDoc)
 include(ClangTidy)
 include(ClangFormat)
 
-add_subdirectory(third-party)
 add_subdirectory(modules)
 add_subdirectory(plugins)
 add_subdirectory(tests)
 
-add_executable(${PROJECT_NAME} ${SOURCES})
-add_dependencies(${PROJECT_NAME} cae-third-party cae-modules)
-target_include_directories(${PROJECT_NAME} PRIVATE
-        "${PROJECT_SOURCE_DIR}/include"
-        "${PROJECT_SOURCE_DIR}/third-party/nlohmann-json/single_include"
+include(FetchContent)
+FetchContent_Declare(
+        nlohmann-json
+        GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+        GIT_TAG        "v3.12.0"
+        GIT_SHALLOW    TRUE
+        GIT_PROGRESS   TRUE
 )
-target_link_libraries(${PROJECT_NAME} PRIVATE cae-modules)
+FetchContent_MakeAvailable(nlohmann-json)
+
+add_executable(${PROJECT_NAME} ${SOURCES})
+add_dependencies(${PROJECT_NAME} cae-modules)
+target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        cae-modules
+        nlohmann_json::nlohmann_json
+)
 if (NOT WIN32 AND NOT APPLE)
     set(WARNING_FLAGS
             -Wall

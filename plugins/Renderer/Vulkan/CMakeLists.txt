@@ -5,7 +5,6 @@ project(cae-vulkan
 
 include(FetchContent)
 set(VULKAN_VERSION "v1.4.329")
-
 FetchContent_Declare(
         VulkanHeaders
         GIT_REPOSITORY "https://github.com/KhronosGroup/Vulkan-Headers.git"
