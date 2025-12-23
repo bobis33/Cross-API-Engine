@@ -3,6 +3,8 @@
 #include "CAE/Engine/Engine.hpp"
 #include "Utils/Utils.hpp"
 
+#include <numeric>
+
 cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                     const std::function<std::shared_ptr<IInput>()> &inputFactory,
                     const std::function<std::shared_ptr<INetwork>()> &networkFactory,
@@ -41,14 +43,25 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
     m_rendererPlugin->createPipeline({.id = "basic", .vertex = shadersPipelineDesc.at(0).id, .fragment = shadersPipelineDesc.at(1).id});
 }
 
+void printFps(std::array<float, 10>& fpsBuffer, int& fpsIndex, float deltaTime)
+{
+    fpsBuffer[fpsIndex % 10] = 1.0f / deltaTime;
+    fpsIndex++;
+
+    float avgFps = std::accumulate(fpsBuffer.begin(), fpsBuffer.end(), 0.0f) / 10.0f;
+    utl::Logger::log(std::format("FPS: {}", avgFps), utl::LogLevel::INFO);
+}
+
 void cae::Engine::run() const
 {
+    std::array<float, 10> fpsBuffer{};
+    int fpsIndex = 0;
     while (!m_windowPlugin->shouldClose())
     {
-        utl::Logger::log(std::format("FPS: {}", 1.0F / m_clock->getDeltaSeconds()), utl::LogLevel::INFO);
-        m_clock->restart();
         m_rendererPlugin->draw(m_windowPlugin->getWindowSize());
         m_windowPlugin->pollEvents();
+        printFps(fpsBuffer, fpsIndex, m_clock->getDeltaSeconds());
+        m_clock->restart();
     }
 }
 
