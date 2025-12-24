@@ -11,7 +11,7 @@
 namespace cae
 {
 
-    enum KeyState : std::uint8_t
+    enum class KeyState : std::uint8_t
     {
         Pressed = 0,
         Released = 1,

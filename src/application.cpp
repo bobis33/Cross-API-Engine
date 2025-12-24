@@ -44,7 +44,7 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine("OpenGL", "GLFW");
+        setupEngine("OpenGL", "X11", "SPIRV");
     }
     catch (const std::exception &e)
     {
@@ -52,10 +52,11 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
     }
 }
 
-void cae::Application::setupEngine(const std::string &rendererName, const std::string &windowName)
+void cae::Application::setupEngine(const std::string &rendererName, const std::string &windowName, const std::string &shaderName)
 {
     std::shared_ptr<IWindow> windowPlugin = nullptr;
     std::shared_ptr<IRenderer> rendererPlugin = nullptr;
+    std::shared_ptr<IShader> shaderPlugin = nullptr;
 
     for (auto &plugin : loadPlugins(m_pluginLoader))
     {
@@ -73,6 +74,13 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
                 windowPlugin = window;
             }
         }
+        if (const auto shader = std::dynamic_pointer_cast<IShader>(plugin))
+        {
+            if (shader->getName() == shaderName)
+            {
+                shaderPlugin = shader;
+            }
+        }
     }
     if (windowPlugin == nullptr)
     {
@@ -82,9 +90,13 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     {
         utl::Logger::log("No renderer plugin found with name: " + windowName, utl::LogLevel::WARNING);
     }
+    if (shaderPlugin == nullptr)
+    {
+        utl::Logger::log("No shader plugin found with name: SPIRV", utl::LogLevel::WARNING);
+    }
     m_engine = std::make_unique<Engine>(
         m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
-        [rendererPlugin]() { return rendererPlugin; }, [windowPlugin]() { return windowPlugin; });
+        [rendererPlugin]() { return rendererPlugin; }, [shaderPlugin] { return shaderPlugin; }, [windowPlugin]() { return windowPlugin; });
 }
 
 void cae::Application::start() const { m_engine->run(); }

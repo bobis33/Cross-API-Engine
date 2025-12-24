@@ -28,6 +28,12 @@ namespace utl
     class Logger
     {
 
+        private:
+            template<typename E>
+            static constexpr auto to_underlying(E e) noexcept {
+                return static_cast<std::underlying_type_t<E>>(e);
+            }
+
         public:
             Logger(const Logger &) = delete;
             Logger &operator=(const Logger &) = delete;
@@ -45,22 +51,22 @@ namespace utl
 
                 std::cout << getColorForDuration(duration)
                           << formatLogMessage(LogLevel::INFO, message + " took " + std::to_string(duration) + " ms")
-                          << LOG_LEVEL_COLOR[COLOR_RESET];
+                          << LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_RESET)];
             }
 
             static void log(const std::string &message, const LogLevel &logLevel)
             {
-                std::cout << (logLevel == LogLevel::INFO ? LOG_LEVEL_COLOR[COLOR_INFO] : LOG_LEVEL_COLOR[COLOR_WARNING])
-                          << formatLogMessage(logLevel, message) << LOG_LEVEL_COLOR[COLOR_RESET];
+                std::cout << (logLevel == LogLevel::INFO ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_INFO)] : LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_WARNING)])
+                          << formatLogMessage(logLevel, message) << LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_RESET)];
             }
 
         private:
-            enum ColorIndex : uint8_t
+            enum class ColorIndex : uint8_t
             {
-                COLOR_ERROR,
-                COLOR_INFO,
-                COLOR_WARNING,
-                COLOR_RESET
+                COLOR_ERROR = 0,
+                COLOR_INFO = 1,
+                COLOR_WARNING = 2,
+                COLOR_RESET = 3
             };
 
             static constexpr std::array<const char *, 4> LOG_LEVEL_COLOR = {
@@ -78,8 +84,8 @@ namespace utl
             [[nodiscard]] static const char *getColorForDuration(const float duration)
             {
                 return duration < 20.0F
-                           ? LOG_LEVEL_COLOR[COLOR_INFO]
-                           : (duration < 90.0F ? LOG_LEVEL_COLOR[COLOR_WARNING] : LOG_LEVEL_COLOR[COLOR_ERROR]);
+                           ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_INFO)]
+                           : (duration < 90.0F ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_WARNING)] : LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_ERROR)]);
             }
 
             [[nodiscard]] static std::string formatLogMessage(LogLevel level, const std::string &message)
