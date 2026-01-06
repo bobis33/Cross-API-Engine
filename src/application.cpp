@@ -1,6 +1,7 @@
-#include <filesystem>
-
 #include "CAE/Application.hpp"
+#include "CAE/Common.hpp"
+
+#include <filesystem>
 
 static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_ptr<utl::PluginLoader> &loader)
 {

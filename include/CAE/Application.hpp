@@ -9,7 +9,7 @@
 #include "Utils/PluginLoader.hpp"
 
 #include "CAE/ArgsHandler.hpp"
-#include "CAE/Engine/Engine.hpp"
+#include "Engine/Engine.hpp"
 
 namespace cae
 {
