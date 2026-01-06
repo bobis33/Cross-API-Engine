@@ -49,6 +49,7 @@ namespace cae
                    const std::function<std::shared_ptr<IInput>()> &inputFactory,
                    const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                    const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
+                   const std::function<std::shared_ptr<IShader>()> &shaderFactory,
                    const std::function<std::shared_ptr<IWindow>()> &windowFactory);
             ~Engine() = default;
 
@@ -73,6 +74,7 @@ namespace cae
             std::shared_ptr<IInput> m_inputPlugin = nullptr;
             std::shared_ptr<INetwork> m_networkPlugin = nullptr;
             std::shared_ptr<IRenderer> m_rendererPlugin = nullptr;
+            std::shared_ptr<IShader> m_shaderPlugin = nullptr;
             std::shared_ptr<IWindow> m_windowPlugin = nullptr;
 
             std::unique_ptr<utl::Clock> m_clock = nullptr;

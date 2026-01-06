@@ -41,7 +41,7 @@ namespace cae
             void stop();
 
         private:
-            void setupEngine(const std::string &rendererName, const std::string &windowName);
+            void setupEngine(const std::string &rendererName, const std::string &windowName, const std::string &shaderName);
 
             static EngineConfig parseEngineConf(const std::string &path);
 
