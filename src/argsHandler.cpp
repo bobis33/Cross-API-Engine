@@ -1,9 +1,9 @@
-#include <iostream>
-
 #include "Utils/Env.hpp"
 
 #include "CAE/ArgsHandler.hpp"
 #include "CAE/Common.hpp"
+
+#include <iostream>
 
 cae::ArgsConfig cae::ArgsHandler::ParseArgs(const int argc, const char *const *argv)
 {
