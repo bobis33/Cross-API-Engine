@@ -1,7 +1,7 @@
+#include "GLFW/GLFW.hpp"
+
 #include "Utils/Image.hpp"
 #include "Utils/Logger.hpp"
-
-#include "GLFW/GLFW.hpp"
 
 void cae::GLFW::frameBufferResizeCallback(GLFWwindow *window, const int width, const int height)
 {

@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include <array>
+#include "Key/Keyboard.hpp"
 
 #include "Utils/Interfaces/IPlugin.hpp"
 
-#include "Key/Keyboard.hpp"
+#include <array>
 
 namespace cae
 {

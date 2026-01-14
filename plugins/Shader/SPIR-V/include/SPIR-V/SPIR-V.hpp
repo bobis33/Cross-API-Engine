@@ -6,10 +6,10 @@
 
 #pragma once
 
+#include "Interfaces/Renderer/IShader.hpp"
+
 #include <glslang/Public/ShaderLang.h>
 #include <SPIRV/GlslangToSpv.h>
-
-#include "Interfaces/Renderer/IShader.hpp"
 
 #include <unordered_map>
 #include <stdexcept>

@@ -1,12 +1,12 @@
-#include <cstring>
-#include <string>
-#include <unordered_map>
+#include "Utils/Env.hpp"
 
 #ifdef _WIN32
 #include <windows.h>
 #endif
 
-#include "Utils/Env.hpp"
+#include <cstring>
+#include <string>
+#include <unordered_map>
 
 std::unordered_map<std::string, std::string> utl::getEnvMap(const char *const *env)
 {

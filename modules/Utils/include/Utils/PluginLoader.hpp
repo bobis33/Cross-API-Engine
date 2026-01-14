@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include "Utils/Interfaces/IPlugin.hpp"
+#include "Utils/Logger.hpp"
+
 #include <concepts>
 #include <memory>
 #include <mutex>
@@ -24,9 +27,6 @@
 #define PLUGINS_EXTENSION ".so"
 #endif
 #endif
-
-#include "Utils/Interfaces/IPlugin.hpp"
-#include "Utils/Logger.hpp"
 
 namespace utl
 {

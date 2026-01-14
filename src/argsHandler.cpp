@@ -1,7 +1,7 @@
-#include "Utils/Env.hpp"
-
 #include "CAE/ArgsHandler.hpp"
 #include "CAE/Common.hpp"
+
+#include "Utils/Env.hpp"
 
 #include <iostream>
 

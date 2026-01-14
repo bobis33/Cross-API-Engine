@@ -7,6 +7,7 @@
 #pragma once
 
 #include "CAE/Generated/Version.hpp"
+
 #include "Engine/Common.hpp"
 
 namespace cae

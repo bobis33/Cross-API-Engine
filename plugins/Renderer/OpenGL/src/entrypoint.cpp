@@ -1,5 +1,3 @@
-#include <memory>
-
 #include "OPGL/OPGL.hpp"
 
 extern "C"

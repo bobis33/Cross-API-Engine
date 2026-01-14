@@ -1,7 +1,7 @@
+#include "Utils/Utils.hpp"
+
 #include <fstream>
 #include <sstream>
-
-#include "Utils/Utils.hpp"
 
 std::vector<char> utl::fileToVector(const std::filesystem::path& path)
 {

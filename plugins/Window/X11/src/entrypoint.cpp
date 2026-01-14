@@ -1,6 +1,6 @@
-#include <memory>
-
 #include "X11/X11.hpp"
+
+#include <memory>
 
 extern "C"
 {

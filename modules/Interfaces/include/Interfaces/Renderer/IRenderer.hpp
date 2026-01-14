@@ -10,6 +10,8 @@
 #include "Interfaces/Renderer/IShader.hpp"
 #include "Interfaces/IWindow.hpp"
 
+#include <memory>
+
 namespace cae
 {
 

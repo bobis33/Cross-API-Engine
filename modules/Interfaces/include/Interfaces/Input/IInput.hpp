@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <memory>
-#include <vector>
-
 #include "Interfaces/Input/IGamepad.hpp"
 #include "Interfaces/Input/IKeyboard.hpp"
 #include "Interfaces/Input/IMouse.hpp"
+
+#include <memory>
+#include <vector>
 
 namespace cae
 {

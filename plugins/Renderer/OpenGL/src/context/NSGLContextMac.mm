@@ -1,10 +1,9 @@
 #if defined(__APPLE__)
 
-#import <AppKit/AppKit.h>
-
+#include "OPGL/Context/NSGLContextMac.hpp"
 #include "OPGL/glad/glad.h"
 
-#include "OPGL/Context/NSGLContextMac.hpp"
+#import <AppKit/AppKit.h>
 
 cae::NSGLContextMac::~NSGLContextMac() {
     if (m_context) {

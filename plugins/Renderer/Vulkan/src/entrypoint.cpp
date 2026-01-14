@@ -1,6 +1,6 @@
-#include <memory>
-
 #include "VULKN/VULKN.hpp"
+
+#include <memory>
 
 extern "C"
 {

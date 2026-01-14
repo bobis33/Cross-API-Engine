@@ -1,10 +1,9 @@
-#if defined(__linux__)
-
-#include <stdexcept>
-
-#include "OPGL/glad/glad.h"
+#ifdef __linux__
 
 #include "OPGL/Context/EGLContextLinux.hpp"
+#include "OPGL/glad/glad.h"
+
+#include <stdexcept>
 
 cae::EGLContextLinux::~EGLContextLinux()
 {

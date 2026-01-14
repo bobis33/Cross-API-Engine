@@ -6,15 +6,15 @@
 
 #pragma once
 
-#include <functional>
+#include "Engine/Common.hpp"
 
 #include "Utils/Clock.hpp"
-
-#include "Engine/Common.hpp"
 #include "Interfaces/IAudio.hpp"
 #include "Interfaces/INetwork.hpp"
 #include "Interfaces/Input/IInput.hpp"
 #include "Interfaces/Renderer/IRenderer.hpp"
+
+#include <functional>
 
 namespace cae
 {

@@ -1,6 +1,6 @@
-#include <memory>
-
 #include "GLFW/GLFW.hpp"
+
+#include <memory>
 
 extern "C"
 {

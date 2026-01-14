@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include "Utils/PluginLoader.hpp"
-
 #include "CAE/ArgsHandler.hpp"
+
 #include "Engine/Engine.hpp"
+#include "Utils/PluginLoader.hpp"
 
 namespace cae
 {

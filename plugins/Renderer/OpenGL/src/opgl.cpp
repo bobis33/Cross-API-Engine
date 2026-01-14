@@ -1,9 +1,5 @@
-#include <array>
-#include <memory>
-#include <stdexcept>
-
 #include "OPGL/OPGL.hpp"
-#include "Utils/Utils.hpp"
+
 #ifdef __linux__
 #include "OPGL/Context/EGLContextLinux.hpp"
 #elifdef _WIN32
@@ -11,6 +7,12 @@
 #elifdef __APPLE__
 #include "OPGL/Context/NSGLContextMac.hpp"
 #endif
+
+#include "Utils/Utils.hpp"
+
+#include <array>
+#include <memory>
+#include <stdexcept>
 
 void cae::OPGL::initialize(const NativeWindowHandle &window, const std::shared_ptr<IShader> shader)
 {
