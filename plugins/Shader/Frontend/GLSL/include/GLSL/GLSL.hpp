@@ -1,6 +1,6 @@
 ///
-/// @file SPIR-V.hpp
-/// @brief This file contains the SPIR-V class declaration
+/// @file GLSL.hpp
+/// @brief This file contains the GLSL class declaration
 /// @namespace cae
 ///
 
@@ -20,23 +20,23 @@ namespace cae
     constexpr auto VERSION = 450;
 
     ///
-    /// @class SPIRV
-    /// @brief Class for the SPIRV plugin
+    /// @class GLSL
+    /// @brief Class for the GLSL plugin
     /// @namespace cae
     ///
-    class SPIRV final : public IShader
+    class GLSL final : public IShader
     {
 
         public:
-            SPIRV() = default;
-            ~SPIRV() override = default;
+            GLSL() = default;
+            ~GLSL() override = default;
 
-            SPIRV(const SPIRV &) = delete;
-            SPIRV &operator=(const SPIRV &) = delete;
-            SPIRV(SPIRV &&) = delete;
-            SPIRV &operator=(SPIRV &&) = delete;
+            GLSL(const GLSL &) = delete;
+            GLSL &operator=(const GLSL &) = delete;
+            GLSL(GLSL &&) = delete;
+            GLSL &operator=(GLSL &&) = delete;
 
-            [[nodiscard]] std::string getName() const override { return "SPIRV"; }
+            [[nodiscard]] std::string getName() const override { return "GLSL"; }
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::SHADER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::LINUX; }
 
@@ -136,6 +136,6 @@ namespace cae
                 return spirv;
             }
 
-    }; // class SPIRV
+    }; // class GLSL
 
 } // namespace cae

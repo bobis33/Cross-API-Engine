@@ -45,7 +45,7 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine("OpenGL", "X11", "SPIRV");
+        setupEngine("OpenGL", "X11", "GLSL");
     }
     catch (const std::exception &e)
     {

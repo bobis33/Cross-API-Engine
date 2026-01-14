@@ -1,8 +1,8 @@
-#include "SPIR-V/SPIR-V.hpp"
+#include "GLSL/GLSL.hpp"
 
 #include "Utils/Logger.hpp"
 
-void cae::SPIRV::addShader(const ShaderModuleDesc& pipelineDesc)
+void cae::GLSL::addShader(const ShaderModuleDesc& pipelineDesc)
 {
     ShaderData data;
     data.type = ShaderSourceType::GLSL;
@@ -12,7 +12,7 @@ void cae::SPIRV::addShader(const ShaderModuleDesc& pipelineDesc)
     m_shaders[pipelineDesc.id] = std::move(data);
 }
 
-bool cae::SPIRV::compileAll()
+bool cae::GLSL::compileAll()
 {
     bool allCompiled = true;
     for (auto& [name, shader] : m_shaders) {
@@ -28,7 +28,7 @@ bool cae::SPIRV::compileAll()
     return allCompiled;
 }
 
-const ShaderData& cae::SPIRV::getShader(const std::string& name) const
+const ShaderData& cae::GLSL::getShader(const std::string& name) const
 {
     auto it = m_shaders.find(name);
     if (it == m_shaders.end()) {
@@ -37,7 +37,7 @@ const ShaderData& cae::SPIRV::getShader(const std::string& name) const
     return it->second;
 }
 
-bool cae::SPIRV::isCompiled(const std::string& name) const
+bool cae::GLSL::isCompiled(const std::string& name) const
 {
     auto it = m_compiled.find(name);
     return it != m_compiled.end() && it->second;
