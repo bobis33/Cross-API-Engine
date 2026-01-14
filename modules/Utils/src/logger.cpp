@@ -1,8 +1,8 @@
+#include "Utils/Logger.hpp"
+
 #ifdef _WIN32
 #include <windows.h>
 #endif
-
-#include "Utils/Logger.hpp"
 
 void utl::Logger::init()
 {

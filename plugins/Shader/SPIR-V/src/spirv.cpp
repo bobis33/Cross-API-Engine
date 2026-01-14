@@ -1,4 +1,5 @@
 #include "SPIR-V/SPIR-V.hpp"
+
 #include "Utils/Logger.hpp"
 
 void cae::SPIRV::addShader(const ShaderModuleDesc& pipelineDesc)

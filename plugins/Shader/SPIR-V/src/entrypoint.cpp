@@ -1,6 +1,6 @@
-#include <memory>
-
 #include "SPIR-V/SPIR-V.hpp"
+
+#include <memory>
 
 extern "C"
 {

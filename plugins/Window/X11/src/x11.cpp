@@ -1,7 +1,7 @@
+#include "X11/X11.hpp"
+
 #include <iostream>
 #include <utility>
-
-#include "X11/X11.hpp"
 
 bool cae::X11::create(const std::string &name, const WindowSize size)
 {

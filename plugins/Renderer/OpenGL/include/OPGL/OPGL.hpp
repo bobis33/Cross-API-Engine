@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include "OPGL/Context/IContext.hpp"
 #include "OPGL/glad/glad.h"
 
-#include "Context/IContext.hpp"
 #include "Interfaces/Renderer/ARenderer.hpp"
 
 #include <unordered_map>

@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <X11/Xlib.h>
-
 #include "Interfaces/IWindow.hpp"
+
+#include <X11/Xlib.h>
 
 namespace cae
 {

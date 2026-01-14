@@ -1,10 +1,9 @@
-#if defined(_WIN32)
-
-#include <stdexcept>
-
-#include "OPGL/glad/glad.h"
+#ifdef _WIN32
 
 #include "OPGL/Context/WGLContextWindows.hpp"
+#include "OPGL/glad/glad.h"
+
+#include <stdexcept>
 
 cae::WGLContextWindows::~WGLContextWindows()
 {

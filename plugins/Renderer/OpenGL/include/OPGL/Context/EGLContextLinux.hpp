@@ -7,9 +7,10 @@
 #pragma once
 
 #ifdef __linux__
-#include <EGL/egl.h>
 
-#include "IContext.hpp"
+#include "OPGL/Context/IContext.hpp"
+
+#include <EGL/egl.h>
 
 namespace cae
 {

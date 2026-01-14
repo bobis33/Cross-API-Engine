@@ -7,9 +7,10 @@
 #pragma once
 
 #ifdef _WIN32
-#include <Windows.h>
 
-#include "IContext.hpp"
+#include "OPGL/Context/IContext.hpp"
+
+#include <Windows.h>
 
 namespace cae
 {
