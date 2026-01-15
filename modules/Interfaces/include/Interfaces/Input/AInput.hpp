@@ -26,7 +26,10 @@ namespace cae
             const std::unique_ptr<IMouse> &getMouse() const override { return m_mouse; }
             const std::vector<std::unique_ptr<IGamepad>> &getGamepads() const override { return m_gamepads; }
 
-            void setGamepads(std::vector<std::unique_ptr<IGamepad>> &gamepads) override { m_gamepads = std::move(gamepads); }
+            void setGamepads(std::vector<std::unique_ptr<IGamepad>> &gamepads) override
+            {
+                m_gamepads = std::move(gamepads);
+            }
             void setKeyboard(std::unique_ptr<IKeyboard> &keyboard) override { m_keyboard = std::move(keyboard); }
             void setMouse(std::unique_ptr<IMouse> &mouse) override { m_mouse = std::move(mouse); }
 

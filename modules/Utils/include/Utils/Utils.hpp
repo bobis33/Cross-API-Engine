@@ -11,6 +11,6 @@
 
 namespace utl
 {
-    [[nodiscard]] std::vector<char> fileToVector(const std::filesystem::path& path);
-    [[nodiscard]] std::string fileToString(const std::filesystem::path& path);
+    [[nodiscard]] std::vector<char> fileToVector(const std::filesystem::path &path);
+    [[nodiscard]] std::string fileToString(const std::filesystem::path &path);
 } // namespace utl

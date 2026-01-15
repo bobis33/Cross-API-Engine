@@ -29,8 +29,8 @@ namespace utl
     {
 
         private:
-            template<typename E>
-            static constexpr auto to_underlying(E e) noexcept {
+            template <typename E> static constexpr auto to_underlying(E e) noexcept
+            {
                 return static_cast<std::underlying_type_t<E>>(e);
             }
 
@@ -56,8 +56,10 @@ namespace utl
 
             static void log(const std::string &message, const LogLevel &logLevel)
             {
-                std::cout << (logLevel == LogLevel::INFO ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_INFO)] : LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_WARNING)])
-                          << formatLogMessage(logLevel, message) << LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_RESET)];
+                std::cout << (logLevel == LogLevel::INFO ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_INFO)]
+                                                         : LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_WARNING)])
+                          << formatLogMessage(logLevel, message)
+                          << LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_RESET)];
             }
 
         private:
@@ -83,9 +85,9 @@ namespace utl
 
             [[nodiscard]] static const char *getColorForDuration(const float duration)
             {
-                return duration < 20.0F
-                           ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_INFO)]
-                           : (duration < 90.0F ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_WARNING)] : LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_ERROR)]);
+                return duration < 20.0F ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_INFO)]
+                                        : (duration < 90.0F ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_WARNING)]
+                                                            : LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_ERROR)]);
             }
 
             [[nodiscard]] static std::string formatLogMessage(LogLevel level, const std::string &message)

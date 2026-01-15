@@ -32,8 +32,11 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            void initialize(const NativeWindowHandle &nativeWindowHandle, std::shared_ptr<IShader> shader) override {}
-            void createPipeline(const ShaderPipelineDesc& pipeline) override {}
+            void initialize(const NativeWindowHandle &nativeWindowHandle) override {}
+            void createPipeline(const ShaderPipelineDesc &pipeline, const ShaderIRModule &vertex,
+                                const ShaderIRModule &fragment) override
+            {
+            }
             void draw(const WindowSize &windowSize) override {};
 
             void setVSyncEnabled(bool enabled) override {}

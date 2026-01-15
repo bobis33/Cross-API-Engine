@@ -45,7 +45,7 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine("OpenGL", "X11", "GLSL");
+        setupEngine("OpenGL", "X11", "GLSL", "SPIRV");
     }
     catch (const std::exception &e)
     {
@@ -53,11 +53,13 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
     }
 }
 
-void cae::Application::setupEngine(const std::string &rendererName, const std::string &windowName, const std::string &shaderName)
+void cae::Application::setupEngine(const std::string &rendererName, const std::string &windowName,
+                                   const std::string &shaderFrontendName, const std::string &shaderIRName)
 {
     std::shared_ptr<IWindow> windowPlugin = nullptr;
     std::shared_ptr<IRenderer> rendererPlugin = nullptr;
-    std::shared_ptr<IShader> shaderPlugin = nullptr;
+    std::shared_ptr<IShaderIR> shaderIRPlugin = nullptr;
+    std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> shaderFactories;
 
     for (auto &plugin : loadPlugins(m_pluginLoader))
     {
@@ -75,29 +77,37 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
                 windowPlugin = window;
             }
         }
-        if (const auto shader = std::dynamic_pointer_cast<IShader>(plugin))
+        if (const auto shader = std::dynamic_pointer_cast<IShaderFrontend>(plugin))
         {
-            if (shader->getName() == shaderName)
+            if (shader->getName() == shaderFrontendName)
             {
-                shaderPlugin = shader;
+                shaderFactories.emplace_back([shader]() { return shader; });
+            }
+        }
+        if (const auto shaderIR = std::dynamic_pointer_cast<IShaderIR>(plugin))
+        {
+            if (shaderIR->getName() == shaderIRName)
+            {
+                shaderIRPlugin = shaderIR;
             }
         }
     }
     if (windowPlugin == nullptr)
     {
-        utl::Logger::log("No window plugin found with name: " + rendererName, utl::LogLevel::WARNING);
+        utl::Logger::log("No window plugin found with name: " + windowName, utl::LogLevel::WARNING);
     }
     if (rendererPlugin == nullptr)
     {
-        utl::Logger::log("No renderer plugin found with name: " + windowName, utl::LogLevel::WARNING);
+        utl::Logger::log("No renderer plugin found with name: " + rendererName, utl::LogLevel::WARNING);
     }
-    if (shaderPlugin == nullptr)
+    if (shaderFactories.empty())
     {
-        utl::Logger::log("No shader plugin found with name: SPIRV", utl::LogLevel::WARNING);
+        utl::Logger::log("No shader plugin found with name: GLSL", utl::LogLevel::WARNING);
     }
     m_engine = std::make_unique<Engine>(
         m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
-        [rendererPlugin]() { return rendererPlugin; }, [shaderPlugin] { return shaderPlugin; }, [windowPlugin]() { return windowPlugin; });
+        [rendererPlugin]() { return rendererPlugin; }, [shaderIRPlugin]() { return shaderIRPlugin; }, shaderFactories,
+        [windowPlugin]() { return windowPlugin; });
 }
 
 void cae::Application::start() const { m_engine->run(); }

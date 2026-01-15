@@ -14,9 +14,8 @@
 #include <memory>
 #include <stdexcept>
 
-void cae::OPGL::initialize(const NativeWindowHandle &window, const std::shared_ptr<IShader> shader)
+void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle)
 {
-    m_shader = shader;
 #ifdef __linux__
     m_context = std::make_unique<EGLContextLinux>();
 #elifdef _WIN32
@@ -25,7 +24,7 @@ void cae::OPGL::initialize(const NativeWindowHandle &window, const std::shared_p
     m_context = std::make_unique<NSGLContextMac>();
 #endif
 
-    m_context->initialize(window);
+    m_context->initialize(nativeWindowHandle);
 
     glEnable(GL_DEPTH_TEST);
     glClearColor(1.F, 1.F, 1.F, 1.F);
@@ -49,15 +48,31 @@ void cae::OPGL::setVSyncEnabled(const bool enabled) { m_context->setVSyncEnabled
 
 bool cae::OPGL::isVSyncEnabled() const { return m_context->isVSyncEnabled(); }
 
-void cae::OPGL::createPipeline(const ShaderPipelineDesc& pipeline)
+void cae::OPGL::createPipeline(const ShaderPipelineDesc &pipeline, const ShaderIRModule &vertex,
+                               const ShaderIRModule &fragment)
 {
-    if (!m_shader->isCompiled(pipeline.vertex) ||
-        !m_shader->isCompiled(pipeline.fragment))
+
+    const GLuint program = glCreateProgram();
+
+    GLuint vs = createGLShader(GL_VERTEX_SHADER, vertex);
+    GLuint fs = createGLShader(GL_FRAGMENT_SHADER, fragment);
+
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+
+    GLint success = 0;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success)
     {
-        throw std::runtime_error("Pipeline uses uncompiled shaders");
+        char log[512];
+        glGetProgramInfoLog(program, 512, nullptr, log);
+        throw std::runtime_error(log);
     }
 
-    const GLuint program = createProgramFromPipeline(pipeline);
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+
     m_programs[pipeline.id] = program;
 }
 
@@ -82,44 +97,12 @@ void cae::OPGL::createTriangle()
     glBindVertexArray(0);
 }
 
-GLuint cae::OPGL::createProgramFromPipeline(const ShaderPipelineDesc& pipeline) const
-{
-    const auto& vert = m_shader->getShader(pipeline.vertex);
-    const auto& frag = m_shader->getShader(pipeline.fragment);
-
-    const GLuint program = glCreateProgram();
-
-    GLuint vs = createGLShader(GL_VERTEX_SHADER, vert);
-    GLuint fs = createGLShader(GL_FRAGMENT_SHADER, frag);
-
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-
-    GLint success = 0;
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (success == 0) {
-        char log[512];
-        glGetProgramInfoLog(program, 512, nullptr, log);
-        throw std::runtime_error(log);
-    }
-
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
-    return program;
-}
-
-GLuint cae::OPGL::createGLShader(const GLenum type, const ShaderData& data)
+GLuint cae::OPGL::createGLShader(const GLenum type, const ShaderIRModule &data)
 {
     const GLuint shader = glCreateShader(type);
 
-    glShaderBinary(
-        1, &shader,
-        GL_SHADER_BINARY_FORMAT_SPIR_V,
-        data.spirv.data(),
-        static_cast<GLsizei>(data.spirv.size() * sizeof(uint32_t))
-    );
+    glShaderBinary(1, &shader, GL_SHADER_BINARY_FORMAT_SPIR_V, data.spirv.data(),
+                   static_cast<GLsizei>(data.spirv.size() * sizeof(uint32_t)));
 
     glSpecializeShader(shader, data.entryPoint.c_str(), 0, nullptr, nullptr);
 
