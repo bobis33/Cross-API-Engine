@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "Engine/Camera.hpp"
 #include "Engine/Common.hpp"
 #include "Engine/ShaderManager.hpp"
 
@@ -82,10 +83,11 @@ namespace cae
             std::shared_ptr<IInput> m_inputPlugin = nullptr;
             std::shared_ptr<INetwork> m_networkPlugin = nullptr;
             std::shared_ptr<IRenderer> m_rendererPlugin = nullptr;
-            std::unique_ptr<ShaderManager> m_shaderManager = nullptr;
             std::shared_ptr<IWindow> m_windowPlugin = nullptr;
 
             std::unique_ptr<utl::Clock> m_clock = nullptr;
+            std::unique_ptr<ShaderManager> m_shaderManager = nullptr;
+            std::unique_ptr<Camera> m_camera = nullptr;
 
             void initWindow(const std::string &windowName, const WindowSize &windowSize);
             void initRenderer(const NativeWindowHandle & nativeWindowHandle, const std::vector<float> &vertices, const Color & clearColor = {.r = 1, .g = 1, .b = 1, .a = 1}) const;

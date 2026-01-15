@@ -23,8 +23,8 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
                     const std::function<std::shared_ptr<IWindow>()> &windowFactory,
                     const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices)
     : m_audioPlugin(audioFactory()), m_inputPlugin(inputFactory()), m_networkPlugin(networkFactory()),
-      m_rendererPlugin(rendererFactory()), m_shaderManager(std::make_unique<ShaderManager>()),
-      m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>())
+      m_rendererPlugin(rendererFactory()), m_windowPlugin(windowFactory()),
+      m_clock(std::make_unique<utl::Clock>()), m_shaderManager(std::make_unique<ShaderManager>()), m_camera(std::make_unique<Camera>())
 {
     constexpr auto boolToStr = [](const bool b) { return b ? "true" : "false"; };
     std::ostringstream msg;

@@ -6,6 +6,21 @@ project(engine
         LANGUAGES CXX
 )
 
+include(FetchContent)
+
+set(GLM_BUILD_TESTS OFF CACHE INTERNAL "")
+set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
+
+FetchContent_Declare(
+        glm
+        GIT_REPOSITORY https://github.com/g-truc/glm.git
+        GIT_TAG 1.0.3
+        GIT_SHALLOW    TRUE
+        GIT_PROGRESS   TRUE
+)
+
+FetchContent_MakeAvailable(glm)
+
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 
@@ -19,13 +34,16 @@ target_sources(${PROJECT_NAME}
         PUBLIC  FILE_SET HEADERS BASE_DIRS ${INCLUDE_DIR} FILES ${HEADERS}
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE utils)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        utils
+        glm::glm
+)
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${INCLUDE_DIR}>
         $<INSTALL_INTERFACE:include>
-)
-target_include_directories(${PROJECT_NAME} PRIVATE
+        ${glm_SOURCE_DIR}
+        PRIVATE
         "${CMAKE_SOURCE_DIR}/modules/Interfaces/include"
 )
 
