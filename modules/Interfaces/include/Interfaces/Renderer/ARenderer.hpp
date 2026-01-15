@@ -24,12 +24,9 @@ namespace cae
         public:
             ~ARenderer() override = default;
 
-            std::shared_ptr<IModel> getModel() const override { return m_model; }
-
-            void setModel(const std::shared_ptr<IModel> model) override { m_model = model; }
-
         protected:
-            std::shared_ptr<IModel> m_model;
+
+        private:
 
     }; // interface ARenderer
 
