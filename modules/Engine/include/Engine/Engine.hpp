@@ -7,8 +7,7 @@
 #pragma once
 
 #include "Engine/Common.hpp"
-#include "Engine/Shader/ShaderFrontendManager.hpp"
-#include "Engine/Shader/ShaderIRManager.hpp"
+#include "Engine/ShaderManager.hpp"
 
 #include "Interfaces/IAudio.hpp"
 #include "Interfaces/INetwork.hpp"
@@ -52,7 +51,7 @@ namespace cae
                    const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                    const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
                    const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
-                   const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFactories,
+                   const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
                    const std::function<std::shared_ptr<IWindow>()> &windowFactory);
             ~Engine() = default;
 
@@ -78,11 +77,13 @@ namespace cae
             std::shared_ptr<INetwork> m_networkPlugin = nullptr;
             std::shared_ptr<IRenderer> m_rendererPlugin = nullptr;
             std::unique_ptr<ShaderManager> m_shaderManager = nullptr;
-            std::unique_ptr<ShaderIRManager> m_irManager = nullptr;
             std::shared_ptr<IWindow> m_windowPlugin = nullptr;
 
             std::unique_ptr<utl::Clock> m_clock = nullptr;
-            std::unordered_map<ShaderID, ShaderIRModule> m_finalModules;
+
+            void initShaders(
+                const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
+                const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories) const;
     }; // class Engine
 
 } // namespace cae

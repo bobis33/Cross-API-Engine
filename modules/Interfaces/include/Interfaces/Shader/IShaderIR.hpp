@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <span>
+
 #include "Interfaces/Shader/IShaderFrontend.hpp"
 
 #include <stdexcept>
@@ -36,7 +38,7 @@ namespace cae
             ///
             /// @brief Optional: optimize a batch of IR modules
             ///
-            virtual void optimize(std::vector<ShaderIRModule> &modules) { /* default: no-op */ }
+            virtual void optimize(std::span<ShaderIRModule> modules) { /* default: no-op */ }
 
             ///
             /// @brief Optional: cross-compile from one IR to another (SPIR-V -> MSL, etc.)

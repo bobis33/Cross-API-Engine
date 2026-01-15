@@ -43,7 +43,7 @@ namespace cae
                 return out;
             }
 
-            void optimize(std::vector<ShaderIRModule> &modules) override {}
+            void optimize(std::span<ShaderIRModule> modules) override {}
 
             ShaderIRModule crossCompile(const ShaderIRModule &module, const ShaderSourceType targetType) override
             {
@@ -55,5 +55,7 @@ namespace cae
 
                 throw std::runtime_error("Cross-compilation to this target not implemented");
             }
+
     }; // class SPIRV
+
 } // namespace cae

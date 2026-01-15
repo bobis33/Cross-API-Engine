@@ -31,7 +31,7 @@ namespace cae
             virtual void setModel(std::shared_ptr<IModel> model) = 0;
 
             virtual void initialize(const NativeWindowHandle &nativeWindowHandle) = 0;
-            virtual void createPipeline(const ShaderPipelineDesc &pipeline, const ShaderIRModule &vertex,
+            virtual void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                         const ShaderIRModule &fragment) = 0;
 
             virtual void draw(const WindowSize &windowSize) = 0;

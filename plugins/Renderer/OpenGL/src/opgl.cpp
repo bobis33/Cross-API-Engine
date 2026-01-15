@@ -48,8 +48,7 @@ void cae::OPGL::setVSyncEnabled(const bool enabled) { m_context->setVSyncEnabled
 
 bool cae::OPGL::isVSyncEnabled() const { return m_context->isVSyncEnabled(); }
 
-void cae::OPGL::createPipeline(const ShaderPipelineDesc &pipeline, const ShaderIRModule &vertex,
-                               const ShaderIRModule &fragment)
+void cae::OPGL::createPipeline(const ShaderID &id, const ShaderIRModule &vertex, const ShaderIRModule &fragment)
 {
 
     const GLuint program = glCreateProgram();
@@ -73,7 +72,7 @@ void cae::OPGL::createPipeline(const ShaderPipelineDesc &pipeline, const ShaderI
     glDeleteShader(vs);
     glDeleteShader(fs);
 
-    m_programs[pipeline.id] = program;
+    m_programs[id] = program;
 }
 
 void cae::OPGL::createTriangle()

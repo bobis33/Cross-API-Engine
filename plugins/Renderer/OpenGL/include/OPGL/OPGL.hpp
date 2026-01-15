@@ -37,7 +37,7 @@ namespace cae
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
             void initialize(const NativeWindowHandle &nativeWindowHandle) override;
-            void createPipeline(const ShaderPipelineDesc &pipeline, const ShaderIRModule &vertex,
+            void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                 const ShaderIRModule &fragment) override;
             void draw(const WindowSize &windowSize) override;
 
