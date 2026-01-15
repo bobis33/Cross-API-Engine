@@ -6,12 +6,12 @@
 
 ## Supported Languages & Target APIs
 
-| Language | Compatibility   |
-|:---------|:----------------|
-| GLSL     | OpenGL - Vulkan |
-| HLSL     | DirectX         |
-| MSL      | Metal           |
-| WGSL     | WebGPU          |
+| Language | Compatibility (renderer) | Compatibility (IR)                  |
+|:---------|:-------------------------|:------------------------------------|
+| GLSL     | OpenGL - Vulkan          | SPIR-V → HLSL/MSL/WGSL              |
+| HLSL     | DirectX                  | DXC → DXIL / SPIR-V → GLSL/MSL/WGSL |
+| MSL      | Metal                    | SPIR-V → MSL (SPIRV-Cross)          |
+| WGSL     | WebGPU                   | SPIR-V → WGSL (via SPIRV-Cross)     |
 
 ---
 

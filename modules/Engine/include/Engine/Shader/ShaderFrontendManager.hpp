@@ -8,6 +8,9 @@
 
 #include "Interfaces/Shader/IShaderFrontend.hpp"
 
+#include <memory>
+#include <unordered_map>
+
 namespace cae
 {
     ///

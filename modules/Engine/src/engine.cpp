@@ -4,6 +4,7 @@
 #include "Utils/Utils.hpp"
 
 #include <numeric>
+#include <sstream>
 
 cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                     const std::function<std::shared_ptr<IInput>()> &inputFactory,
@@ -17,26 +18,6 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
       m_irManager(std::make_unique<ShaderIRManager>()), m_windowPlugin(windowFactory()),
       m_clock(std::make_unique<utl::Clock>())
 {
-    for (const auto &factory : shaderFactories)
-    {
-        auto frontend = factory();
-        m_shaderManager->registerFrontend(frontend);
-    }
-    m_irManager->registerPlugin(shaderIRFactory());
-    utl::Logger::log("Loading engine with configuration:", utl::LogLevel::INFO);
-    utl::Logger::log("\tAudio master volume: " + std::to_string(config.audio_master_volume), utl::LogLevel::INFO);
-    utl::Logger::log("\tAudio muted: " + std::string(config.audio_muted ? "true" : "false"), utl::LogLevel::INFO);
-    utl::Logger::log("\tNetwork host: " + config.network_host, utl::LogLevel::INFO);
-    utl::Logger::log("\tNetwork port: " + std::to_string(config.network_port), utl::LogLevel::INFO);
-    utl::Logger::log("\tRenderer vsync: " + std::string(config.renderer_vsync ? "true" : "false"), utl::LogLevel::INFO);
-    utl::Logger::log("\tRenderer frame rate limit: " + std::to_string(config.renderer_frame_rate_limit),
-                     utl::LogLevel::INFO);
-    utl::Logger::log("\tWindow width: " + std::to_string(config.window_width), utl::LogLevel::INFO);
-    utl::Logger::log("\tWindow height: " + std::to_string(config.window_height), utl::LogLevel::INFO);
-    utl::Logger::log("\tWindow fullscreen: " + std::string(config.window_fullscreen ? "true" : "false"),
-                     utl::LogLevel::INFO);
-    utl::Logger::log("\tWindow name: " + config.window_name, utl::LogLevel::INFO);
-    m_windowPlugin->create(config.window_name, {.width = config.window_width, .height = config.window_height});
     const std::vector<ShaderSourceDesc> shaderSources = {
         {.id = "basic_vertex",
          .type = ShaderSourceType::GLSL,
@@ -48,7 +29,29 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
          .source = utl::fileToString("assets/shaders/uniform_color.frag"),
          .stage = ShaderStage::FRAGMENT},
     };
+    std::ostringstream msg;
+    const auto boolToStr = [](bool b){ return b ? "true" : "false"; };
+    msg << "Loading engine with configuration:\n"
+        << "\tAudio master volume: " << config.audio_master_volume << "\n"
+        << "\tAudio muted: " << boolToStr(config.audio_muted) << "\n"
+        << "\tNetwork host: " << config.network_host << "\n"
+        << "\tNetwork port: " << config.network_port << "\n"
+        << "\tRenderer vsync: " << boolToStr(config.renderer_vsync) << "\n"
+        << "\tRenderer frame rate limit: " << config.renderer_frame_rate_limit << "\n"
+        << "\tWindow width: " << config.window_width << "\n"
+        << "\tWindow height: " << config.window_height << "\n"
+        << "\tWindow fullscreen: " << boolToStr(config.window_fullscreen) << "\n"
+        << "\tWindow name: " << config.window_name;
+    utl::Logger::log(msg.str(), utl::LogLevel::INFO);
 
+    m_windowPlugin->create(config.window_name, {.width = config.window_width, .height = config.window_height});
+    m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle());
+    for (const auto &factory : shaderFactories)
+    {
+        auto frontend = factory();
+        m_shaderManager->registerFrontend(frontend);
+    }
+    m_irManager->registerPlugin(shaderIRFactory());
     for (const auto &src : shaderSources)
     {
         m_shaderManager->addSource(src);
@@ -57,18 +60,16 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
     m_shaderManager->compileAll();
     for (const auto &[id, irModule] : m_shaderManager->getAllIR())
     {
-        const auto processed = m_irManager->process(irModule, "Vulkan");
+        const auto processed = m_irManager->process(irModule);
         m_finalModules[id] = processed;
     }
-    m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle());
-
     m_rendererPlugin->createPipeline({.id = "basic", .vertex = "basic_vertex", .fragment = "basic_fragment"},
                                      m_finalModules["basic_vertex"], m_finalModules["basic_fragment"]);
 }
 
 void printFps(std::array<float, 10> &fpsBuffer, int &fpsIndex, const float deltaTime)
 {
-    fpsBuffer[fpsIndex % 10] = 1.0f / deltaTime;
+    fpsBuffer[fpsIndex % 10] = 1.0F / deltaTime;
     fpsIndex++;
 
     float avgFps = std::accumulate(fpsBuffer.begin(), fpsBuffer.end(), 0.0f) / 10.0f;

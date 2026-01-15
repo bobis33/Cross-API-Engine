@@ -29,10 +29,9 @@ namespace cae
             ///
             /// @brief Transform or validate a shader IR module
             /// @param module The input IR module
-            /// @param targetBackend Optional: the backend we are targeting (Vulkan, OpenGL, Metal…)
             /// @return Transformed IR module ready for the backend
             ///
-            virtual ShaderIRModule process(const ShaderIRModule &module, const std::string &targetBackend = "") = 0;
+            virtual ShaderIRModule process(const ShaderIRModule &module) = 0;
 
             ///
             /// @brief Optional: optimize a batch of IR modules

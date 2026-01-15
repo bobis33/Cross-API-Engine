@@ -35,18 +35,11 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::SHADER_IR; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            ShaderSourceType irType() const override { return ShaderSourceType::SPIRV; }
+            [[nodiscard]] ShaderSourceType irType() const override { return ShaderSourceType::SPIRV; }
 
-            ShaderIRModule process(const ShaderIRModule &module, const std::string &targetBackend = "") override
+            ShaderIRModule process(const ShaderIRModule &module) override
             {
-
                 ShaderIRModule out = module;
-
-                if (!targetBackend.empty())
-                {
-                    out.entryPoint = "main";
-                }
-
                 return out;
             }
 

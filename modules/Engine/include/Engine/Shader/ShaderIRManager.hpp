@@ -32,7 +32,7 @@ namespace cae
 
             void registerPlugin(const std::shared_ptr<IShaderIR> &plugin) { m_plugins[plugin->irType()] = plugin; }
 
-            ShaderIRModule process(const ShaderIRModule &module, const std::string &backend = "")
+            ShaderIRModule process(const ShaderIRModule &module)
             {
                 const auto it = m_plugins.find(moduleType(module));
                 if (it == m_plugins.end())
@@ -40,7 +40,7 @@ namespace cae
                     throw std::runtime_error("No IR plugin for this module type");
                 }
 
-                return it->second->process(module, backend);
+                return it->second->process(module);
             }
 
             void optimizeAll(std::vector<ShaderIRModule> &modules)
