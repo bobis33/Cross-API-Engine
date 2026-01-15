@@ -12,9 +12,10 @@ cae::WGLContextWindows::~WGLContextWindows()
         wglMakeCurrent(nullptr, nullptr);
         wglDeleteContext(m_hglrc);
     }
-    if ((m_hdc != nullptr) && (m_hwnd != nullptr)) {
+    if ((m_hdc != nullptr) && (m_hwnd != nullptr))
+    {
         ReleaseDC(m_hwnd, m_hdc);
-}
+    }
 }
 
 void cae::WGLContextWindows::initialize(const NativeWindowHandle &window)
@@ -36,13 +37,15 @@ void cae::WGLContextWindows::initialize(const NativeWindowHandle &window)
         throw std::runtime_error("Failed to set pixel format");
 
     m_hglrc = wglCreateContext(m_hdc);
-    if (!m_hglrc) {
+    if (!m_hglrc)
+    {
         throw std::runtime_error("Failed to create WGL context");
-}
+    }
 
-    if (wglMakeCurrent(m_hdc, m_hglrc) == 0) {
+    if (wglMakeCurrent(m_hdc, m_hglrc) == 0)
+    {
         throw std::runtime_error("Failed to make WGL context current");
-}
+    }
 
     if (gladLoadGL() == 0)
     {

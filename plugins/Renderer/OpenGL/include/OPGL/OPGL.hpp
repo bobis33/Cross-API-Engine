@@ -36,8 +36,9 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            void initialize(const NativeWindowHandle &window, std::shared_ptr<IShader> shader) override;
-            void createPipeline(const ShaderPipelineDesc& pipeline) override;
+            void initialize(const NativeWindowHandle &nativeWindowHandle) override;
+            void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
+                                const ShaderIRModule &fragment) override;
             void draw(const WindowSize &windowSize) override;
 
             void setVSyncEnabled(bool enabled) override;
@@ -45,15 +46,11 @@ namespace cae
 
         private:
             std::unique_ptr<IContext> m_context;
-            std::shared_ptr<IShader> m_shader;
-
-
             std::unordered_map<ShaderID, GLuint> m_programs;
             GLuint gVAO = 0;
             GLuint gVBO = 0;
 
-            GLuint createProgramFromPipeline(const ShaderPipelineDesc& pipeline) const;
-            static GLuint createGLShader(GLenum type, const ShaderData& data);
+            static GLuint createGLShader(GLenum type, const ShaderIRModule &data);
             void createTriangle();
 
     }; // class OPGL

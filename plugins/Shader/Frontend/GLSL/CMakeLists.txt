@@ -1,5 +1,5 @@
-project(cae-spriv
-        DESCRIPTION "CAE SPIR-V Shader Plugin"
+project(cae-glsl
+        DESCRIPTION "CAE GLSL Shader Frontend Plugin"
         LANGUAGES C CXX
 )
 

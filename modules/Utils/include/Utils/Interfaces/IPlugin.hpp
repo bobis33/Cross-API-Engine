@@ -23,8 +23,9 @@ namespace utl
         AUDIO = 0,
         NETWORK = 1,
         RENDERER = 2,
-        SHADER = 3,
-        WINDOW = 4,
+        SHADER_IR = 3,
+        SHADER_FRONTEND = 4,
+        WINDOW = 5,
         UNDEFINED = 255,
     };
 

@@ -1,6 +1,6 @@
 ///
 /// @file Common.hpp
-/// @brief This file contains
+/// @brief This file contains common constants used across the engine
 /// @namespace cae
 ///
 
@@ -21,7 +21,6 @@ namespace cae
         inline constexpr auto VOLUME = 1.F;
         inline constexpr auto MUTED = false;
     } // namespace Audio
-
 
     namespace Network
     {
