@@ -48,7 +48,7 @@ namespace cae
         namespace Window
         {
             inline constexpr auto GLFW = "GLFW";
-            inline constexpr auto WIN32 = "Win32";
+            inline constexpr auto WIN32_ = "Win32";
             inline constexpr auto X11 = "X11";
         } // namespace Window
 
