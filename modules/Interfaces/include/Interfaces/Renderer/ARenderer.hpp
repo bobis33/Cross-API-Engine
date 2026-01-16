@@ -8,8 +8,6 @@
 
 #include "Interfaces/Renderer/IRenderer.hpp"
 
-#include <memory>
-
 namespace cae
 {
 

@@ -1,6 +1,6 @@
-#include <memory>
-
 #include "Win32/Win32.hpp"
+
+#include <memory>
 
 extern "C"
 {

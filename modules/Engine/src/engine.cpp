@@ -3,7 +3,7 @@
 #include "Utils/Logger.hpp"
 
 #include <numeric>
-#include <sstream>
+#include <ranges>
 
 void printFps(std::array<float, 10> &fpsBuffer, int &fpsIndex, const float deltaTime)
 {
@@ -80,7 +80,7 @@ void cae::Engine::stop()
     m_windowPlugin = nullptr;
 }
 
-void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath)
+void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath) const
 {
     m_windowPlugin->create(windowName, windowSize);
     if (!iconPath.empty())

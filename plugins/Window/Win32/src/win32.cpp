@@ -4,8 +4,6 @@
 #include "Utils/Logger.hpp"
 
 #include <cstring>
-#include <filesystem>
-#include <string>
 
 constexpr wchar_t WINDOW_CLASS_NAME[] = L"CAE_WindowsWindowClass";
 

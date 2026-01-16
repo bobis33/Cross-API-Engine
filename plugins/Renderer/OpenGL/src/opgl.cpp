@@ -8,9 +8,6 @@
 #include "OPGL/Context/NSGLContextMac.hpp"
 #endif
 
-#include "Utils/Utils.hpp"
-
-#include <memory>
 #include <stdexcept>
 
 void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor)

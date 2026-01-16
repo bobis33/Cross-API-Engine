@@ -7,7 +7,6 @@
 #pragma once
 
 #include "Engine/Camera.hpp"
-#include "Engine/Common.hpp"
 #include "Engine/ShaderManager.hpp"
 
 #include "Interfaces/IAudio.hpp"
@@ -15,8 +14,6 @@
 #include "Interfaces/Input/IInput.hpp"
 #include "Interfaces/Renderer/IRenderer.hpp"
 #include "Utils/Clock.hpp"
-
-#include <functional>
 
 namespace cae
 {
@@ -90,7 +87,7 @@ namespace cae
             std::unique_ptr<ShaderManager> m_shaderManager = nullptr;
             std::unique_ptr<Camera> m_camera = nullptr;
 
-            void initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath);
+            void initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath) const;
             void initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const;
 
     }; // class Engine

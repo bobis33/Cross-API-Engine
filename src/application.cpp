@@ -3,8 +3,6 @@
 
 #include "Utils/Utils.hpp"
 
-#include <filesystem>
-
 static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_ptr<utl::PluginLoader> &loader)
 {
     const std::filesystem::path pluginDir{PLUGINS_DIR};

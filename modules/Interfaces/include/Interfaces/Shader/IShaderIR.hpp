@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include <span>
-
 #include "Interfaces/Shader/IShaderFrontend.hpp"
 
+#include <span>
 #include <stdexcept>
 
 namespace cae

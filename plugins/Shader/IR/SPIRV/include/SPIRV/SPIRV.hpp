@@ -8,10 +8,6 @@
 
 #include "Interfaces/Shader/IShaderIR.hpp"
 
-#include <stdexcept>
-#include <string>
-#include <vector>
-
 namespace cae
 {
 

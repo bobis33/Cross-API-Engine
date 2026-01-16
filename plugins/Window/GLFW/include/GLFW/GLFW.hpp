@@ -8,15 +8,14 @@
 
 #include "Interfaces/IWindow.hpp"
 
-#if defined(_WIN32)
+#ifdef _WIN32
 #define GLFW_EXPOSE_NATIVE_WIN32
-#elif defined(__linux__)
+#elifdef __linux__
 #define GLFW_EXPOSE_NATIVE_X11
-#elif defined(__APPLE__)
+#elifdef __APPLE__
 #define GLFW_EXPOSE_NATIVE_COCOA
 #endif
 #include <GLFW/glfw3.h>
-#include <GLFW/glfw3native.h>
 
 namespace cae
 {
