@@ -16,7 +16,7 @@ static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_
             continue;
         }
         const std::string pluginPath = entry.path().string();
-        if (auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath); plugin != nullptr)
+        if (auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath, "libcae"); plugin != nullptr)
         {
             loadedPlugins.push_back(plugin);
         }
