@@ -26,7 +26,7 @@ std::vector<char> utl::fileToVector(const std::filesystem::path &path)
 
 std::string utl::fileToString(const std::filesystem::path &path)
 {
-    std::ifstream file(path, std::ios::in);
+    const std::ifstream file(path, std::ios::in);
     if (!file.is_open())
     {
         throw std::runtime_error("Failed to open file: " + path.string());

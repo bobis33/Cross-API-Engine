@@ -15,3 +15,10 @@
  - vkConfig
  - Shader assisted debuging
  - Syncval
+
+## Windows build
+
+**init**: `cmake.exe -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=C:/Users/masin/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe -G Ninja -S C:\Users\masin\Projects\Cross-API-Engine -B C:\Users\masin\Projects\Cross-API-Engine\cmake-build-release`
+
+**build**: `cmake.exe --build C:\Users\masin\Projects\Cross-API-Engine\cmake-build-release --target all -j 20
+`

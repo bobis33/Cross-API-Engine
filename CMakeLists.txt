@@ -34,6 +34,7 @@ include(MakeVersion)
 include(MakeDoc)
 include(ClangTidy)
 include(ClangFormat)
+include(CopyAssets)
 
 add_subdirectory(modules)
 add_subdirectory(plugins)
@@ -92,3 +93,14 @@ if (MSVC)
 else ()
     target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS} -O3)
 endif ()
+
+copy_directory_to_target(
+        cae
+        "${CMAKE_SOURCE_DIR}/assets/icons"
+        "assets/icons"
+)
+copy_directory_to_target(
+        cae
+        "${CMAKE_SOURCE_DIR}/assets/shaders"
+        "assets/shaders"
+)
