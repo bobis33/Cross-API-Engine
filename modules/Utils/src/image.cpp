@@ -5,16 +5,16 @@
 
 #include <stdexcept>
 
-utl::Image::Image(const std::string &path, const bool flip)
+utl::Image::Image(const std::filesystem::path &path, const bool flip)
 {
-    if (flip != false)
+    if (flip)
     {
         stbi_set_flip_vertically_on_load(1);
     }
-    pixels = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+    pixels = stbi_load(path.string().c_str(), &width, &height, &channels, STBI_rgb_alpha);
     if (pixels == nullptr)
     {
-        throw std::runtime_error("Failed to load image: " + path);
+        throw std::runtime_error("Failed to load image: " + path.string());
     }
 }
 

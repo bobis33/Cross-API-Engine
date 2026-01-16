@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <string>
+#include <filesystem>
 
 namespace utl
 {
@@ -16,7 +16,7 @@ namespace utl
 
             using pixel = unsigned char *;
 
-            explicit Image(const std::string &path, bool flip = false);
+            explicit Image(const std::filesystem::path &path, bool flip = false);
             ~Image();
 
             pixel pixels = nullptr;

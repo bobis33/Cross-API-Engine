@@ -76,6 +76,7 @@ void cae::Engine::stop()
 void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize)
 {
     m_windowPlugin->create(windowName, windowSize);
+    m_windowPlugin->setIcon("assets/icons/icon-192x192.png");
 }
 
 void cae::Engine::initRenderer(const NativeWindowHandle &nativeWindowHandle, const std::vector<float> &vertices,
