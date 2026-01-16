@@ -58,8 +58,7 @@ namespace cae
                    const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
                    const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
                    const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-                   const std::function<std::shared_ptr<IWindow>()> &windowFactory,
-                   const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices);
+                   const std::function<std::shared_ptr<IWindow>()> &windowFactory);
             ~Engine() = default;
 
             Engine(const Engine &) = delete;
@@ -76,6 +75,8 @@ namespace cae
             [[nodiscard]] const std::unique_ptr<utl::Clock> &getClock() { return m_clock; }
             [[nodiscard]] const std::unique_ptr<Camera> &getCamera() const { return m_camera; }
 
+            void initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices) const;
+
             void run() const;
             void stop();
 
@@ -91,8 +92,6 @@ namespace cae
             std::unique_ptr<Camera> m_camera = nullptr;
 
             void initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath);
-            void initRenderer(const NativeWindowHandle &nativeWindowHandle, const std::vector<float> &vertices,
-                              const Color &clearColor = {.r = 1, .g = 1, .b = 1, .a = 1}) const;
             void initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const;
 
     }; // class Engine

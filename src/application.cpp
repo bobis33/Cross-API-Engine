@@ -64,18 +64,6 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     std::shared_ptr<IShaderIR> shaderIRPlugin = nullptr;
     std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> shaderFactories;
 
-    static const std::vector<ShaderSourceDesc> shaderSources = {
-        {.id = "basic_vertex",
-         .type = ShaderSourceType::GLSL,
-         .source = utl::fileToString("assets/shaders/glsl/texture.vert"),
-         .stage = ShaderStage::VERTEX},
-
-        {.id = "basic_fragment",
-         .type = ShaderSourceType::GLSL,
-         .source = utl::fileToString("assets/shaders/glsl/texture.frag"),
-         .stage = ShaderStage::FRAGMENT},
-    };
-
     for (auto &plugin : loadPlugins(m_pluginLoader))
     {
         if (const auto renderer = std::dynamic_pointer_cast<IRenderer>(plugin))
@@ -122,11 +110,26 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     m_engine = std::make_unique<Engine>(
         m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
         [rendererPlugin]() { return rendererPlugin; }, [shaderIRPlugin]() { return shaderIRPlugin; }, shaderFactories,
-        [windowPlugin]() { return windowPlugin; }, shaderSources,
-        std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
+        [windowPlugin]() { return windowPlugin; });
 }
 
-void cae::Application::start() const { m_engine->run(); }
+void cae::Application::start() const
+{
+    static const std::vector<ShaderSourceDesc> shaderSources = {
+        {.id = "basic_vertex",
+         .type = ShaderSourceType::GLSL,
+         .source = utl::fileToString("assets/shaders/glsl/texture.vert"),
+         .stage = ShaderStage::VERTEX},
+
+        {.id = "basic_fragment",
+         .type = ShaderSourceType::GLSL,
+         .source = utl::fileToString("assets/shaders/glsl/texture.frag"),
+         .stage = ShaderStage::FRAGMENT},
+    };
+    m_engine->initializeRenderResources(shaderSources,
+        std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
+    m_engine->run();
+}
 
 void cae::Application::stop()
 {
