@@ -26,7 +26,7 @@ LRESULT CALLBACK cae::Win32::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPAR
             if (self != nullptr)
             {
                 self->m_frameBufferResized = true;
-                self->m_frameBufferSize = {.width=LOWORD(lParam), .height=HIWORD(lParam)};
+                self->m_frameBufferSize = {.width = LOWORD(lParam), .height = HIWORD(lParam)};
             }
             return 0;
 
@@ -77,7 +77,8 @@ bool cae::Win32::create(const std::string &name, WindowSize size)
     m_hwnd = CreateWindowExW(0, WINDOW_CLASS_NAME, L"TEST TITLE VISIBLE", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
                              CW_USEDEFAULT, size.width, size.height, nullptr, nullptr, m_hInstance, this);
 
-    if (m_hwnd == nullptr) {
+    if (m_hwnd == nullptr)
+    {
         return false;
     }
 

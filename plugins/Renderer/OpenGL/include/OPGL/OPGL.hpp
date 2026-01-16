@@ -18,10 +18,10 @@ namespace cae
 
     struct Mesh
     {
-        GLuint vao = 0;
-        GLuint vbo = 0;
-        GLuint ebo = 0;
-        GLsizei vertexCount = 0;
+            GLuint vao = 0;
+            GLuint vbo = 0;
+            GLuint ebo = 0;
+            GLsizei vertexCount = 0;
     };
 
     ///
@@ -53,7 +53,7 @@ namespace cae
             void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                 const ShaderIRModule &fragment) override;
             void draw(const WindowSize &windowSize, const ShaderID &shaderId) override;
-            void createMesh(const std::vector<float>& vertices) override;
+            void createMesh(const std::vector<float> &vertices) override;
 
         private:
             std::unique_ptr<IContext> m_context;
