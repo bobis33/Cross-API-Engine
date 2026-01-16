@@ -16,6 +16,14 @@
 namespace cae
 {
 
+    struct Mesh
+    {
+        GLuint vao = 0;
+        GLuint vbo = 0;
+        GLuint ebo = 0;
+        GLsizei vertexCount = 0;
+    };
+
     ///
     /// @class OPGL
     /// @brief Class for the OpenGL plugin
@@ -36,22 +44,23 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
-            void initialize(const NativeWindowHandle &nativeWindowHandle) override;
+            void setVSyncEnabled(const bool enabled) override { m_context->setVSyncEnabled(enabled); }
+            void setClearColor(const Color &color) override { glClearColor(color.r, color.g, color.b, color.a); }
+
+            [[nodiscard]] bool isVSyncEnabled() const override { return m_context->isVSyncEnabled(); }
+
+            void initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor) override;
             void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                 const ShaderIRModule &fragment) override;
-            void draw(const WindowSize &windowSize) override;
-
-            void setVSyncEnabled(bool enabled) override;
-            [[nodiscard]] bool isVSyncEnabled() const override;
+            void draw(const WindowSize &windowSize, const ShaderID &shaderId) override;
+            void createMesh(const std::vector<float>& vertices) override;
 
         private:
             std::unique_ptr<IContext> m_context;
             std::unordered_map<ShaderID, GLuint> m_programs;
-            GLuint gVAO = 0;
-            GLuint gVBO = 0;
+            Mesh m_mesh;
 
             static GLuint createGLShader(GLenum type, const ShaderIRModule &data);
-            void createTriangle();
 
     }; // class OPGL
 
