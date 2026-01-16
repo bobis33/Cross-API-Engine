@@ -40,11 +40,11 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
         << "\tWindow width: " << config.window_width << "\n"
         << "\tWindow height: " << config.window_height << "\n"
         << "\tWindow fullscreen: " << boolToStr(config.window_fullscreen) << "\n"
-        << "\tWindow name: " << config.window_name
-        << "\n\tWindow icon path: " << config.window_icon_path << '\n';
+        << "\tWindow name: " << config.window_name << "\n\tWindow icon path: " << config.window_icon_path << '\n';
     utl::Logger::log(msg.str(), utl::LogLevel::INFO);
 
-    initWindow(config.window_name, {.width = config.window_width, .height = config.window_height}, config.window_icon_path);
+    initWindow(config.window_name, {.width = config.window_width, .height = config.window_height},
+               config.window_icon_path);
     initRenderer(m_windowPlugin->getNativeHandle(), vertices, config.renderer_clear_color);
     initShaders(shaderIRFactory, shaderFrontendFactories, shaderSources);
 }

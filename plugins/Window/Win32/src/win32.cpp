@@ -3,6 +3,7 @@
 #include "Utils/Image.hpp"
 #include "Utils/Logger.hpp"
 
+#include <cstring>
 #include <filesystem>
 #include <string>
 
@@ -132,17 +133,20 @@ bool cae::Win32::setIcon(const std::string &path) const
         bi.bV5Planes = 1;
         bi.bV5BitCount = 32;
         bi.bV5Compression = BI_BITFIELDS;
-        bi.bV5RedMask   = 0x00FF0000;
+        bi.bV5RedMask = 0x00FF0000;
         bi.bV5GreenMask = 0x0000FF00;
-        bi.bV5BlueMask  = 0x000000FF;
+        bi.bV5BlueMask = 0x000000FF;
         bi.bV5AlphaMask = 0xFF000000;
 
-        void* pBits = nullptr;
+        void *pBits = nullptr;
         const HDC hdc = GetDC(nullptr);
-        const HBITMAP hBitmap = CreateDIBSection(hdc, reinterpret_cast<BITMAPINFO*>(&bi), DIB_RGB_COLORS, &pBits, nullptr, 0);
+        const HBITMAP hBitmap =
+            CreateDIBSection(hdc, reinterpret_cast<BITMAPINFO *>(&bi), DIB_RGB_COLORS, &pBits, nullptr, 0);
         ReleaseDC(nullptr, hdc);
 
-        if (hBitmap == nullptr) { return false;
+        if (hBitmap == nullptr)
+        {
+            return false;
         }
 
         std::memcpy(pBits, image.pixels, static_cast<size_t>(image.width * image.height * 4));
@@ -165,13 +169,12 @@ bool cae::Win32::setIcon(const std::string &path) const
 
         return true;
     }
-    catch (const std::exception& e)
+    catch (const std::exception &e)
     {
         utl::Logger::log("Failed to load icon: " + std::string(e.what()), utl::LogLevel::WARNING);
         return false;
     }
 }
-
 
 void cae::Win32::pollEvents()
 {

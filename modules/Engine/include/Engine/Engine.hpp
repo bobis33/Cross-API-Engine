@@ -59,8 +59,7 @@ namespace cae
                    const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
                    const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
                    const std::function<std::shared_ptr<IWindow>()> &windowFactory,
-                   const std::vector<ShaderSourceDesc> &shaderSources,
-                   const std::vector<float> &vertices);
+                   const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices);
             ~Engine() = default;
 
             Engine(const Engine &) = delete;
@@ -92,11 +91,12 @@ namespace cae
             std::unique_ptr<Camera> m_camera = nullptr;
 
             void initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath);
-            void initRenderer(const NativeWindowHandle & nativeWindowHandle, const std::vector<float> &vertices, const Color & clearColor = {.r = 1, .g = 1, .b = 1, .a = 1}) const;
-            void initShaders(
-            const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
-            const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-            const std::vector<ShaderSourceDesc> &shaderSources) const;
+            void initRenderer(const NativeWindowHandle &nativeWindowHandle, const std::vector<float> &vertices,
+                              const Color &clearColor = {.r = 1, .g = 1, .b = 1, .a = 1}) const;
+            void
+            initShaders(const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
+                        const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
+                        const std::vector<ShaderSourceDesc> &shaderSources) const;
 
     }; // class Engine
 
