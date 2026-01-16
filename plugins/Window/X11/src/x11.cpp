@@ -1,7 +1,10 @@
 #include "X11/X11.hpp"
 
+#include "Utils/Image.hpp"
+
 #include <iostream>
 #include <utility>
+#include <vector>
 
 bool cae::X11::create(const std::string &name, const WindowSize size)
 {
@@ -64,8 +67,50 @@ cae::WindowSize cae::X11::getWindowSize() const
 
 bool cae::X11::setIcon(const std::string &path) const
 {
-    std::cerr << "[X11] setIcon() not implemented yet (" << path << ")\n";
-    return false;
+    if ((m_display == nullptr) || m_window == 0)
+    {
+        return false;
+    }
+
+    try
+    {
+        const utl::Image image(path);
+
+        const auto pixelCount = static_cast<const size_t>(image.width * image.height);
+        std::vector<unsigned long> iconData;
+        iconData.reserve(2 + pixelCount);
+
+        iconData.push_back(static_cast<unsigned long>(image.width));
+        iconData.push_back(static_cast<unsigned long>(image.height));
+
+        const uint8_t *pixels = image.pixels;
+        for (size_t i = 0; i < pixelCount; ++i)
+        {
+            const uint8_t r = pixels[i * 4 + 0];
+            const uint8_t g = pixels[i * 4 + 1];
+            const uint8_t b = pixels[i * 4 + 2];
+            const uint8_t a = pixels[i * 4 + 3];
+
+            const unsigned long argb = (static_cast<unsigned long>(a) << 24) | (static_cast<unsigned long>(r) << 16) |
+                                       (static_cast<unsigned long>(g) << 8) | (static_cast<unsigned long>(b));
+
+            iconData.push_back(argb);
+        }
+
+        const Atom netWmIcon = XInternAtom(m_display, "_NET_WM_ICON", False);
+        const Atom cardinal = XInternAtom(m_display, "CARDINAL", False);
+
+        XChangeProperty(m_display, m_window, netWmIcon, cardinal, 32, PropModeReplace,
+                        reinterpret_cast<const unsigned char *>(iconData.data()), static_cast<int>(iconData.size()));
+
+        XFlush(m_display);
+        return true;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "[X11] Failed to set icon: " << e.what() << '\n';
+        return false;
+    }
 }
 
 bool cae::X11::shouldClose() const { return m_shouldClose; }

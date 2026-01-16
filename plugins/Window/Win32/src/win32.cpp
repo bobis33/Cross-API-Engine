@@ -1,12 +1,15 @@
-#include <string>
+#include "Win32/Win32.hpp"
 
+#include "Utils/Image.hpp"
 #include "Utils/Logger.hpp"
 
-#include "Win32/Win32.hpp"
+#include <cstring>
+#include <filesystem>
+#include <string>
 
 constexpr wchar_t WINDOW_CLASS_NAME[] = L"CAE_WindowsWindowClass";
 
-LRESULT CALLBACK cae::Win32::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
 {
     Win32 *self = nullptr;
 
@@ -38,7 +41,7 @@ LRESULT CALLBACK cae::Win32::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPAR
     }
 }
 
-bool cae::Win32::create(const std::string &name, WindowSize size)
+bool cae::Win32::create(const std::string &name, const WindowSize size)
 {
     m_hInstance = GetModuleHandleW(nullptr);
     m_frameBufferSize = size;
@@ -109,7 +112,69 @@ cae::WindowSize cae::Win32::getWindowSize() const
             .height = static_cast<uint16_t>(rect.bottom - rect.top)};
 }
 
-bool cae::Win32::setIcon(const std::string &path) const { return false; }
+bool cae::Win32::setIcon(const std::string &path) const
+{
+    try
+    {
+        const utl::Image image(path);
+
+        for (size_t i = 0; i < static_cast<size_t>(image.width * image.height); ++i)
+        {
+            std::swap(image.pixels[(i * 4) + 0], image.pixels[(i * 4) + 2]);
+        }
+
+        ICONINFO iconInfo{};
+        iconInfo.fIcon = TRUE;
+
+        BITMAPV5HEADER bi{};
+        bi.bV5Size = sizeof(BITMAPV5HEADER);
+        bi.bV5Width = image.width;
+        bi.bV5Height = -static_cast<LONG>(image.height);
+        bi.bV5Planes = 1;
+        bi.bV5BitCount = 32;
+        bi.bV5Compression = BI_BITFIELDS;
+        bi.bV5RedMask = 0x00FF0000;
+        bi.bV5GreenMask = 0x0000FF00;
+        bi.bV5BlueMask = 0x000000FF;
+        bi.bV5AlphaMask = 0xFF000000;
+
+        void *pBits = nullptr;
+        const HDC hdc = GetDC(nullptr);
+        const HBITMAP hBitmap =
+            CreateDIBSection(hdc, reinterpret_cast<BITMAPINFO *>(&bi), DIB_RGB_COLORS, &pBits, nullptr, 0);
+        ReleaseDC(nullptr, hdc);
+
+        if (hBitmap == nullptr)
+        {
+            return false;
+        }
+
+        std::memcpy(pBits, image.pixels, static_cast<size_t>(image.width * image.height * 4));
+
+        iconInfo.hbmColor = hBitmap;
+        iconInfo.hbmMask = CreateBitmap(image.width, image.height, 1, 1, nullptr);
+
+        HICON hIcon = CreateIconIndirect(&iconInfo);
+
+        DeleteObject(hBitmap);
+        DeleteObject(iconInfo.hbmMask);
+
+        if (hIcon == nullptr)
+        {
+            return false;
+        }
+
+        SendMessageW(m_hwnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hIcon));
+        SendMessageW(m_hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(hIcon));
+
+        return true;
+    }
+    catch (const std::exception &e)
+    {
+        utl::Logger::log("Failed to load icon: " + std::string(e.what()), utl::LogLevel::WARNING);
+        return false;
+    }
+}
 
 void cae::Win32::pollEvents()
 {

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 4.0.0)
 
-project(engine
+project(cae-engine
         VERSION 0.0.0
-        DESCRIPTION "Engine library"
+        DESCRIPTION "CAE Engine library"
         LANGUAGES CXX
 )
 
@@ -35,7 +35,7 @@ target_sources(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        utils
+        cae-utils
         glm::glm
 )
 target_include_directories(${PROJECT_NAME}
@@ -52,5 +52,4 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 set_target_properties(${PROJECT_NAME} PROPERTIES
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
-        PREFIX ""
 )

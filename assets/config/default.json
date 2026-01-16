@@ -19,6 +19,7 @@
     "name": "CAE - Cross API Engine",
     "width": 1920,
     "height": 1080,
-    "fullscreen": false
+    "fullscreen": false,
+    "iconPath": "assets/icons/icon-192x192.png"
   }
 }

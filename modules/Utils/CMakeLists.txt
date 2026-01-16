@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 4.0.0)
 
-project(utils
+project(cae-utils
         VERSION 0.0.0
-        DESCRIPTION "Utils library"
+        DESCRIPTION "CAE Utils library"
         LANGUAGES CXX
 )
 
@@ -48,5 +48,4 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 set_target_properties(${PROJECT_NAME} PROPERTIES
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
-        PREFIX ""
 )

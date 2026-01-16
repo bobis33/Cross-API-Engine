@@ -22,16 +22,26 @@ namespace cae
     class ShaderManager
     {
         public:
-            ShaderManager() = default;
+            explicit ShaderManager(
+                const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
+                const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory = nullptr)
+            {
+                for (const auto &factory : shaderFrontendFactories)
+                {
+                    auto frontend = factory();
+                    registerFrontend(frontend);
+                }
+                if (shaderIRFactory)
+                {
+                    registerIR(shaderIRFactory());
+                }
+            }
             ~ShaderManager() = default;
 
             ShaderManager(const ShaderManager &) = delete;
             ShaderManager &operator=(const ShaderManager &) = delete;
             ShaderManager(ShaderManager &&) = delete;
             ShaderManager &operator=(ShaderManager &&) = delete;
-
-            void registerFrontend(const std::shared_ptr<IShaderFrontend> &f) { m_frontends[f->sourceType()] = f; }
-            void registerIR(const std::shared_ptr<IShaderIR> &ir) { m_irs[ir->irType()] = ir; }
 
             std::unordered_map<ShaderID, ShaderIRModule> build(const std::vector<ShaderSourceDesc> &sources,
                                                                const ShaderSourceType targetIR) const
@@ -50,7 +60,7 @@ namespace cae
                 return out;
             }
 
-            template <std::ranges::input_range R> void optimizeAll(ShaderSourceType irType, R &&modules) const
+            template <std::ranges::input_range R> void optimizeAll(const ShaderSourceType irType, R &&modules) const
             {
                 if (auto it = m_irs.find(irType); it != m_irs.end())
                 {
@@ -65,13 +75,15 @@ namespace cae
 
                     it->second->optimize(tmp);
 
-                    // recopier vers les originaux si besoin
                     for (size_t i = 0; i < ptrs.size(); ++i)
                         *ptrs[i] = std::move(tmp[i]);
                 }
             }
 
         private:
+            void registerFrontend(const std::shared_ptr<IShaderFrontend> &f) { m_frontends[f->sourceType()] = f; }
+            void registerIR(const std::shared_ptr<IShaderIR> &ir) { m_irs[ir->irType()] = ir; }
+
             std::unordered_map<ShaderSourceType, std::shared_ptr<IShaderFrontend>> m_frontends;
             std::unordered_map<ShaderSourceType, std::shared_ptr<IShaderIR>> m_irs;
 

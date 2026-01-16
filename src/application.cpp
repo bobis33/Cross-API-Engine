@@ -1,5 +1,6 @@
 #include "CAE/Application.hpp"
 #include "CAE/Common.hpp"
+
 #include "Utils/Utils.hpp"
 
 #include <filesystem>
@@ -16,7 +17,7 @@ static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_
             continue;
         }
         const std::string pluginPath = entry.path().string();
-        if (auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath); plugin != nullptr)
+        if (auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath, "cae-"); plugin != nullptr)
         {
             loadedPlugins.push_back(plugin);
         }
@@ -36,7 +37,7 @@ static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_
 cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &envConfig)
     : m_pluginLoader(std::make_unique<utl::PluginLoader>())
 {
-    utl::Logger::log("PROJECT INFO:\n" + std::string(Message::VERSION_MSG), utl::LogLevel::INFO);
+    utl::Logger::log("PROJECT INFO:\n" + std::string(MESSAGE::VERSION_MSG), utl::LogLevel::INFO);
 
     try
     {
@@ -46,7 +47,8 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine("OpenGL", "GLFW", "GLSL", "SPIRV");
+        setupEngine(PLUGINS::NAME::RENDERER::OPENGL, PLUGINS::NAME::WINDOW::GLFW, PLUGINS::NAME::SHADER::FRONTEND::GLSL,
+                    PLUGINS::NAME::SHADER::IR::SPIRV);
     }
     catch (const std::exception &e)
     {
@@ -61,18 +63,6 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     std::shared_ptr<IRenderer> rendererPlugin = nullptr;
     std::shared_ptr<IShaderIR> shaderIRPlugin = nullptr;
     std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> shaderFactories;
-
-    static const std::vector<ShaderSourceDesc> shaderSources = {
-        {.id = "basic_vertex",
-         .type = ShaderSourceType::GLSL,
-         .source = utl::fileToString("assets/shaders/glsl/texture.vert"),
-         .stage = ShaderStage::VERTEX},
-
-        {.id = "basic_fragment",
-         .type = ShaderSourceType::GLSL,
-         .source = utl::fileToString("assets/shaders/glsl/texture.frag"),
-         .stage = ShaderStage::FRAGMENT},
-    };
 
     for (auto &plugin : loadPlugins(m_pluginLoader))
     {
@@ -120,10 +110,26 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     m_engine = std::make_unique<Engine>(
         m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
         [rendererPlugin]() { return rendererPlugin; }, [shaderIRPlugin]() { return shaderIRPlugin; }, shaderFactories,
-        [windowPlugin]() { return windowPlugin; }, shaderSources, std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
+        [windowPlugin]() { return windowPlugin; });
 }
 
-void cae::Application::start() const { m_engine->run(); }
+void cae::Application::start() const
+{
+    static const std::vector<ShaderSourceDesc> shaderSources = {
+        {.id = "basic_vertex",
+         .type = ShaderSourceType::GLSL,
+         .source = utl::fileToString("assets/shaders/glsl/texture.vert"),
+         .stage = ShaderStage::VERTEX},
+
+        {.id = "basic_fragment",
+         .type = ShaderSourceType::GLSL,
+         .source = utl::fileToString("assets/shaders/glsl/texture.frag"),
+         .stage = ShaderStage::FRAGMENT},
+    };
+    m_engine->initializeRenderResources(shaderSources,
+        std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
+    m_engine->run();
+}
 
 void cae::Application::stop()
 {

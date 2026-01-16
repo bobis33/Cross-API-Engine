@@ -10,6 +10,7 @@
 #include "Utils/Logger.hpp"
 
 #include <concepts>
+#include <filesystem>
 #include <memory>
 #include <mutex>
 #include <stdexcept>
@@ -19,6 +20,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #define PLUGINS_EXTENSION ".dll"
+#define PLUGINS_PREFIX ""
 #else
 #include <dlfcn.h>
 #ifdef __APPLE__
@@ -26,6 +28,7 @@
 #elif __linux__
 #define PLUGINS_EXTENSION ".so"
 #endif
+#define PLUGINS_PREFIX "lib"
 #endif
 
 namespace utl
@@ -98,44 +101,58 @@ namespace utl
             /// Load a plugin of type T
             /// @tparam T Expected plugin interface (must derive from IPlugin)
             /// @param path Path to the dynamic library
+            /// @param pluginPrefix Expected prefix for plugin filenames
             /// @return shared_ptr<T> instance
             ///
-            template <std::derived_from<IPlugin> T> std::shared_ptr<T> loadPlugin(const std::string &path)
+            template <std::derived_from<IPlugin> T>
+            std::shared_ptr<T> loadPlugin(const std::string &path, const std::string_view &pluginPrefix = "")
             {
                 std::scoped_lock lock(m_mutex);
 
-                if (m_plugins.contains(path))
+                try
                 {
-                    throw std::runtime_error("Plugin already loaded: " + path);
+                    validatePluginPath(path, PLUGINS_PREFIX + std::string(pluginPrefix));
+
+                    if (m_plugins.contains(path))
+                    {
+                        Logger::log("Plugin already loaded, skipping: " + path, LogLevel::WARNING);
+                        return nullptr;
+                    }
+
+                    SharedLib lib = loadLibrary(path);
+                    const EntryPointFn entry = getEntryPoint(lib, path);
+
+                    std::unique_ptr<IPlugin> plugin(entry());
+                    if (!plugin)
+                    {
+                        throw std::runtime_error("EntryPoint returned null");
+                    }
+
+                    T *typed = dynamic_cast<T *>(plugin.get());
+                    if (!typed)
+                    {
+                        throw std::runtime_error("Plugin type mismatch");
+                    }
+
+                    auto [it, inserted] = m_plugins.emplace(path, std::move(plugin));
+                    if (!inserted)
+                    {
+                        throw std::runtime_error("Failed to store plugin");
+                    }
+
+                    m_handles[path] = std::move(lib);
+
+                    Logger::log("Plugin loaded:\t name: " + it->second->getName() + "\t path: " + path, LogLevel::INFO);
+
+                    std::shared_ptr<IPlugin> baseShared(it->second.get(), [](IPlugin *) {});
+                    return std::shared_ptr<T>(baseShared, typed);
                 }
-
-                SharedLib lib = loadLibrary(path);
-                const EntryPointFn entry = getEntryPoint(lib, path);
-
-                std::unique_ptr<IPlugin> plugin(entry());
-                if (!plugin)
+                catch (const std::exception &e)
                 {
-                    throw std::runtime_error("EntryPoint failed: " + path);
+                    Logger::log("Skipping plugin '" + path + "': " + e.what(), LogLevel::WARNING);
+
+                    return nullptr;
                 }
-
-                T *typed = dynamic_cast<T *>(plugin.get());
-                if (!typed)
-                {
-                    throw std::runtime_error("Plugin type mismatch: " + path);
-                }
-
-                auto [it, inserted] = m_plugins.emplace(path, std::move(plugin));
-                if (!inserted)
-                {
-                    throw std::runtime_error("Failed to store plugin: " + path);
-                }
-
-                m_handles[path] = std::move(lib);
-
-                Logger::log("Plugin loaded:\t name: " + it->second->getName() + "\t path: " + path, LogLevel::INFO);
-
-                std::shared_ptr<IPlugin> baseShared(it->second.get(), [](IPlugin *) {});
-                return std::shared_ptr<T>(baseShared, typed);
             }
 
         private:
@@ -178,6 +195,33 @@ namespace utl
                 }
                 return entry;
             }
-    };
+
+            static void validatePluginPath(const std::string &path, const std::string_view &pluginPrefix)
+            {
+                namespace fs = std::filesystem;
+
+                const fs::path p(path);
+
+                if (!p.has_filename())
+                {
+                    throw std::runtime_error("Invalid plugin path: " + path);
+                }
+
+                const std::string filename = p.filename().string();
+
+                if (p.extension() != PLUGINS_EXTENSION)
+                {
+                    throw std::runtime_error("Invalid plugin extension: " + filename +
+                                             " (expected " PLUGINS_EXTENSION ")");
+                }
+
+                if (!filename.starts_with(pluginPrefix))
+                {
+                    throw std::runtime_error("Invalid plugin name: " + filename + " (plugins must start with '" +
+                                             std::string(pluginPrefix) + "')");
+                }
+            }
+
+    }; // class PluginLoader
 
 } // namespace utl

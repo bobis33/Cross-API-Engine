@@ -20,11 +20,11 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
                     const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
                     const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-                    const std::function<std::shared_ptr<IWindow>()> &windowFactory,
-                    const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices)
+                    const std::function<std::shared_ptr<IWindow>()> &windowFactory)
     : m_audioPlugin(audioFactory()), m_inputPlugin(inputFactory()), m_networkPlugin(networkFactory()),
       m_rendererPlugin(rendererFactory()), m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>()),
-      m_shaderManager(std::make_unique<ShaderManager>()), m_camera(std::make_unique<Camera>())
+      m_shaderManager(std::make_unique<ShaderManager>(shaderFrontendFactories, shaderIRFactory)),
+      m_camera(std::make_unique<Camera>())
 {
     constexpr auto boolToStr = [](const bool b) { return b ? "true" : "false"; };
     std::ostringstream msg;
@@ -40,12 +40,19 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
         << "\tWindow width: " << config.window_width << "\n"
         << "\tWindow height: " << config.window_height << "\n"
         << "\tWindow fullscreen: " << boolToStr(config.window_fullscreen) << "\n"
-        << "\tWindow name: " << config.window_name;
+        << "\tWindow name: " << config.window_name << "\n\tWindow icon path: " << config.window_icon_path << '\n';
     utl::Logger::log(msg.str(), utl::LogLevel::INFO);
 
-    initWindow(config.window_name, {.width = config.window_width, .height = config.window_height});
-    initRenderer(m_windowPlugin->getNativeHandle(), vertices, config.renderer_clear_color);
-    initShaders(shaderIRFactory, shaderFrontendFactories, shaderSources);
+    initWindow(config.window_name, {.width = config.window_width, .height = config.window_height},
+               config.window_icon_path);
+    m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle(), config.renderer_clear_color);
+}
+
+void cae::Engine::initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices) const
+{
+    initShaders(shaderSources);
+    m_rendererPlugin->createMesh(vertices);
+
 }
 
 void cae::Engine::run() const
@@ -73,29 +80,17 @@ void cae::Engine::stop()
     m_windowPlugin = nullptr;
 }
 
-void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize)
+void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath)
 {
     m_windowPlugin->create(windowName, windowSize);
-}
-
-void cae::Engine::initRenderer(const NativeWindowHandle &nativeWindowHandle, const std::vector<float> &vertices,
-                               const Color &clearColor) const
-{
-    m_rendererPlugin->initialize(nativeWindowHandle, clearColor);
-    m_rendererPlugin->createMesh(vertices);
-}
-
-void cae::Engine::initShaders(
-    const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
-    const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-    const std::vector<ShaderSourceDesc> &shaderSources) const
-{
-    for (const auto &factory : shaderFrontendFactories)
+    if (!iconPath.empty())
     {
-        auto frontend = factory();
-        m_shaderManager->registerFrontend(frontend);
+        m_windowPlugin->setIcon(iconPath);
     }
-    m_shaderManager->registerIR(shaderIRFactory());
+}
+
+void cae::Engine::initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const
+{
     auto shaders = m_shaderManager->build(shaderSources, ShaderSourceType::SPIRV);
     m_shaderManager->optimizeAll(ShaderSourceType::SPIRV, shaders | std::views::values);
     m_rendererPlugin->createPipeline("basic", shaders["basic_vertex"], shaders["basic_fragment"]);
