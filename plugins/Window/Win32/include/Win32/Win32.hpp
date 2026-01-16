@@ -42,7 +42,7 @@ namespace cae
 
             [[nodiscard]] bool setIcon(const std::string &path) const override;
 
-        [[nodiscard]] bool shouldClose() const override { return m_shouldClose; }
+            [[nodiscard]] bool shouldClose() const override { return m_shouldClose; }
             void pollEvents() override;
 
             bool wasResized() const override { return m_frameBufferResized; }

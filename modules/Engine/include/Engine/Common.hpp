@@ -22,6 +22,16 @@ namespace cae
         inline constexpr auto MUTED = false;
     } // namespace Audio
 
+    namespace Cam
+    {
+        inline constexpr auto NAME = "Camera";
+        inline constexpr auto MOVE_SPEED = 2.5F;
+        inline constexpr auto LOOK_SPEED = 100.F;
+        inline constexpr auto FOV = 45.F;
+        inline constexpr auto NEAR_PLANE = 0.1F;
+        inline constexpr auto FAR_PLANE = 100.F;
+    } // namespace Cam
+
     namespace Network
     {
         inline constexpr auto HOST = "127.0.0.1";
@@ -57,4 +67,5 @@ namespace cae
         inline constexpr auto NAME = "CAE - Cross API Engine";
         inline constexpr auto FULLSCREEN = false;
     } // namespace Window
+
 } // namespace cae
