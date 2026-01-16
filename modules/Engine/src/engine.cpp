@@ -1,7 +1,6 @@
 #include "Engine/Engine.hpp"
 
 #include "Utils/Logger.hpp"
-#include "Utils/Utils.hpp"
 
 #include <numeric>
 #include <sstream>
@@ -21,12 +20,13 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
                     const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
                     const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-                    const std::function<std::shared_ptr<IWindow>()> &windowFactory)
+                    const std::function<std::shared_ptr<IWindow>()> &windowFactory,
+                    const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices)
     : m_audioPlugin(audioFactory()), m_inputPlugin(inputFactory()), m_networkPlugin(networkFactory()),
       m_rendererPlugin(rendererFactory()), m_shaderManager(std::make_unique<ShaderManager>()),
       m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>())
 {
-    constexpr auto boolToStr = [](bool b) { return b ? "true" : "false"; };
+    constexpr auto boolToStr = [](const bool b) { return b ? "true" : "false"; };
     std::ostringstream msg;
     msg << "Loading engine with configuration:\n"
         << "\tAudio master volume: " << config.audio_master_volume << "\n"
@@ -35,16 +35,17 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
         << "\tNetwork port: " << config.network_port << "\n"
         << "\tRenderer vsync: " << boolToStr(config.renderer_vsync) << "\n"
         << "\tRenderer frame rate limit: " << config.renderer_frame_rate_limit << "\n"
+        << "\tRenderer clear color: (" << config.renderer_clear_color.r << ", " << config.renderer_clear_color.g << ", "
+        << config.renderer_clear_color.b << ", " << config.renderer_clear_color.a << ")\n"
         << "\tWindow width: " << config.window_width << "\n"
         << "\tWindow height: " << config.window_height << "\n"
         << "\tWindow fullscreen: " << boolToStr(config.window_fullscreen) << "\n"
         << "\tWindow name: " << config.window_name;
     utl::Logger::log(msg.str(), utl::LogLevel::INFO);
 
-    m_windowPlugin->create(config.window_name, {.width = config.window_width, .height = config.window_height});
-    m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle());
-    m_rendererPlugin->createMesh({-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
-    initShaders(shaderIRFactory, shaderFrontendFactories);
+    initWindow(config.window_name, {.width = config.window_width, .height = config.window_height});
+    initRenderer(m_windowPlugin->getNativeHandle(), vertices, config.renderer_clear_color);
+    initShaders(shaderIRFactory, shaderFrontendFactories, shaderSources);
 }
 
 void cae::Engine::run() const
@@ -72,22 +73,23 @@ void cae::Engine::stop()
     m_windowPlugin = nullptr;
 }
 
+void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize)
+{
+    m_windowPlugin->create(windowName, windowSize);
+}
+
+void cae::Engine::initRenderer(const NativeWindowHandle &nativeWindowHandle, const std::vector<float> &vertices,
+                               const Color &clearColor) const
+{
+    m_rendererPlugin->initialize(nativeWindowHandle, clearColor);
+    m_rendererPlugin->createMesh(vertices);
+}
+
 void cae::Engine::initShaders(
     const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
-    const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories) const
+    const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
+    const std::vector<ShaderSourceDesc> &shaderSources) const
 {
-    static const std::vector<ShaderSourceDesc> shaderSources = {
-        {.id = "basic_vertex",
-         .type = ShaderSourceType::GLSL,
-         .source = utl::fileToString("assets/shaders/glsl/uniform_color.vert"),
-         .stage = ShaderStage::VERTEX},
-
-        {.id = "basic_fragment",
-         .type = ShaderSourceType::GLSL,
-         .source = utl::fileToString("assets/shaders/glsl/uniform_color.frag"),
-         .stage = ShaderStage::FRAGMENT},
-    };
-
     for (const auto &factory : shaderFrontendFactories)
     {
         auto frontend = factory();

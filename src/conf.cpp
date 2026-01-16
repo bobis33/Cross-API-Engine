@@ -75,6 +75,17 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
         {
             config.renderer_frame_rate_limit = renderer["frameRateLimit"];
         }
+        if (renderer.contains("clearColor") && renderer["clearColor"].is_array() && renderer["clearColor"].size() == 4)
+        {
+            if (const auto &clearColor = renderer["clearColor"]; clearColor[0].is_number() && clearColor[1].is_number() && clearColor[2].is_number() &&
+                clearColor[3].is_number())
+            {
+                config.renderer_clear_color.r = clearColor[0];
+                config.renderer_clear_color.g = clearColor[1];
+                config.renderer_clear_color.b = clearColor[2];
+                config.renderer_clear_color.a = clearColor[3];
+            }
+        }
     }
     if (j.contains("window"))
     {

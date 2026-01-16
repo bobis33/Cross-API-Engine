@@ -39,6 +39,10 @@ namespace cae
     {
         inline constexpr auto VSYNC = false;
         inline constexpr auto FRAME_RATE_LIMIT = 90;
+        inline constexpr auto CLEAR_COLOR_R = 1.0F;
+        inline constexpr auto CLEAR_COLOR_G = 1.0F;
+        inline constexpr auto CLEAR_COLOR_B = 1.0F;
+        inline constexpr auto CLEAR_COLOR_A = 1.0F;
     } // namespace Renderer
 
     namespace User

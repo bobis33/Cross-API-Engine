@@ -1,5 +1,6 @@
 #include "CAE/Application.hpp"
 #include "CAE/Common.hpp"
+#include "Utils/Utils.hpp"
 
 #include <filesystem>
 
@@ -61,6 +62,18 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     std::shared_ptr<IShaderIR> shaderIRPlugin = nullptr;
     std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> shaderFactories;
 
+    static const std::vector<ShaderSourceDesc> shaderSources = {
+        {.id = "basic_vertex",
+         .type = ShaderSourceType::GLSL,
+         .source = utl::fileToString("assets/shaders/glsl/texture.vert"),
+         .stage = ShaderStage::VERTEX},
+
+        {.id = "basic_fragment",
+         .type = ShaderSourceType::GLSL,
+         .source = utl::fileToString("assets/shaders/glsl/texture.frag"),
+         .stage = ShaderStage::FRAGMENT},
+    };
+
     for (auto &plugin : loadPlugins(m_pluginLoader))
     {
         if (const auto renderer = std::dynamic_pointer_cast<IRenderer>(plugin))
@@ -102,12 +115,12 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     }
     if (shaderFactories.empty())
     {
-        utl::Logger::log("No shader plugin found with name: GLSL", utl::LogLevel::WARNING);
+        utl::Logger::log("No shader plugin found with name: " + shaderFrontendName, utl::LogLevel::WARNING);
     }
     m_engine = std::make_unique<Engine>(
         m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
         [rendererPlugin]() { return rendererPlugin; }, [shaderIRPlugin]() { return shaderIRPlugin; }, shaderFactories,
-        [windowPlugin]() { return windowPlugin; });
+        [windowPlugin]() { return windowPlugin; }, shaderSources, std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
 }
 
 void cae::Application::start() const { m_engine->run(); }

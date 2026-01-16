@@ -30,6 +30,10 @@ namespace cae
 
             bool renderer_vsync = Renderer::VSYNC;
             uint16_t renderer_frame_rate_limit = Renderer::FRAME_RATE_LIMIT;
+            Color renderer_clear_color = {.r = Renderer::CLEAR_COLOR_R,
+                                          .g = Renderer::CLEAR_COLOR_G,
+                                          .b = Renderer::CLEAR_COLOR_B,
+                                          .a = Renderer::CLEAR_COLOR_A};
 
             uint16_t window_width = Window::WIDTH;
             uint16_t window_height = Window::HEIGHT;
@@ -52,7 +56,9 @@ namespace cae
                    const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
                    const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
                    const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-                   const std::function<std::shared_ptr<IWindow>()> &windowFactory);
+                   const std::function<std::shared_ptr<IWindow>()> &windowFactory,
+                   const std::vector<ShaderSourceDesc> &shaderSources,
+                   const std::vector<float> &vertices);
             ~Engine() = default;
 
             Engine(const Engine &) = delete;
@@ -81,9 +87,13 @@ namespace cae
 
             std::unique_ptr<utl::Clock> m_clock = nullptr;
 
+            void initWindow(const std::string &windowName, const WindowSize &windowSize);
+            void initRenderer(const NativeWindowHandle & nativeWindowHandle, const std::vector<float> &vertices, const Color & clearColor = {.r = 1, .g = 1, .b = 1, .a = 1}) const;
             void initShaders(
-                const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
-                const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories) const;
+            const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
+            const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
+            const std::vector<ShaderSourceDesc> &shaderSources) const;
+
     }; // class Engine
 
 } // namespace cae
