@@ -20,6 +20,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #define PLUGINS_EXTENSION ".dll"
+#define PLUGINS_PREFIX ""
 #else
 #include <dlfcn.h>
 #ifdef __APPLE__
@@ -27,6 +28,7 @@
 #elif __linux__
 #define PLUGINS_EXTENSION ".so"
 #endif
+#define PLUGINS_PREFIX "lib"
 #endif
 
 namespace utl
@@ -109,7 +111,7 @@ namespace utl
 
                 try
                 {
-                    validatePluginPath(path, pluginPrefix);
+                    validatePluginPath(path, PLUGINS_PREFIX + std::string(pluginPrefix));
 
                     if (m_plugins.contains(path))
                     {

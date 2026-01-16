@@ -1,5 +1,6 @@
 #include "CAE/Application.hpp"
 #include "CAE/Common.hpp"
+
 #include "Utils/Utils.hpp"
 
 #include <filesystem>
@@ -16,7 +17,7 @@ static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_
             continue;
         }
         const std::string pluginPath = entry.path().string();
-        if (auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath, "libcae"); plugin != nullptr)
+        if (auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath, "cae-"); plugin != nullptr)
         {
             loadedPlugins.push_back(plugin);
         }
