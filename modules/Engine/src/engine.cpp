@@ -40,10 +40,11 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
         << "\tWindow width: " << config.window_width << "\n"
         << "\tWindow height: " << config.window_height << "\n"
         << "\tWindow fullscreen: " << boolToStr(config.window_fullscreen) << "\n"
-        << "\tWindow name: " << config.window_name;
+        << "\tWindow name: " << config.window_name
+        << "\n\tWindow icon path: " << config.window_icon_path << '\n';
     utl::Logger::log(msg.str(), utl::LogLevel::INFO);
 
-    initWindow(config.window_name, {.width = config.window_width, .height = config.window_height});
+    initWindow(config.window_name, {.width = config.window_width, .height = config.window_height}, config.window_icon_path);
     initRenderer(m_windowPlugin->getNativeHandle(), vertices, config.renderer_clear_color);
     initShaders(shaderIRFactory, shaderFrontendFactories, shaderSources);
 }
@@ -73,10 +74,13 @@ void cae::Engine::stop()
     m_windowPlugin = nullptr;
 }
 
-void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize)
+void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath)
 {
     m_windowPlugin->create(windowName, windowSize);
-    m_windowPlugin->setIcon("assets/icons/icon-192x192.png");
+    if (!iconPath.empty())
+    {
+        m_windowPlugin->setIcon(iconPath);
+    }
 }
 
 void cae::Engine::initRenderer(const NativeWindowHandle &nativeWindowHandle, const std::vector<float> &vertices,

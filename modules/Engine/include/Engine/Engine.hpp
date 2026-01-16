@@ -40,6 +40,7 @@ namespace cae
             uint16_t window_height = Window::HEIGHT;
             bool window_fullscreen = Window::FULLSCREEN;
             std::string window_name = Window::NAME;
+            std::string window_icon_path = Window::ICON_PATH;
     };
 
     ///
@@ -90,7 +91,7 @@ namespace cae
             std::unique_ptr<ShaderManager> m_shaderManager = nullptr;
             std::unique_ptr<Camera> m_camera = nullptr;
 
-            void initWindow(const std::string &windowName, const WindowSize &windowSize);
+            void initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath);
             void initRenderer(const NativeWindowHandle & nativeWindowHandle, const std::vector<float> &vertices, const Color & clearColor = {.r = 1, .g = 1, .b = 1, .a = 1}) const;
             void initShaders(
             const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,

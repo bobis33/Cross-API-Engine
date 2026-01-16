@@ -66,6 +66,7 @@ namespace cae
         inline constexpr uint16_t HEIGHT = 1080;
         inline constexpr auto NAME = "CAE - Cross API Engine";
         inline constexpr auto FULLSCREEN = false;
+        inline constexpr auto ICON_PATH = "";
     } // namespace Window
 
 } // namespace cae

@@ -106,6 +106,10 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
         {
             config.window_name = window["name"];
         }
+        if (window.contains("iconPath") && window["iconPath"].is_string())
+        {
+            config.window_icon_path = window["iconPath"];
+        }
     }
 
     return config;
