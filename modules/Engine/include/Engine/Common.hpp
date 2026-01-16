@@ -24,6 +24,7 @@ namespace cae
 
     namespace Cam
     {
+        inline constexpr auto NAME = "Camera";
         inline constexpr auto MOVE_SPEED = 2.5F;
         inline constexpr auto LOOK_SPEED = 100.F;
         inline constexpr auto FOV = 45.F;

@@ -53,7 +53,7 @@ namespace cae
             void rotate(float yawOffset, float pitchOffset, float deltaTime);
 
         private:
-            std::string m_name = "Camera";
+            std::string m_name = Cam::NAME;
 
             glm::vec3 m_position = glm::vec3(0.0F, 0.0F, 0.0F);
             glm::vec3 m_rotation = glm::vec3(0.0F, 0.0F, 0.0F);

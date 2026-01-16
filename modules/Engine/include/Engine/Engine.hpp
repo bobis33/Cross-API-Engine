@@ -74,6 +74,7 @@ namespace cae
             [[nodiscard]] const std::shared_ptr<IWindow> &getWindow() const { return m_windowPlugin; }
 
             [[nodiscard]] const std::unique_ptr<utl::Clock> &getClock() { return m_clock; }
+            [[nodiscard]] const std::unique_ptr<Camera> &getCamera() const { return m_camera; }
 
             void run() const;
             void stop();
