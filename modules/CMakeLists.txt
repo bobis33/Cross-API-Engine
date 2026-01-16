@@ -4,8 +4,8 @@ add_subdirectory(Utils)
 add_subdirectory(Engine)
 
 target_link_libraries(cae-modules INTERFACE
-        utils
-        engine
+        cae-utils
+        cae-engine
 )
 target_include_directories(cae-modules SYSTEM INTERFACE
         "${CMAKE_CURRENT_SOURCE_DIR}/Interfaces/include"
