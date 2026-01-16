@@ -1,4 +1,9 @@
-# Renderer | OpenGL plugin
+# Renderer plugin - OpenGL
+
+## Dependancies
+
+- [GLAD](https://glad.dav1d.de/) - Multi-Language GL/GLES/EGL/GLX/WGL Loader-Generator.
+- [OpenGL](https://www.khronos.org/opengl/) - Cross-language, cross-platform API for rendering 2D and 3D vector graphics.
 
 > [!WARNING]
 > OpenGL was deprecated in macOS 10.14.
