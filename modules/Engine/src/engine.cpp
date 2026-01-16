@@ -24,7 +24,8 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
                     const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices)
     : m_audioPlugin(audioFactory()), m_inputPlugin(inputFactory()), m_networkPlugin(networkFactory()),
       m_rendererPlugin(rendererFactory()), m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>()),
-      m_shaderManager(std::make_unique<ShaderManager>()), m_camera(std::make_unique<Camera>())
+      m_shaderManager(std::make_unique<ShaderManager>(shaderFrontendFactories, shaderIRFactory)),
+      m_camera(std::make_unique<Camera>())
 {
     constexpr auto boolToStr = [](const bool b) { return b ? "true" : "false"; };
     std::ostringstream msg;
@@ -46,7 +47,7 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
     initWindow(config.window_name, {.width = config.window_width, .height = config.window_height},
                config.window_icon_path);
     initRenderer(m_windowPlugin->getNativeHandle(), vertices, config.renderer_clear_color);
-    initShaders(shaderIRFactory, shaderFrontendFactories, shaderSources);
+    initShaders(shaderSources);
 }
 
 void cae::Engine::run() const
@@ -90,17 +91,8 @@ void cae::Engine::initRenderer(const NativeWindowHandle &nativeWindowHandle, con
     m_rendererPlugin->createMesh(vertices);
 }
 
-void cae::Engine::initShaders(
-    const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
-    const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-    const std::vector<ShaderSourceDesc> &shaderSources) const
+void cae::Engine::initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const
 {
-    for (const auto &factory : shaderFrontendFactories)
-    {
-        auto frontend = factory();
-        m_shaderManager->registerFrontend(frontend);
-    }
-    m_shaderManager->registerIR(shaderIRFactory());
     auto shaders = m_shaderManager->build(shaderSources, ShaderSourceType::SPIRV);
     m_shaderManager->optimizeAll(ShaderSourceType::SPIRV, shaders | std::views::values);
     m_rendererPlugin->createPipeline("basic", shaders["basic_vertex"], shaders["basic_fragment"]);

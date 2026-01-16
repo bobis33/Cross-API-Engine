@@ -93,10 +93,7 @@ namespace cae
             void initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath);
             void initRenderer(const NativeWindowHandle &nativeWindowHandle, const std::vector<float> &vertices,
                               const Color &clearColor = {.r = 1, .g = 1, .b = 1, .a = 1}) const;
-            void
-            initShaders(const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
-                        const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-                        const std::vector<ShaderSourceDesc> &shaderSources) const;
+            void initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const;
 
     }; // class Engine
 
