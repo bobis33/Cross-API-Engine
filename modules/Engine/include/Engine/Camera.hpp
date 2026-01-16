@@ -55,18 +55,18 @@ namespace cae
             void rotate(float yawOffset, float pitchOffset, float deltaTime);
 
         private:
-            std::string m_name = Cam::NAME;
+            std::string m_name = CAMERA::NAME;
 
             glm::vec3 m_position = glm::vec3(0.0F, 0.0F, 0.0F);
             glm::vec3 m_rotation = glm::vec3(0.0F, 0.0F, 0.0F);
             glm::vec3 m_direction = glm::vec3(0.0F, 0.0F, -1.0F);
 
-            float m_moveSpeed = Cam::MOVE_SPEED;
-            float m_lookSpeed = Cam::LOOK_SPEED;
+            float m_moveSpeed = CAMERA::MOVE_SPEED;
+            float m_lookSpeed = CAMERA::LOOK_SPEED;
 
-            float m_fov = Cam::FOV;
-            float m_near = Cam::NEAR_PLANE;
-            float m_far = Cam::FAR_PLANE;
+            float m_fov = CAMERA::FOV;
+            float m_near = CAMERA::NEAR_PLANE;
+            float m_far = CAMERA::FAR_PLANE;
 
     }; // class Camera
 

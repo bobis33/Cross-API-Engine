@@ -37,7 +37,7 @@ static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_
 cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &envConfig)
     : m_pluginLoader(std::make_unique<utl::PluginLoader>())
 {
-    utl::Logger::log("PROJECT INFO:\n" + std::string(Message::VERSION_MSG), utl::LogLevel::INFO);
+    utl::Logger::log("PROJECT INFO:\n" + std::string(MESSAGE::VERSION_MSG), utl::LogLevel::INFO);
 
     try
     {
@@ -47,8 +47,8 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine(Plugins::Name::Render::OPENGL, Plugins::Name::Window::GLFW, Plugins::Name::Shader::Frontend::GLSL,
-                    Plugins::Name::Shader::IR::SPIRV);
+        setupEngine(PLUGINS::NAME::RENDERER::OPENGL, PLUGINS::NAME::WINDOW::GLFW, PLUGINS::NAME::SHADER::FRONTEND::GLSL,
+                    PLUGINS::NAME::SHADER::IR::SPIRV);
     }
     catch (const std::exception &e)
     {

@@ -21,13 +21,13 @@ cae::ArgsConfig cae::ArgsHandler::ParseArgs(const int argc, const char *const *a
 
         if (arg == "-h" || arg == "--help")
         {
-            std::cout << Message::HELP_MSG;
+            std::cout << MESSAGE::HELP_MSG;
             config.run = false;
             return config;
         }
         if (arg == "-v" || arg == "--version")
         {
-            std::cout << Message::VERSION_MSG;
+            std::cout << MESSAGE::VERSION_MSG;
             config.run = false;
             return config;
         }

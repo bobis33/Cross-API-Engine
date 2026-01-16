@@ -12,7 +12,7 @@
 
 namespace cae
 {
-    namespace Message
+    namespace MESSAGE
     {
         static constexpr std::string_view HELP_MSG = "Usage: " PROJECT_NAME APP_EXTENSION " [options]\n\n"
                                                      "Options:\n"
@@ -21,42 +21,42 @@ namespace cae
                                                      "  -c, --config <path>     Specify JSON configuration file";
         static constexpr std::string_view VERSION_MSG = PROJECT_NAME
             " v" PROJECT_VERSION " " BUILD_TYPE " (" GIT_TAG ", commit " GIT_COMMIT_HASH ") " __DATE__ " " __TIME__;
-    } // namespace Message
+    } // namespace MESSAGE
 
-    namespace Plugins::Name
+    namespace PLUGINS::NAME
     {
-        namespace Render
+        namespace RENDERER
         {
             inline constexpr auto OPENGL = "OpenGL";
             inline constexpr auto VULKAN = "Vulkan";
-        } // namespace Render
+        } // namespace RENDERER
 
-        namespace Shader
+        namespace SHADER
         {
             namespace IR
             {
                 inline constexpr auto SPIRV = "SPIRV";
             } // namespace IR
 
-            namespace Frontend
+            namespace FRONTEND
             {
                 inline constexpr auto GLSL = "GLSL";
-            } // namespace Frontend
+            } // namespace FRONTEND
 
-        } // namespace Shader
+        } // namespace SHADER
 
-        namespace Window
+        namespace WINDOW
         {
             inline constexpr auto GLFW = "GLFW";
             inline constexpr auto WIN32_ = "Win32";
             inline constexpr auto X11 = "X11";
-        } // namespace Window
+        } // namespace WINDOW
 
-    } // namespace Plugins::Name
+    } // namespace PLUGINS::NAME
 
-    namespace User
+    namespace USER
     {
         inline constexpr auto NAME = "User";
-    } // namespace User
+    } // namespace USER
 
 } // namespace cae

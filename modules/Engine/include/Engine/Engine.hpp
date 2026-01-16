@@ -23,24 +23,24 @@ namespace cae
 
     struct EngineConfig
     {
-            float audio_master_volume = Audio::VOLUME;
-            bool audio_muted = Audio::MUTED;
+            float audio_master_volume = AUDIO::VOLUME;
+            bool audio_muted = AUDIO::MUTED;
 
-            std::string network_host = Network::HOST;
-            uint16_t network_port = Network::PORT;
+            std::string network_host = NETWORK::HOST;
+            uint16_t network_port = NETWORK::PORT;
 
-            bool renderer_vsync = Renderer::VSYNC;
-            uint16_t renderer_frame_rate_limit = Renderer::FRAME_RATE_LIMIT;
-            Color renderer_clear_color = {.r = Renderer::CLEAR_COLOR_R,
-                                          .g = Renderer::CLEAR_COLOR_G,
-                                          .b = Renderer::CLEAR_COLOR_B,
-                                          .a = Renderer::CLEAR_COLOR_A};
+            bool renderer_vsync = RENDERER::VSYNC;
+            uint16_t renderer_frame_rate_limit = RENDERER::FRAME_RATE_LIMIT;
+            Color renderer_clear_color = {.r = RENDERER::CLEAR_COLOR_R,
+                                          .g = RENDERER::CLEAR_COLOR_G,
+                                          .b = RENDERER::CLEAR_COLOR_B,
+                                          .a = RENDERER::CLEAR_COLOR_A};
 
-            uint16_t window_width = Window::WIDTH;
-            uint16_t window_height = Window::HEIGHT;
-            bool window_fullscreen = Window::FULLSCREEN;
-            std::string window_name = Window::NAME;
-            std::string window_icon_path = Window::ICON_PATH;
+            uint16_t window_width = WINDOW::WIDTH;
+            uint16_t window_height = WINDOW::HEIGHT;
+            bool window_fullscreen = WINDOW::FULLSCREEN;
+            std::string window_name = WINDOW::NAME;
+            std::string window_icon_path = WINDOW::ICON_PATH;
     };
 
     ///
@@ -76,7 +76,6 @@ namespace cae
             [[nodiscard]] const std::unique_ptr<Camera> &getCamera() const { return m_camera; }
 
             void initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices) const;
-
             void run() const;
             void stop();
 
