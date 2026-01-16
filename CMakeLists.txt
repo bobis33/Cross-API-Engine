@@ -19,10 +19,9 @@ set(TEMPLATE_PATH "${PROJECT_SOURCE_DIR}/cmake/config/Version.hpp.in")
 add_compile_definitions(PLUGINS_DIR="${PLUGIN_DIR}")
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/*.hpp")
 file(GLOB_RECURSE PROJECT_FILES
         ${SOURCES}
-        ${HEADERS}
+        "${PROJECT_SOURCE_DIR}/include/*.hpp"
         "${PROJECT_SOURCE_DIR}/modules/*.cpp"
         "${PROJECT_SOURCE_DIR}/modules/*.hpp"
         "${PROJECT_SOURCE_DIR}/plugins/*.cpp"
@@ -96,11 +95,6 @@ endif ()
 
 copy_directory_to_target(
         cae
-        "${CMAKE_SOURCE_DIR}/assets/icons"
-        "assets/icons"
-)
-copy_directory_to_target(
-        cae
-        "${CMAKE_SOURCE_DIR}/assets/shaders"
-        "assets/shaders"
+        "${CMAKE_SOURCE_DIR}/assets"
+        "assets"
 )

@@ -3,10 +3,16 @@ function(copy_directory_to_target TARGET SRC_DIR DST_SUBDIR)
         message(FATAL_ERROR "Target '${TARGET}' does not exist")
     endif()
 
-    add_custom_command(
-            TARGET ${TARGET} POST_BUILD
+    set(COPY_TARGET_NAME copy_${TARGET}_${DST_SUBDIR})
+
+    set(DST_DIR "$<TARGET_FILE_DIR:${TARGET}>/${DST_SUBDIR}")
+
+    add_custom_target(${COPY_TARGET_NAME} ALL
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${SRC_DIR}
-            $<TARGET_FILE_DIR:${TARGET}>/${DST_SUBDIR}
+            ${DST_DIR}
+            COMMENT "Copying '${SRC_DIR}' to '${DST_DIR}'"
     )
+
+    add_dependencies(${TARGET} ${COPY_TARGET_NAME})
 endfunction()
