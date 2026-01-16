@@ -46,7 +46,7 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine("OpenGL", "Win32", "GLSL", "SPIRV");
+        setupEngine("OpenGL", "GLFW", "GLSL", "SPIRV");
     }
     catch (const std::exception &e)
     {
@@ -120,7 +120,8 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     m_engine = std::make_unique<Engine>(
         m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
         [rendererPlugin]() { return rendererPlugin; }, [shaderIRPlugin]() { return shaderIRPlugin; }, shaderFactories,
-        [windowPlugin]() { return windowPlugin; }, shaderSources, std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
+        [windowPlugin]() { return windowPlugin; }, shaderSources,
+        std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
 }
 
 void cae::Application::start() const { m_engine->run(); }
