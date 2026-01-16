@@ -22,4 +22,41 @@ namespace cae
         static constexpr std::string_view VERSION_MSG = PROJECT_NAME
             " v" PROJECT_VERSION " " BUILD_TYPE " (" GIT_TAG ", commit " GIT_COMMIT_HASH ") " __DATE__ " " __TIME__;
     } // namespace Message
+
+    namespace Plugins::Name
+    {
+        namespace Render
+        {
+            inline constexpr auto OPENGL = "OpenGL";
+            inline constexpr auto VULKAN = "Vulkan";
+        } // namespace Render
+
+        namespace Shader
+        {
+            namespace IR
+            {
+                inline constexpr auto SPIRV = "SPIRV";
+            } // namespace IR
+
+            namespace Frontend
+            {
+                inline constexpr auto GLSL = "GLSL";
+            } // namespace Frontend
+
+        } // namespace Shader
+
+        namespace Window
+        {
+            inline constexpr auto GLFW = "GLFW";
+            inline constexpr auto WIN32 = "Win32";
+            inline constexpr auto X11 = "X11";
+        } // namespace Window
+
+    } // namespace Plugins::Name
+
+    namespace User
+    {
+        inline constexpr auto NAME = "User";
+    } // namespace User
+
 } // namespace cae

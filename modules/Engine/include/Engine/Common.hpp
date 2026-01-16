@@ -24,7 +24,7 @@ namespace cae
 
     namespace Cam
     {
-        inline constexpr auto NAME = "Camera";
+        inline constexpr auto NAME = "Default name";
         inline constexpr auto MOVE_SPEED = 2.5F;
         inline constexpr auto LOOK_SPEED = 100.F;
         inline constexpr auto FOV = 45.F;
@@ -38,13 +38,6 @@ namespace cae
         inline constexpr auto PORT = 4242;
     } // namespace Network
 
-    namespace Plugins::Name
-    {
-        inline constexpr auto RENDERER_OPENGL = "OpenGL";
-        inline constexpr auto RENDERER_VULKAN = "Vulkan";
-        inline constexpr auto WINDOW_GLFW = "GLFW";
-    } // namespace Plugins::Name
-
     namespace Renderer
     {
         inline constexpr auto VSYNC = false;
@@ -55,16 +48,11 @@ namespace cae
         inline constexpr auto CLEAR_COLOR_A = 1.0F;
     } // namespace Renderer
 
-    namespace User
-    {
-        inline constexpr auto NAME = "User";
-    } // namespace User
-
     namespace Window
     {
         inline constexpr uint16_t WIDTH = 1920;
         inline constexpr uint16_t HEIGHT = 1080;
-        inline constexpr auto NAME = "CAE - Cross API Engine";
+        inline constexpr auto NAME = "Default name";
         inline constexpr auto FULLSCREEN = false;
         inline constexpr auto ICON_PATH = "";
     } // namespace Window
