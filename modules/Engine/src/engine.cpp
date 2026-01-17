@@ -48,11 +48,11 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
     m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle(), config.renderer_clear_color);
 }
 
-void cae::Engine::initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices) const
+void cae::Engine::initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
+                                            const std::vector<float> &vertices) const
 {
     initShaders(shaderSources);
     m_rendererPlugin->createMesh(vertices);
-
 }
 
 void cae::Engine::run() const
@@ -80,7 +80,8 @@ void cae::Engine::stop()
     m_windowPlugin = nullptr;
 }
 
-void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath) const
+void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize,
+                             const std::string &iconPath) const
 {
     m_windowPlugin->create(windowName, windowSize);
     if (!iconPath.empty())

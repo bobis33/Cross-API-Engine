@@ -77,9 +77,9 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
         }
         if (renderer.contains("clearColor") && renderer["clearColor"].is_array() && renderer["clearColor"].size() == 4)
         {
-            if (const auto &clearColor = renderer["clearColor"]; clearColor[0].is_number_float() &&
-                                                                 clearColor[1].is_number_float() &&
-                                                                 clearColor[2].is_number_float() && clearColor[3].is_number_float())
+            if (const auto &clearColor = renderer["clearColor"];
+                clearColor[0].is_number_float() && clearColor[1].is_number_float() && clearColor[2].is_number_float() &&
+                clearColor[3].is_number_float())
             {
                 config.renderer_clear_color.r = clearColor[0];
                 config.renderer_clear_color.g = clearColor[1];

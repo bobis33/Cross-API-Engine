@@ -55,6 +55,6 @@ namespace cae
         inline constexpr auto NAME = "Default name";
         inline constexpr auto FULLSCREEN = false;
         inline constexpr auto ICON_PATH = "";
-    } // namespace Window
+    } // namespace WINDOW
 
 } // namespace cae

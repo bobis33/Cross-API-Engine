@@ -124,8 +124,8 @@ void cae::Application::start() const
          .source = utl::fileToString("assets/shaders/glsl/texture.frag"),
          .stage = ShaderStage::FRAGMENT},
     };
-    m_engine->initializeRenderResources(shaderSources,
-        std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
+    m_engine->initializeRenderResources(
+        shaderSources, std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
     m_engine->run();
 }
 

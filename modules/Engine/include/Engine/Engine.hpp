@@ -72,7 +72,8 @@ namespace cae
             [[nodiscard]] const std::unique_ptr<utl::Clock> &getClock() { return m_clock; }
             [[nodiscard]] const std::unique_ptr<Camera> &getCamera() const { return m_camera; }
 
-            void initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources, const std::vector<float> &vertices) const;
+            void initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
+                                           const std::vector<float> &vertices) const;
             void run() const;
             void stop();
 
@@ -87,7 +88,8 @@ namespace cae
             std::unique_ptr<ShaderManager> m_shaderManager = nullptr;
             std::unique_ptr<Camera> m_camera = nullptr;
 
-            void initWindow(const std::string &windowName, const WindowSize &windowSize, const std::string &iconPath) const;
+            void initWindow(const std::string &windowName, const WindowSize &windowSize,
+                            const std::string &iconPath) const;
             void initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const;
 
     }; // class Engine
