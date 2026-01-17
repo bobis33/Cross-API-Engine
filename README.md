@@ -16,15 +16,15 @@ This enables rapid experimentation, platform portability, performance benchmarki
 
 ![Architecture Diagram](./assets/diagram.png)
 ## Supported Platforms
-| Platform | Compiler                         | Build system            | Status |
-|----------|----------------------------------|-------------------------|--------|
-| Windows  | MSVC (Visual Studio 2022 / 18.x) | CMake + MSBuild / Ninja | ✅      |
-| Linux    | GCC ≥ 13                         | CMake + Ninja / Make    | ✅      |
-| MacOS    | GCC ≥ 13 / Clang                 | CMake + Ninja / Make    | ✅      |
-| iOS      |                                  |                         | ❌      |
-| tvOS     |                                  |                         | ❌      |
-| Android  |                                  |                         | ❌      |
-| Web      |                                  |                         | ❌      |
+| Platform | Compiler                         | Build system    | Status |
+|----------|----------------------------------|-----------------|--------|
+| Windows  | MSVC (Visual Studio 2026 / 18.x) | MSBuild / Ninja | ✅      |
+| Linux    | GCC ≥ 13                         | Ninja / Make    | ✅      |
+| MacOS    | GCC ≥ 13 / Clang                 | Ninja / Make    | ✅      |
+| iOS      |                                  |                 | ❌      |
+| tvOS     |                                  |                 | ❌      |
+| Android  |                                  |                 | ❌      |
+| Web      |                                  |                 | ❌      |
 
 ## Build
 
@@ -45,7 +45,7 @@ Make sure you have the following dependencies installed on your system:
 ### Windows
 
 ```powershell
-cmake -S . -G "Ninja" -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
+cmake -S . -G "Visual Studio 18 2026" -A "x64" -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-build-release --config Release
 ```
 
