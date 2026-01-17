@@ -36,13 +36,24 @@ namespace utl
                 return os;
             }
 
+            ///
+            /// @return Current time point
+            /// @brief Get the current time point
+            ///
             static TimePoint now() { return std::chrono::high_resolution_clock::now(); }
+
+            ///
+            /// @brief Restart the clock
+            ///
             void restart()
             {
                 m_start = now();
                 m_pausedDuration = Duration(0);
                 m_isPaused = false;
             }
+            ///
+            /// @brief Pause the clock
+            ///
             void pause()
             {
                 if (!m_isPaused)
@@ -51,6 +62,10 @@ namespace utl
                     m_isPaused = true;
                 }
             }
+
+            ///
+            /// @brief Resume the clock
+            ///
             void resume()
             {
                 if (m_isPaused)
@@ -59,6 +74,11 @@ namespace utl
                     m_isPaused = false;
                 }
             }
+
+            ///
+            /// @return Elapsed time in seconds
+            /// @brief Get the elapsed time in seconds
+            ///
             [[nodiscard]] float getDeltaSeconds() const
             {
                 if (m_isPaused)
@@ -68,6 +88,11 @@ namespace utl
                 return std::chrono::duration<float>(now() - m_start - m_pausedDuration).count();
             }
 
+            ///
+            /// @tparam Duration Type of duration to return (default: seconds)
+            /// @return Elapsed time in specified duration
+            /// @brief Get the elapsed time in specified duration
+            ///
             template <typename Duration = std::chrono::seconds> [[nodiscard]] auto getElapsed() const
             {
                 return std::chrono::duration_cast<Duration>(now() - m_start - m_pausedDuration);

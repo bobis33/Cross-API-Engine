@@ -40,8 +40,17 @@ namespace utl
             Logger(Logger &&) = delete;
             Logger &operator=(Logger &&) = delete;
 
+            ///
+            /// @brief Initialize the logger
+            ///
             static void init();
 
+            ///
+            /// @tparam Func Function to be measured
+            /// @param message Message to be logged
+            /// @param func Function to be measured
+            /// @brief Log the execution time of a function
+            ///
             template <typename Func> static void logExecutionTime(const std::string &message, Func &&func)
             {
                 const auto start = std::chrono::high_resolution_clock::now();
@@ -54,6 +63,11 @@ namespace utl
                           << LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_RESET)];
             }
 
+            ///
+            /// @param message Message to be logged
+            /// @param logLevel Log level of the message
+            /// @brief Log a message with a specific log level
+            ///
             static void log(const std::string &message, const LogLevel &logLevel)
             {
                 std::cout << (logLevel == LogLevel::INFO ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_INFO)]

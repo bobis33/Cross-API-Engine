@@ -33,6 +33,11 @@ namespace utl
         void *;
 #endif
 
+    ///
+    /// @struct SharedLib
+    /// @brief RAII wrapper for shared libraries
+    /// @namespace utl
+    ///
     struct SharedLib
     {
             LibHandle handle = nullptr;
@@ -90,11 +95,11 @@ namespace utl
             PluginLoader &operator=(PluginLoader &&) = delete;
 
             ///
-            /// Load a plugin of type T
             /// @tparam T Expected plugin interface (must derive from IPlugin)
             /// @param path Path to the dynamic library
             /// @param pluginPrefix Expected prefix for plugin filenames
             /// @return shared_ptr<T> instance
+            /// @brief Load a plugin of type T
             ///
             template <std::derived_from<IPlugin> T>
             std::shared_ptr<T> loadPlugin(const std::string &path, const std::string_view &pluginPrefix = "")
@@ -147,6 +152,11 @@ namespace utl
             std::unordered_map<std::string, SharedLib> m_handles;
             std::unordered_map<std::string, std::unique_ptr<IPlugin>> m_plugins;
 
+            ///
+            /// @param path Path to the dynamic library
+            /// @return Loaded SharedLib
+            /// @brief Load a shared library
+            ///
             static SharedLib loadLibrary(const std::string &path)
             {
                 const LibHandle handle =
@@ -168,6 +178,11 @@ namespace utl
                 return SharedLib(handle);
             }
 
+            ///
+            /// @param lib Loaded SharedLib
+            /// @param path Path to the dynamic library
+            /// @return EntryPoint function pointer
+            ///
             static EntryPointFn getEntryPoint(SharedLib &lib, const std::string &path)
             {
                 const auto entry =
@@ -183,6 +198,11 @@ namespace utl
                 return entry;
             }
 
+            ///
+            /// @param path Path to the dynamic library
+            /// @param pluginPrefix Expected prefix for plugin filenames
+            /// @brief Validate the plugin path
+            ///
             static void validatePluginPath(const std::filesystem::path &path, const std::string_view &pluginPrefix)
             {
                 const std::string filename = path.filename().string();

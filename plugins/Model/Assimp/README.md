@@ -1,0 +1,1 @@
+# Model plugin - Assimp

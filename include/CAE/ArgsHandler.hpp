@@ -11,11 +11,22 @@
 namespace cae
 {
 
+    ///
+    /// @struct ArgsConfig
+    /// @brief Struct for command line arguments configuration
+    /// @namespace cae
+    ///
     struct ArgsConfig
     {
             bool run = false;
             std::string config_path;
     };
+
+    ///
+    /// @struct EnvConfig
+    /// @brief Struct for environment variables configuration
+    /// @namespace cae
+    ///
     struct EnvConfig
     {
             std::string user_name;
@@ -39,7 +50,19 @@ namespace cae
             ArgsHandler(ArgsHandler &&) = delete;
             ArgsHandler &operator=(ArgsHandler &&) = delete;
 
+            ///
+            /// @param argc argument count
+            /// @param argv argument vector
+            /// @return Parsed ArgsConfig
+            /// @brief Parse command line arguments
+            ///
             static ArgsConfig ParseArgs(int argc, const char *const *argv);
+
+            ///
+            /// @param envp environment pointer
+            /// @return Parsed EnvConfig
+            /// @brief Parse environment variables
+            ///
             static EnvConfig ParseEnv(const char *const *envp);
 
         private:

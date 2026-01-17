@@ -48,8 +48,22 @@ namespace utl
         public:
             virtual ~IPlugin() = default;
 
+            ///
+            /// @return The name of the plugin
+            /// @brief Get the name of the plugin
+            ///
             [[nodiscard]] virtual std::string getName() const = 0;
+
+            ///
+            /// @return The type of the plugin
+            /// @brief Get the type of the plugin
+            ///
             [[nodiscard]] virtual PluginType getType() const = 0;
+
+            ///
+            /// @return The handled platform of the plugin
+            /// @brief Get the handled platform of the plugin
+            ///
             [[nodiscard]] virtual PluginPlatform getPlatform() const = 0;
 
     }; // interface IPlugin

@@ -19,13 +19,13 @@ If not, **create one** using the provided templates:
 Each contribution must be developed in a dedicated branch.
 Branches and Pull Requests must follow this naming convention:
 ```
-<Type>/<Scope>/<Sub-scope>
+<Type>/<Scope>/<Short-Description>
 ```
 - **Type** → `Feature` | `Fix` | `Refactor` | `Docs` | `Test` | `CI`
 - **Scope** → `Core` | `Audio` | `Input` | `Network` | `Renderer` | `Window`
+- **Short-Description** → A concise summary of the change (use hyphens for spaces).
 
 This ensures consistency across branches and PRs, making it easy to identify the purpose of each contribution at a glance.
-
 
 ## Commit Norms
 

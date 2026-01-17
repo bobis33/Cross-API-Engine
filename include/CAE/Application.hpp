@@ -14,6 +14,11 @@
 namespace cae
 {
 
+    ///
+    /// @struct AppConfig
+    /// @brief Struct for application configuration
+    /// @namespace cae
+    ///
     struct AppConfig
     {
             EngineConfig engineConfig;
@@ -29,6 +34,12 @@ namespace cae
     {
 
         public:
+
+            ///
+            /// @param argsConfig Command line arguments configuration
+            /// @param envConfig Environment variables configuration
+            /// @brief Construct the Application with given configurations
+            ///
             Application(const ArgsConfig &argsConfig, const EnvConfig &envConfig);
             ~Application() = default;
 
@@ -37,13 +48,33 @@ namespace cae
             Application(Application &&) = delete;
             Application &operator=(Application &&) = delete;
 
+            ///
+            /// @brief Start the application
+            ///
             void start() const;
+
+            ///
+            /// @brief Stop the application
+            ///
             void stop();
 
         private:
+
+            ///
+            /// @param rendererName renderer plugin name
+            /// @param windowName window plugin name
+            /// @param shaderFrontendName shader frontend plugin name
+            /// @param shaderIRName shader IR plugin name
+            /// @brief Setup the engine with the given plugins
+            ///
             void setupEngine(const std::string &rendererName, const std::string &windowName,
                              const std::string &shaderFrontendName, const std::string &shaderIRName);
 
+            ///
+            /// @param path Path to the engine configuration file
+            /// @return Parsed EngineConfig
+            /// @brief Parse the engine configuration file
+            ///
             static EngineConfig parseEngineConf(const std::string &path);
 
             std::unique_ptr<utl::PluginLoader> m_pluginLoader = nullptr;

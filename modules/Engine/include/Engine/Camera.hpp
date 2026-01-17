@@ -51,7 +51,19 @@ namespace cae
             [[nodiscard]] const float &getNear() const { return m_near; }
             [[nodiscard]] const float &getFar() const { return m_far; }
 
+            ///
+            /// @param direction Direction to move the camera
+            /// @param deltaTime Time delta for movement
+            /// @brief Move the camera in a given direction
+            ///
             void move(const glm::vec3 &direction, float deltaTime);
+
+            ///
+            /// @param yawOffset Yaw offset to rotate the camera
+            /// @param pitchOffset Pitch offset to rotate the camera
+            /// @param deltaTime Time delta for rotation
+            /// @brief Rotate the camera by given yaw and pitch offsets
+            ///
             void rotate(float yawOffset, float pitchOffset, float deltaTime);
 
         private:
