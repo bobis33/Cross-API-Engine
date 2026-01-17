@@ -54,13 +54,13 @@ namespace utl
                 return normalize((fs::path(paths) / ...));
             }
 
-            fs::path executableDir()
+            static fs::path executableDir()
             {
-#if defined(_WIN32)
+#ifdef _WIN32
                 char buffer[MAX_PATH];
                 GetModuleFileNameA(NULL, buffer, MAX_PATH);
                 return fs::path(buffer).parent_path();
-#elif defined(__APPLE__)
+#elifdef __APPLE__
                 char buffer[1024];
                 uint32_t size = sizeof(buffer);
                 if (_NSGetExecutablePath(buffer, &size) == 0)
@@ -78,7 +78,7 @@ namespace utl
 #endif
             }
 
-            fs::path resolveRelativeToExe(const fs::path &relativePath)
+            static fs::path resolveRelativeToExe(const fs::path &relativePath)
             {
                 return normalize(executableDir() / relativePath);
             }

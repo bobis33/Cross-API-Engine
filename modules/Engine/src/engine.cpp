@@ -5,6 +5,8 @@
 #include <numeric>
 #include <ranges>
 
+#include "Utils/Path.hpp"
+
 void printFps(std::array<float, 10> &fpsBuffer, int &fpsIndex, const float deltaTime)
 {
     fpsBuffer[fpsIndex % 10] = 1.0F / deltaTime;
@@ -24,13 +26,14 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
     : m_audioPlugin(audioFactory()), m_inputPlugin(inputFactory()), m_networkPlugin(networkFactory()),
       m_rendererPlugin(rendererFactory()), m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>()),
       m_shaderManager(std::make_unique<ShaderManager>(shaderFrontendFactories, shaderIRFactory)),
-      m_camera(std::make_unique<Camera>())
+      m_camera(std::make_unique<Camera>()), m_logFps(config.log_fps)
 {
     constexpr auto boolToStr = [](const bool b) { return b ? "true" : "false"; };
     std::ostringstream msg;
-    msg << "Loading engine with configuration:\n"
+    msg << "Starting engine with configuration:\n"
         << "\tAudio master volume: " << config.audio_master_volume << "\n"
         << "\tAudio muted: " << boolToStr(config.audio_muted) << "\n"
+        << "\tLog FPS: " << boolToStr(config.log_fps) << "\n"
         << "\tNetwork host: " << config.network_host << "\n"
         << "\tNetwork port: " << config.network_port << "\n"
         << "\tRenderer vsync: " << boolToStr(config.renderer_vsync) << "\n"
@@ -63,7 +66,10 @@ void cae::Engine::run() const
     {
         m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic");
         m_windowPlugin->pollEvents();
-        printFps(fpsBuffer, fpsIndex, m_clock->getDeltaSeconds());
+        if (m_logFps)
+        {
+            printFps(fpsBuffer, fpsIndex, m_clock->getDeltaSeconds());
+        }
         m_clock->restart();
     }
 }

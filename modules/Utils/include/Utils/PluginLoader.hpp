@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "Utils/Logger.hpp"
-
 #include <filesystem>
 #include <mutex>
 
@@ -109,7 +107,6 @@ namespace utl
 
                     if (m_plugins.contains(path))
                     {
-                        Logger::log("Plugin already loaded, skipping: " + path, LogLevel::WARNING);
                         return nullptr;
                     }
 
@@ -136,15 +133,11 @@ namespace utl
 
                     m_handles[path] = std::move(lib);
 
-                    Logger::log("Plugin loaded:\t name: " + it->second->getName() + "\t path: " + path, LogLevel::INFO);
-
                     std::shared_ptr<IPlugin> baseShared(it->second.get(), [](IPlugin *) {});
                     return std::shared_ptr<T>(baseShared, typed);
                 }
                 catch (const std::exception &e)
                 {
-                    Logger::log("Skipping plugin '" + path + "': " + e.what(), LogLevel::WARNING);
-
                     return nullptr;
                 }
             }
@@ -190,20 +183,11 @@ namespace utl
                 return entry;
             }
 
-            static void validatePluginPath(const std::string &path, const std::string_view &pluginPrefix)
+            static void validatePluginPath(const std::filesystem::path &path, const std::string_view &pluginPrefix)
             {
-                namespace fs = std::filesystem;
+                const std::string filename = path.filename().string();
 
-                const fs::path p(path);
-
-                if (!p.has_filename())
-                {
-                    throw std::runtime_error("Invalid plugin path: " + path);
-                }
-
-                const std::string filename = p.filename().string();
-
-                if (p.extension() != PLUGINS_EXTENSION)
+                if (path.extension() != PLUGINS_EXTENSION)
                 {
                     throw std::runtime_error("Invalid plugin extension: " + filename +
                                              " (expected " PLUGINS_EXTENSION ")");

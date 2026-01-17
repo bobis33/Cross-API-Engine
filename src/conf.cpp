@@ -1,30 +1,27 @@
 #include "CAE/Application.hpp"
 
+#include "Utils/Logger.hpp"
+#include "Utils/Path.hpp"
+
 #include <nlohmann/json.hpp>
 
 #include <fstream>
 
-namespace fs = std::filesystem;
 using json = nlohmann::json;
 
 cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
 {
-    const fs::path filePath(path);
-    if (!fs::exists(filePath))
+    auto confPath = utl::Path::resolveRelativeToExe(path);
+    if (!utl::Path::existsFile(confPath))
     {
-        std::cerr << "Config file not found: " << filePath << '\n';
-        return {};
-    }
-    if (!fs::is_regular_file(filePath))
-    {
-        std::cerr << "Config path is not a regular file: " << filePath << '\n';
+        utl::Logger::log("Config file does not exist: " + confPath.string(), utl::LogLevel::WARNING);
         return {};
     }
 
-    std::ifstream file(filePath);
+    std::ifstream file(confPath);
     if (!file.is_open())
     {
-        std::cerr << "Failed to open config file: " << filePath << '\n';
+        utl::Logger::log("Failed to open config file: " + confPath.string(), utl::LogLevel::WARNING);
         return {};
     }
 
@@ -35,11 +32,12 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
     }
     catch (const json::parse_error &e)
     {
-        std::cerr << "Failed to parse JSON config (" << filePath << "): " + std::string(e.what()) << '\n';
+        utl::Logger::log("Failed to parse JSON config (" + confPath.string() + "): " + std::string(e.what()),
+                         utl::LogLevel::WARNING);
         return {};
     }
     EngineConfig config;
-    utl::Logger::log("Loading config: " + filePath.string(), utl::LogLevel::INFO);
+    utl::Logger::log("Loading config: " + confPath.string(), utl::LogLevel::INFO);
     if (j.contains("audio"))
     {
         const auto &audio = j["audio"];
@@ -50,6 +48,13 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
         if (audio.contains("muted") && audio["muted"].is_boolean())
         {
             config.audio_muted = audio["muted"];
+        }
+    }
+    if (j.contains("log"))
+    {
+        if (const auto &log = j["log"]; log.contains("fps") && log["fps"].is_boolean())
+        {
+            config.log_fps = log["fps"];
         }
     }
     if (j.contains("network"))
@@ -109,7 +114,7 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
         }
         if (window.contains("iconPath") && window["iconPath"].is_string())
         {
-            config.window_icon_path = window["iconPath"];
+            config.window_icon_path = utl::Path::resolveRelativeToExe(window["iconPath"]).string();
         }
     }
 

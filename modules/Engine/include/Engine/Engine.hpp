@@ -23,6 +23,8 @@ namespace cae
             float audio_master_volume = AUDIO::VOLUME;
             bool audio_muted = AUDIO::MUTED;
 
+            bool log_fps = LOG::LOG_FPS;
+
             std::string network_host = NETWORK::HOST;
             uint16_t network_port = NETWORK::PORT;
 
@@ -87,6 +89,8 @@ namespace cae
             std::unique_ptr<utl::Clock> m_clock = nullptr;
             std::unique_ptr<ShaderManager> m_shaderManager = nullptr;
             std::unique_ptr<Camera> m_camera = nullptr;
+
+            bool m_logFps = false;
 
             void initWindow(const std::string &windowName, const WindowSize &windowSize,
                             const std::string &iconPath) const;

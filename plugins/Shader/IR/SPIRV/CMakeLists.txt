@@ -1,5 +1,14 @@
-## Need spirv-cross for cross-compilation,
-## maybe spirv-val for validation and spirv-opt for optimization
+## Need spirv-val for validation and spirv-opt for optimization
+
+## set(SPIRV_SKIP_TESTS ON CACHE BOOL "")
+## set(SPIRV_SKIP_EXECUTABLES ON CACHE BOOL "")
+## FetchContent_Declare(
+##         spirv-tools
+##         GIT_REPOSITORY https://github.com/KhronosGroup/SPIRV-Tools.git
+##         GIT_TAG vulkan-sdk-1.4.335.0
+## )
+## set(SPIRV_TOOLS_INCLUDE_DIR ${spirv-headers_SOURCE_DIR})
+## FetchContent_MakeAvailable(spirv-tools)
 
 project(cae-spirv
         DESCRIPTION "CAE SPIRV Shader Intermediate Representation Plugin"
@@ -54,6 +63,8 @@ else()
             spirv-cross-glsl
             spirv-cross-hlsl
             spirv-cross-msl
+            ## SPIRV-Tools-opt
+            ## SPIRV-Tools-val
     )
 endif()
 
@@ -66,15 +77,12 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         ${SPIRV_HEADERS_INCLUDE_DIR}
         ${SPIRV_CROSS_INCLUDE_DIR}
 )
-
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-modules
         ${SPIRV_CROSS_LIBS}
 )
-
 target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-
 set_target_properties(${PROJECT_NAME} PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${PLUGIN_DIR}"
         RUNTIME_OUTPUT_DIRECTORY "${PLUGIN_DIR}"
