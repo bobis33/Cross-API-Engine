@@ -7,6 +7,7 @@
 #pragma once
 
 #ifdef __APPLE__
+
 #include "OPGL/Context/IContext.hpp"
 
 namespace cae

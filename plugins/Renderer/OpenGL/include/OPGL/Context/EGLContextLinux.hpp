@@ -23,7 +23,7 @@ namespace cae
     class EGLContextLinux final : public IContext
     {
         public:
-            EGLContextLinux() = default;
+            explicit EGLContextLinux() = default;
             ~EGLContextLinux() override;
 
             void initialize(const NativeWindowHandle &window) override;
@@ -41,7 +41,8 @@ namespace cae
             EGLDisplay m_display = EGL_NO_DISPLAY;
             EGLSurface m_surface = EGL_NO_SURFACE;
             EGLContext m_context = EGL_NO_CONTEXT;
-    };
+
+    }; // class EGLContextLinux
 
 } // namespace cae
 

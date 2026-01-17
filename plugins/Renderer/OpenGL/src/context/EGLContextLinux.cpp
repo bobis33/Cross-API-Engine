@@ -1,7 +1,6 @@
 #ifdef __linux__
 
 #include "OPGL/Context/EGLContextLinux.hpp"
-#include "OPGL/glad/glad.h"
 
 #include <stdexcept>
 
@@ -82,7 +81,9 @@ void cae::EGLContextLinux::initialize(const NativeWindowHandle &window)
 
     eglSwapInterval(m_display, 0);
 
-    if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(eglGetProcAddress)) == 0)
+    if (gladLoadGLContext(
+            &gl,
+            eglGetProcAddress) == 0)
     {
         throw std::runtime_error("Failed to initialize GLAD");
     }

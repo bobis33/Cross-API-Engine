@@ -8,6 +8,8 @@
 
 #include "Interfaces/IWindow.hpp"
 
+#include <glad/gl.h>
+
 namespace cae
 {
     ///
@@ -26,6 +28,8 @@ namespace cae
 
             virtual void setVSyncEnabled(bool enabled) = 0;
             [[nodiscard]] virtual bool isVSyncEnabled() const = 0;
+
+            GladGLContext gl{0};
 
     }; // interface IContext
 

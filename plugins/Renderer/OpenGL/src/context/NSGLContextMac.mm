@@ -1,7 +1,6 @@
 #if defined(__APPLE__)
 
 #include "OPGL/Context/NSGLContextMac.hpp"
-#include "OPGL/glad/glad.h"
 
 #import <AppKit/AppKit.h>
 
@@ -31,7 +30,7 @@ void cae::NSGLContextMac::initialize(const NativeWindowHandle &window) {
     [(NSOpenGLContext*)m_context setView:nsview];
     [(NSOpenGLContext*)m_context makeCurrentContext];
 
-    if (!gladLoadGL()) {
+    if (!gladLoadGLContext(&gl, nullptr)) {
         throw std::runtime_error("Failed to initialize GLAD");
     }
 }

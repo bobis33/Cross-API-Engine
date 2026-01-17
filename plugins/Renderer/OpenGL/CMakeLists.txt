@@ -1,6 +1,6 @@
 project(cae-opengl
         DESCRIPTION "CAE OpenGL Renderer Plugin"
-        LANGUAGES C CXX
+        LANGUAGES CXX
 )
 
 find_package(OpenGL REQUIRED)
@@ -8,6 +8,16 @@ if (NOT OPENGL_FOUND)
     message(WARNING "OpenGL not found, skipping ${PROJECT_NAME} build")
     return()
 endif ()
+
+include(FetchContent)
+FetchContent_Declare(
+        glad
+        GIT_REPOSITORY "https://github.com/bobis33/glad"
+        GIT_TAG ddd8a69bb693740db074d47616a8629637cc821a
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(glad)
 
 if (APPLE)
     enable_language(OBJCXX)
@@ -17,7 +27,6 @@ elseif (UNIX)
 endif ()
 
 file(GLOB_RECURSE SOURCES
-        "${PROJECT_SOURCE_DIR}/src/*.c"
         "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 
@@ -37,7 +46,7 @@ if (UNIX AND NOT APPLE)
     target_include_directories(${PROJECT_NAME} PRIVATE ${EGL_INCLUDE_DIRS})
 endif ()
 
-set(PLATFORM_LIBS cae-modules OpenGL::GL)
+set(PLATFORM_LIBS cae-modules OpenGL::GL glad)
 if (UNIX AND NOT APPLE)
     list(APPEND PLATFORM_LIBS ${EGL_LIBRARIES})
 elseif (APPLE)
