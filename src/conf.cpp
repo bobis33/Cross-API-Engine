@@ -43,7 +43,7 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
     if (j.contains("audio"))
     {
         const auto &audio = j["audio"];
-        if (audio.contains("masterVolume") && audio["masterVolume"].is_number())
+        if (audio.contains("masterVolume") && audio["masterVolume"].is_number_float())
         {
             config.audio_master_volume = audio["masterVolume"];
         }
@@ -77,9 +77,9 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
         }
         if (renderer.contains("clearColor") && renderer["clearColor"].is_array() && renderer["clearColor"].size() == 4)
         {
-            if (const auto &clearColor = renderer["clearColor"]; clearColor[0].is_number() &&
-                                                                 clearColor[1].is_number() &&
-                                                                 clearColor[2].is_number() && clearColor[3].is_number())
+            if (const auto &clearColor = renderer["clearColor"]; clearColor[0].is_number_float() &&
+                                                                 clearColor[1].is_number_float() &&
+                                                                 clearColor[2].is_number_float() && clearColor[3].is_number_float())
             {
                 config.renderer_clear_color.r = clearColor[0];
                 config.renderer_clear_color.g = clearColor[1];
