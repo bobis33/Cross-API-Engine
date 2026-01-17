@@ -9,8 +9,6 @@
 #include "Interfaces/Shader/IShaderIR.hpp"
 
 #include <memory>
-#include <ranges>
-#include <unordered_map>
 
 namespace cae
 {

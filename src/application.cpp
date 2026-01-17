@@ -1,14 +1,19 @@
 #include "CAE/Application.hpp"
 #include "CAE/Common.hpp"
 
-#include "Utils/Utils.hpp"
-
-#include <filesystem>
+#include "Utils/File.hpp"
+#include "Utils/Logger.hpp"
+#include "Utils/Path.hpp"
 
 static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_ptr<utl::PluginLoader> &loader)
 {
-    const std::filesystem::path pluginDir{PLUGINS_DIR};
     std::vector<std::shared_ptr<utl::IPlugin>> loadedPlugins;
+    const std::filesystem::path pluginDir{PLUGINS_DIR};
+    if (!utl::Path::existsDir(pluginDir))
+    {
+        utl::Logger::log("Plugins directory does not exist: " + pluginDir.string(), utl::LogLevel::WARNING);
+        return loadedPlugins;
+    }
 
     for (const auto &entry : std::filesystem::directory_iterator(pluginDir))
     {
@@ -19,6 +24,7 @@ static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_
         const std::string pluginPath = entry.path().string();
         if (auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath, "cae-"); plugin != nullptr)
         {
+            utl::Logger::log("Loaded plugin:\t " + plugin->getName() + " from " + pluginPath, utl::LogLevel::INFO);
             loadedPlugins.push_back(plugin);
         }
         else
@@ -37,7 +43,7 @@ static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_
 cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &envConfig)
     : m_pluginLoader(std::make_unique<utl::PluginLoader>())
 {
-    utl::Logger::log("PROJECT INFO:\n" + std::string(MESSAGE::VERSION_MSG), utl::LogLevel::INFO);
+    utl::Logger::log("PROJECT INFO:\n" + std::string(MESSAGE::VERSION_MSG) + '\n', utl::LogLevel::INFO);
 
     try
     {
@@ -118,16 +124,16 @@ void cae::Application::start() const
     static const std::vector<ShaderSourceDesc> shaderSources = {
         {.id = "basic_vertex",
          .type = ShaderSourceType::GLSL,
-         .source = utl::fileToString("assets/shaders/glsl/texture.vert"),
+         .source = utl::fileToString(utl::Path::resolveRelativeToExe("assets/shaders/glsl/texture.vert")),
          .stage = ShaderStage::VERTEX},
 
         {.id = "basic_fragment",
          .type = ShaderSourceType::GLSL,
-         .source = utl::fileToString("assets/shaders/glsl/texture.frag"),
+         .source = utl::fileToString(utl::Path::resolveRelativeToExe("assets/shaders/glsl/texture.frag")),
          .stage = ShaderStage::FRAGMENT},
     };
-    m_engine->initializeRenderResources(shaderSources,
-        std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
+    m_engine->initializeRenderResources(
+        shaderSources, std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
     m_engine->run();
 }
 

@@ -10,9 +10,6 @@
 #include "Interfaces/Input/IKeyboard.hpp"
 #include "Interfaces/Input/IMouse.hpp"
 
-#include <memory>
-#include <vector>
-
 namespace cae
 {
 

@@ -3,6 +3,8 @@
 #include "Utils/Image.hpp"
 #include "Utils/Logger.hpp"
 
+#include <GLFW/glfw3native.h>
+
 void cae::GLFW::frameBufferResizeCallback(GLFWwindow *window, const int width, const int height)
 {
     auto *const self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
@@ -54,13 +56,13 @@ cae::WindowSize cae::GLFW::getWindowSize() const
 cae::NativeWindowHandle cae::GLFW::getNativeHandle() const
 {
     NativeWindowHandle handle{};
-#if defined(_WIN32)
+#ifdef _WIN32
     handle.window = glfwGetWin32Window(m_window);
     handle.display = GetModuleHandle(nullptr);
-#elif defined(__linux__)
+#elifdef __linux__
     handle.window = reinterpret_cast<void *>(glfwGetX11Window(m_window));
     handle.display = glfwGetX11Display();
-#elif defined(__APPLE__)
+#elifdef __APPLE__
     handle.window = glfwGetCocoaWindow(m_window);
     handle.display = nullptr;
 #endif

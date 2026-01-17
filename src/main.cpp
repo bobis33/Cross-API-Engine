@@ -1,5 +1,7 @@
 #include "CAE/Application.hpp"
 
+#include "Utils/Logger.hpp"
+
 int main(const int argc, const char *const *argv, const char *const *envp)
 {
     std::unique_ptr<cae::Application> app = nullptr;

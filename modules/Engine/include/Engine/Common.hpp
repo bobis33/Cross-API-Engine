@@ -32,6 +32,11 @@ namespace cae
         inline constexpr auto FAR_PLANE = 100.F;
     } // namespace CAMERA
 
+    namespace LOG
+    {
+        inline constexpr auto LOG_FPS = false;
+    } // namespace LOG
+
     namespace NETWORK
     {
         inline constexpr auto HOST = "127.0.0.1";
@@ -55,6 +60,6 @@ namespace cae
         inline constexpr auto NAME = "Default name";
         inline constexpr auto FULLSCREEN = false;
         inline constexpr auto ICON_PATH = "";
-    } // namespace Window
+    } // namespace WINDOW
 
 } // namespace cae

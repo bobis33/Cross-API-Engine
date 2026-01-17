@@ -5,21 +5,19 @@
 #endif
 
 #include <cstring>
-#include <string>
-#include <unordered_map>
 
 std::unordered_map<std::string, std::string> utl::getEnvMap(const char *const *env)
 {
     std::unordered_map<std::string, std::string> cpyEnv;
 
 #ifdef _WIN32
-    LPCH envStrings = GetEnvironmentStringsA();
-    if (!envStrings)
+    const LPCH envStrings = GetEnvironmentStringsA();
+    if (envStrings == nullptr)
     {
         return cpyEnv;
     }
 
-    for (LPCH var = envStrings; *var; var += std::strlen(var) + 1)
+    for (LPCH var = envStrings; *var != 0; var += std::strlen(var) + 1)
     {
         std::string entry(var);
         if (const auto pos = entry.find('='); pos != std::string::npos)

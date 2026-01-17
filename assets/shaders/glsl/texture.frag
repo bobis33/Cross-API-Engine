@@ -7,6 +7,5 @@ layout(binding = 0) uniform sampler2D uTexture;
 
 void main()
 {
-    // Même sans texture bindée, ça se compile.
     FragColor = texture(uTexture, vUV);
 }

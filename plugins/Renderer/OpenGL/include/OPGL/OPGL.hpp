@@ -11,6 +11,7 @@
 
 #include "Interfaces/Renderer/ARenderer.hpp"
 
+#include <memory>
 #include <unordered_map>
 
 namespace cae

@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <windows.h>
-
 #include "Interfaces/IWindow.hpp"
+
+#include <windows.h>
 
 namespace cae
 {

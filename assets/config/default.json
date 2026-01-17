@@ -3,6 +3,9 @@
     "masterVolume": 0.8,
     "muted": false
   },
+  "log": {
+    "fps": false
+  },
   "network": {
     "host": "127.0.0.1",
     "port": 4242
