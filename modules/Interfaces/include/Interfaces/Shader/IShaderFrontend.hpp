@@ -34,6 +34,11 @@ namespace cae
         UNDEFINED = 255
     };
 
+    ///
+    /// @struct ShaderSourceDesc
+    /// @brief Struct for shader source description
+    /// @namespace cae
+    ///
     struct ShaderSourceDesc
     {
             ShaderID id;
@@ -42,6 +47,11 @@ namespace cae
             ShaderStage stage;
     };
 
+    ///
+    /// @struct ShaderIRModule
+    /// @brief Struct for shader intermediate representation module
+    /// @namespace cae
+    ///
     struct ShaderIRModule
     {
             ShaderID id;
@@ -50,6 +60,11 @@ namespace cae
             std::string entryPoint = "main";
     };
 
+    ///
+    /// @struct ShaderPipelineDesc
+    /// @brief Struct for shader pipeline description
+    /// @namespace cae
+    ///
     struct ShaderPipelineDesc
     {
             ShaderID id;
@@ -68,7 +83,17 @@ namespace cae
         public:
             ~IShaderFrontend() override = default;
 
+            ///
+            /// @return The source type this frontend handles
+            /// @brief Get the source type this frontend handles
+            ///
             virtual ShaderSourceType sourceType() const = 0;
+
+            ///
+            /// @param desc Shader source description
+            /// @return Compiled shader intermediate representation module
+            /// @brief Compile shader source to intermediate representation
+            ///
             virtual ShaderIRModule compile(const ShaderSourceDesc &desc) = 0;
 
     }; // interface IShaderFrontend

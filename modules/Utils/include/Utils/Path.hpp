@@ -15,7 +15,6 @@
 #endif
 
 #include <filesystem>
-#include <string>
 
 namespace utl
 {
@@ -31,6 +30,17 @@ namespace utl
     {
 
         public:
+            Path() = default;
+            ~Path() = default;
+
+            Path(const Path &) = delete;
+            Path &operator=(const Path &) = delete;
+            Path(Path &&) = delete;
+            Path &operator=(Path &&) = delete;
+
+            /// @param path Path to be normalized
+            /// @return Normalized path
+            /// @brief Normalize a path (resolve symlinks, relative paths, etc.)
             static fs::path normalize(const fs::path &path)
             {
                 try
@@ -43,17 +53,42 @@ namespace utl
                 }
             }
 
+            ///
+            /// @param path Path to be checked
+            /// @return True if the file exists
+            /// @brief Check if a file exists
+            ///
             static bool existsFile(const fs::path &path) { return fs::exists(path) && fs::is_regular_file(path); }
 
+            ///
+            /// @param path Path to be checked
+            /// @return True if the directory exists
+            /// @brief Check if a directory exists
+            ///
             static bool existsDir(const fs::path &path) { return fs::exists(path) && fs::is_directory(path); }
 
+            ///
+            /// @param path Path to get the parent directory of
+            /// @return Parent directory of the path
+            /// @brief Get the parent directory of a path
+            ///
             static fs::path parentDir(const fs::path &path) { return normalize(path).parent_path(); }
 
+            ///
+            /// @tparam Paths Variadic template for paths
+            /// @param paths Paths to be joined
+            /// @return Joined path
+            /// @brief Join multiple paths
+            ///
             template <typename... Paths> static fs::path join(const Paths &...paths)
             {
                 return normalize((fs::path(paths) / ...));
             }
 
+            ///
+            /// @return Directory of the executable
+            /// @brief Get the directory of the executable
+            ///
             static fs::path executableDir()
             {
 #ifdef _WIN32
@@ -78,6 +113,11 @@ namespace utl
 #endif
             }
 
+            ///
+            /// @param relativePath Relative path to be resolved
+            /// @return Resolved path relative to the executable directory
+            /// @brief Resolve a relative path to the executable directory
+            ///
             static fs::path resolveRelativeToExe(const fs::path &relativePath)
             {
                 return normalize(executableDir() / relativePath);

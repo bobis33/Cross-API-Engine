@@ -25,6 +25,10 @@ namespace cae
         public:
             ~IShaderIR() override = default;
 
+            ///
+            /// @return The IR type this processor handles
+            /// @brief Get the IR type this processor handles
+            ///
             virtual ShaderSourceType irType() const = 0;
 
             ///

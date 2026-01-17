@@ -18,6 +18,11 @@
 namespace cae
 {
 
+    ///
+    /// @struct EngineConfig
+    /// @brief Struct for engine configuration
+    /// @namespace cae
+    ///
     struct EngineConfig
     {
             float audio_master_volume = AUDIO::VOLUME;
@@ -74,9 +79,22 @@ namespace cae
             [[nodiscard]] const std::unique_ptr<utl::Clock> &getClock() { return m_clock; }
             [[nodiscard]] const std::unique_ptr<Camera> &getCamera() const { return m_camera; }
 
+            ///
+            /// @param shaderSources Shader sources to initialize
+            /// @param vertices Vertex data to initialize
+            /// @brief Initialize render resources
+            ///
             void initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
                                            const std::vector<float> &vertices) const;
+
+            ///
+            /// @brief Run the engine main loop
+            ///
             void run() const;
+
+            ///
+            /// @brief Stop the engine
+            ///
             void stop();
 
         private:
@@ -92,8 +110,19 @@ namespace cae
 
             bool m_logFps = false;
 
+            ///
+            /// @param windowName window name
+            /// @param windowSize window size
+            /// @param iconPath path to window icon
+            /// @brief Initialize the window
+            ///
             void initWindow(const std::string &windowName, const WindowSize &windowSize,
                             const std::string &iconPath) const;
+
+            ///
+            /// @param shaderSources Shader sources to initialize
+            /// @brief Initialize shaders
+            ///
             void initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const;
 
     }; // class Engine
