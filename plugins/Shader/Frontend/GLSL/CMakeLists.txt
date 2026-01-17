@@ -4,8 +4,9 @@ project(cae-glsl
 )
 
 find_package(glslang QUIET CONFIG)
-
 if (NOT glslang_FOUND)
+    message(STATUS "glslang not found.")
+
     include(FetchContent)
 
     set(ENABLE_HLSL OFF CACHE BOOL "" FORCE)

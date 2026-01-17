@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 4.0.0)
-
 project(cae-utils
         VERSION 0.0.0
         DESCRIPTION "CAE Utils library"
@@ -22,29 +20,24 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(stb)
 
-add_library(stb INTERFACE)
-add_library(stb::stb ALIAS stb)
-
-target_include_directories(stb INTERFACE
-        $<BUILD_INTERFACE:${stb_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:include>
-)
-
 add_library(${PROJECT_NAME} STATIC)
 
 target_sources(${PROJECT_NAME}
         PRIVATE ${SOURCES}
-        PUBLIC  FILE_SET HEADERS BASE_DIRS ${INCLUDE_DIR} FILES ${HEADERS}
+        PUBLIC FILE_SET HEADERS
+        BASE_DIRS ${INCLUDE_DIR}
+        FILES ${HEADERS}
 )
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${INCLUDE_DIR}>
         $<INSTALL_INTERFACE:include>
+        PRIVATE
+        $<BUILD_INTERFACE:${stb_SOURCE_DIR}>
 )
-target_link_libraries(${PROJECT_NAME} PRIVATE stb::stb)
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
+target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
