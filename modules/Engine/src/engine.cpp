@@ -58,18 +58,63 @@ void cae::Engine::initializeRenderResources(const std::vector<ShaderSourceDesc> 
     m_rendererPlugin->createMesh(vertices);
 }
 
-void cae::Engine::run() const
+void cae::Engine::run()
 {
     std::array<float, 10> fpsBuffer{};
     int fpsIndex = 0;
     while (!m_windowPlugin->shouldClose())
     {
-        glm::mat4 model = glm::mat4(1.0f);
-        glm::mat4 mvp =
-            m_camera->getVP(float(m_windowPlugin->getWindowSize().width) / m_windowPlugin->getWindowSize().height) *
+        auto model = glm::mat4(1.0f);
+        const glm::mat4 mvp =
+            m_camera->getVP(static_cast<float>(m_windowPlugin->getWindowSize().width) / m_windowPlugin->getWindowSize().height) *
             model;
         m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic", mvp);
         m_windowPlugin->pollEvents();
+        WindowEvent e;
+        while (m_windowPlugin->pollEvent(e))
+        {
+            if (e.type == WindowEventType::KeyDown)
+            {
+                m_keyState[e.key.key] = true;
+            }
+            else if (e.type == WindowEventType::KeyUp)
+            {
+                m_keyState[e.key.key] = false;
+            }
+        }
+        glm::vec3 moveDir(0.0f);
+        glm::vec2 lookDir(0.0f);
+
+        // Rotation
+        if (m_keyState[KeyCode::Up])    lookDir.y += 1.0f;
+        if (m_keyState[KeyCode::Down])  lookDir.y -= 1.0f;
+        if (m_keyState[KeyCode::Left])  lookDir.x -= 1.0f;
+        if (m_keyState[KeyCode::Right]) lookDir.x += 1.0f;
+
+        // Appliquer la rotation
+        if (glm::length(lookDir) > 0.0f)
+        {
+            lookDir *= m_camera->getLookSpeed() * m_clock->getDeltaSeconds();
+            m_camera->rotate(lookDir.x, lookDir.y, 1.0f); // deltaTime déjà appliqué dans lookDir
+        }
+
+        glm::vec3 forward = glm::normalize(glm::vec3(m_camera->getDirection().x, 0.0f, m_camera->getDirection().z));
+        glm::vec3 right   = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
+
+        if (m_keyState[KeyCode::W]) moveDir += forward;
+        if (m_keyState[KeyCode::S]) moveDir -= forward;
+        if (m_keyState[KeyCode::A]) moveDir -= right;
+        if (m_keyState[KeyCode::D]) moveDir += right;
+
+        if (glm::length(moveDir) > 0.0f)
+        {
+            moveDir = glm::normalize(moveDir);
+            m_camera->move(moveDir, m_clock->getDeltaSeconds());
+        }
+
+        if (m_keyState[KeyCode::LCtrl]) m_camera->move(glm::vec3(0.0f, -1.0f, 0.0f), m_clock->getDeltaSeconds());
+        if (m_keyState[KeyCode::Space]) m_camera->move(glm::vec3(0.0f, 1.0f, 0.0f), m_clock->getDeltaSeconds());
+
         if (m_logFps)
         {
             printFps(fpsBuffer, fpsIndex, m_clock->getDeltaSeconds());

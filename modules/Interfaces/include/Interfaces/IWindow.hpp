@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "Input/Key/Keyboard.hpp"
+#include "Input/Key/Mouse.hpp"
 #include "Utils/Interfaces/IPlugin.hpp"
 
 namespace cae
@@ -31,6 +33,30 @@ namespace cae
     {
             void *window;
             void *display;
+    };
+
+    enum class WindowEventType {
+        KeyDown,
+        KeyUp,
+        MouseMove,
+        MouseButtonDown,
+        MouseButtonUp,
+        MouseScroll,
+        Resize,
+        Focus,
+        Close
+    };
+
+    struct WindowEvent {
+        WindowEventType type;
+
+        union {
+            struct { KeyCode key; } key;
+            struct { int x, y; } mouseMove;
+            struct { MouseButton button; } mouseButton;
+            struct { float x, y; } scroll;
+            struct { uint16_t w, h; } resize;
+        };
     };
 
     ///
@@ -86,6 +112,13 @@ namespace cae
             /// @brief Poll window events
             ///
             virtual void pollEvents() = 0;
+
+            ///
+            /// @param outEvent Event to be filled
+            /// @return True if an event was polled
+            /// @brief Poll window events into outEvent
+            ///
+            virtual bool pollEvent(WindowEvent& outEvent) = 0;
 
             ///
             /// @return True if the window was resized

@@ -10,6 +10,8 @@
 
 #include <windows.h>
 
+#include <queue>
+
 namespace cae
 {
 
@@ -44,12 +46,15 @@ namespace cae
 
             [[nodiscard]] bool shouldClose() const override { return m_shouldClose; }
             void pollEvents() override;
+            bool pollEvent(WindowEvent &event) override;
 
             bool wasResized() const override { return m_frameBufferResized; }
             void resetResizedFlag() override { m_frameBufferResized = false; }
 
         private:
             static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+            static KeyCode mapWinKey(WPARAM key);
+            std::queue<WindowEvent> m_eventQueue;
 
             std::wstring m_title;
             HWND m_hwnd = nullptr;

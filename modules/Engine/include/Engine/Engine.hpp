@@ -90,7 +90,7 @@ namespace cae
             ///
             /// @brief Run the engine main loop
             ///
-            void run() const;
+            void run();
 
             ///
             /// @brief Stop the engine
@@ -107,6 +107,8 @@ namespace cae
             std::unique_ptr<utl::Clock> m_clock = nullptr;
             std::unique_ptr<ShaderManager> m_shaderManager = nullptr;
             std::unique_ptr<Camera> m_camera = nullptr;
+
+            std::unordered_map<KeyCode, bool> m_keyState;
 
             bool m_logFps = false;
 
