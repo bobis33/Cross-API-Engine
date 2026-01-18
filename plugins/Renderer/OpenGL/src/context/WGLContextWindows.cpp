@@ -36,7 +36,8 @@ static void *win32GetGLProc(const char *name)
 {
     auto *proc = (void *)wglGetProcAddress(name);
 
-    if (proc == nullptr || proc == reinterpret_cast<void *>(0x1) || proc == reinterpret_cast<void *>(0x2) || proc == reinterpret_cast<void *>(0x3) || proc == reinterpret_cast<void *>(-1))
+    if (proc == nullptr || proc == reinterpret_cast<void *>(0x1) || proc == reinterpret_cast<void *>(0x2) ||
+        proc == reinterpret_cast<void *>(0x3) || proc == reinterpret_cast<void *>(-1))
     {
         if (g_opengl32 == nullptr)
         {

@@ -59,11 +59,11 @@ namespace cae
             void resetResizedFlag() override { m_frameBufferResized = false; }
 
         private:
-            static void frameBufferResizeCallback(GLFWwindow* window, int width, int height);
-            static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-            static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-            static void cursorPosCallback(GLFWwindow* window, double x, double y);
-            static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+            static void frameBufferResizeCallback(GLFWwindow *window, int width, int height);
+            static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+            static void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
+            static void cursorPosCallback(GLFWwindow *window, double x, double y);
+            static void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 
             std::queue<WindowEvent> m_eventQueue;
 

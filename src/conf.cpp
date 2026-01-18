@@ -50,6 +50,60 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
             config.audio_muted = audio["muted"];
         }
     }
+    if (j.contains("camera"))
+    {
+        const auto &camera = j["camera"];
+        if (camera.contains("position") && camera["position"].is_array() && camera["position"].size() == 3)
+        {
+            if (const auto &position = camera["position"];
+                position[0].is_number_float() && position[1].is_number_float() && position[2].is_number_float())
+            {
+                config.camera_position.x = position[0];
+                config.camera_position.y = position[1];
+                config.camera_position.z = position[2];
+            }
+        }
+        if (camera.contains("rotation") && camera["rotation"].is_array() && camera["rotation"].size() == 3)
+        {
+            if (const auto &rotation = camera["rotation"];
+                rotation[0].is_number_float() && rotation[1].is_number_float() && rotation[2].is_number_float())
+            {
+                config.camera_rotation.x = rotation[0];
+                config.camera_rotation.y = rotation[1];
+                config.camera_rotation.z = rotation[2];
+            }
+        }
+        if (camera.contains("direction") && camera["direction"].is_array() && camera["direction"].size() == 3)
+        {
+            if (const auto &direction = camera["direction"];
+                direction[0].is_number_float() && direction[1].is_number_float() && direction[2].is_number_float())
+            {
+                config.camera_direction.x = direction[0];
+                config.camera_direction.y = direction[1];
+                config.camera_direction.z = direction[2];
+            }
+        }
+        if (camera.contains("movementSpeed") && camera["movementSpeed"].is_number_float())
+        {
+            config.camera_move_speed = camera["movementSpeed"];
+        }
+        if (camera.contains("rotationSpeed") && camera["rotationSpeed"].is_number_float())
+        {
+            config.camera_look_speed = camera["rotationSpeed"];
+        }
+        if (camera.contains("fov") && camera["fov"].is_number_unsigned())
+        {
+            config.camera_fov = camera["fov"];
+        }
+        if (camera.contains("nearPlane") && camera["nearPlane"].is_number_float())
+        {
+            config.camera_near_plane = camera["nearPlane"];
+        }
+        if (camera.contains("farPlane") && camera["farPlane"].is_number_float())
+        {
+            config.camera_far_plane = camera["farPlane"];
+        }
+    }
     if (j.contains("log"))
     {
         if (const auto &log = j["log"]; log.contains("fps") && log["fps"].is_boolean())

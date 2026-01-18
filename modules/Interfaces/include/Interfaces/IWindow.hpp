@@ -40,7 +40,8 @@ namespace cae
     /// @brief Enum for window event types
     /// @namespace cae
     ///
-    enum class WindowEventType {
+    enum class WindowEventType
+    {
         KeyDown,
         KeyUp,
         MouseMove,
@@ -57,16 +58,33 @@ namespace cae
     /// @brief Struct for window events
     /// @namespace cae
     ///
-    struct WindowEvent {
-        WindowEventType type;
+    struct WindowEvent
+    {
+            WindowEventType type;
 
-        union {
-            struct { KeyCode key; } key;
-            struct { int x, y; } mouseMove;
-            struct { MouseButton button; } mouseButton;
-            struct { float x, y; } scroll;
-            struct { uint16_t w, h; } resize;
-        };
+            union
+            {
+                    struct
+                    {
+                            KeyCode key;
+                    } key;
+                    struct
+                    {
+                            int x, y;
+                    } mouseMove;
+                    struct
+                    {
+                            MouseButton button;
+                    } mouseButton;
+                    struct
+                    {
+                            float x, y;
+                    } scroll;
+                    struct
+                    {
+                            uint16_t w, h;
+                    } resize;
+            };
     };
 
     ///
@@ -128,7 +146,7 @@ namespace cae
             /// @return True if an event was polled
             /// @brief Poll window events into outEvent
             ///
-            virtual bool pollEvent(WindowEvent& outEvent) = 0;
+            virtual bool pollEvent(WindowEvent &outEvent) = 0;
 
             ///
             /// @return True if the window was resized

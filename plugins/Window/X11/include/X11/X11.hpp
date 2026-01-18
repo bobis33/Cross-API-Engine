@@ -49,7 +49,7 @@ namespace cae
 
             [[nodiscard]] bool shouldClose() const override;
             void pollEvents() override;
-            bool pollEvent(WindowEvent& outEvent) override;
+            bool pollEvent(WindowEvent &outEvent) override;
 
             bool wasResized() const override { return m_frameBufferResized; }
             void resetResizedFlag() override { m_frameBufferResized = false; }

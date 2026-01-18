@@ -15,6 +15,8 @@
 #include "Interfaces/Renderer/IRenderer.hpp"
 #include "Utils/Clock.hpp"
 
+#include <glm/glm.hpp>
+
 namespace cae
 {
 
@@ -27,6 +29,15 @@ namespace cae
     {
             float audio_master_volume = AUDIO::VOLUME;
             bool audio_muted = AUDIO::MUTED;
+
+            glm::vec3 camera_position = glm::vec3(0.0F, 0.0F, 5.0F);
+            glm::vec3 camera_rotation = glm::vec3(0.0F, 0.0F, -1.0F);
+            glm::vec3 camera_direction = glm::vec3(0.0F, 0.0F, -1.0F);
+            float camera_move_speed = CAMERA::MOVE_SPEED;
+            float camera_look_speed = CAMERA::LOOK_SPEED;
+            float camera_fov = CAMERA::FOV;
+            float camera_near_plane = CAMERA::NEAR_PLANE;
+            float camera_far_plane = CAMERA::FAR_PLANE;
 
             bool log_fps = LOG::LOG_FPS;
 

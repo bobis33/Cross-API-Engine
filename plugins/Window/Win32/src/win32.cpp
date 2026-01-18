@@ -13,33 +13,62 @@ constexpr wchar_t WINDOW_CLASS_NAME[] = L"CAE_WindowsWindowClass";
 cae::KeyCode cae::Win32::mapWinKey(const WPARAM key)
 {
     static const std::unordered_map<WPARAM, KeyCode> keyMap = {
-        {'A', KeyCode::A}, {'B', KeyCode::B}, {'C', KeyCode::C},
-        {'D', KeyCode::D}, {'E', KeyCode::E}, {'F', KeyCode::F},
-        {'G', KeyCode::G}, {'H', KeyCode::H}, {'I', KeyCode::I},
-        {'J', KeyCode::J}, {'K', KeyCode::K}, {'L', KeyCode::L},
-        {'M', KeyCode::M}, {'N', KeyCode::N}, {'O', KeyCode::O},
-        {'P', KeyCode::P}, {'Q', KeyCode::Q}, {'R', KeyCode::R},
-        {'S', KeyCode::S}, {'T', KeyCode::T}, {'U', KeyCode::U},
-        {'V', KeyCode::V}, {'W', KeyCode::W}, {'X', KeyCode::X},
-        {'Y', KeyCode::Y}, {'Z', KeyCode::Z},
+        {'A', KeyCode::A},
+        {'B', KeyCode::B},
+        {'C', KeyCode::C},
+        {'D', KeyCode::D},
+        {'E', KeyCode::E},
+        {'F', KeyCode::F},
+        {'G', KeyCode::G},
+        {'H', KeyCode::H},
+        {'I', KeyCode::I},
+        {'J', KeyCode::J},
+        {'K', KeyCode::K},
+        {'L', KeyCode::L},
+        {'M', KeyCode::M},
+        {'N', KeyCode::N},
+        {'O', KeyCode::O},
+        {'P', KeyCode::P},
+        {'Q', KeyCode::Q},
+        {'R', KeyCode::R},
+        {'S', KeyCode::S},
+        {'T', KeyCode::T},
+        {'U', KeyCode::U},
+        {'V', KeyCode::V},
+        {'W', KeyCode::W},
+        {'X', KeyCode::X},
+        {'Y', KeyCode::Y},
+        {'Z', KeyCode::Z},
 
-        {'0', KeyCode::Num0}, {'1', KeyCode::Num1}, {'2', KeyCode::Num2},
-        {'3', KeyCode::Num3}, {'4', KeyCode::Num4}, {'5', KeyCode::Num5},
-        {'6', KeyCode::Num6}, {'7', KeyCode::Num7}, {'8', KeyCode::Num8}, {'9', KeyCode::Num9},
+        {'0', KeyCode::Num0},
+        {'1', KeyCode::Num1},
+        {'2', KeyCode::Num2},
+        {'3', KeyCode::Num3},
+        {'4', KeyCode::Num4},
+        {'5', KeyCode::Num5},
+        {'6', KeyCode::Num6},
+        {'7', KeyCode::Num7},
+        {'8', KeyCode::Num8},
+        {'9', KeyCode::Num9},
 
         {VK_ESCAPE, KeyCode::Escape},
-        {VK_LEFT, KeyCode::Left}, {VK_RIGHT, KeyCode::Right},
-        {VK_UP, KeyCode::Up}, {VK_DOWN, KeyCode::Down},
-        {VK_SPACE, KeyCode::Space}, {VK_RETURN, KeyCode::Enter},
-        {VK_BACK, KeyCode::Backspace}, {VK_TAB, KeyCode::Tab},
-        {VK_SHIFT, KeyCode::LShift}, {VK_CONTROL, KeyCode::LCtrl}, {VK_MENU, KeyCode::LAlt}
+        {VK_LEFT, KeyCode::Left},
+        {VK_RIGHT, KeyCode::Right},
+        {VK_UP, KeyCode::Up},
+        {VK_DOWN, KeyCode::Down},
+        {VK_SPACE, KeyCode::Space},
+        {VK_RETURN, KeyCode::Enter},
+        {VK_BACK, KeyCode::Backspace},
+        {VK_TAB, KeyCode::Tab},
+        {VK_SHIFT, KeyCode::LShift},
+        {VK_CONTROL, KeyCode::LCtrl},
+        {VK_MENU, KeyCode::LAlt}
         // ...
     };
 
     const auto it = keyMap.find(key);
     return it != keyMap.end() ? it->second : KeyCode::Count;
 }
-
 
 LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
 {
@@ -54,7 +83,8 @@ LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const W
     }
 
     self = reinterpret_cast<Win32 *>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
-    if (!self) return DefWindowProcW(hwnd, msg, wParam, lParam);
+    if (!self)
+        return DefWindowProcW(hwnd, msg, wParam, lParam);
 
     WindowEvent e{};
     switch (msg)
@@ -93,7 +123,6 @@ LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const W
     return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
-
 bool cae::Win32::create(const std::string &name, const WindowSize size)
 {
     m_hInstance = GetModuleHandleW(nullptr);
@@ -130,8 +159,8 @@ bool cae::Win32::create(const std::string &name, const WindowSize size)
         }
         classRegistered = true;
     }
-    m_hwnd = CreateWindowExW(0, WINDOW_CLASS_NAME, L"", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
-                             CW_USEDEFAULT, size.width, size.height, nullptr, nullptr, m_hInstance, this);
+    m_hwnd = CreateWindowExW(0, WINDOW_CLASS_NAME, L"", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, size.width,
+                             size.height, nullptr, nullptr, m_hInstance, this);
 
     if (m_hwnd == nullptr)
     {
@@ -261,4 +290,3 @@ bool cae::Win32::pollEvent(WindowEvent &event)
 
     return false;
 }
-

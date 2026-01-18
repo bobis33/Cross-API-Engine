@@ -12,20 +12,34 @@ static cae::KeyCode translateKey(const KeySym keysym)
 {
     switch (keysym)
     {
-    case XK_w: return cae::KeyCode::W;
-    case XK_a: return cae::KeyCode::A;
-    case XK_s: return cae::KeyCode::S;
-    case XK_d: return cae::KeyCode::D;
-    case XK_Up: return cae::KeyCode::Up;
-    case XK_Down: return cae::KeyCode::Down;
-    case XK_Left: return cae::KeyCode::Left;
-    case XK_Right: return cae::KeyCode::Right;
-    case XK_Escape: return cae::KeyCode::Escape;
-    case XK_space: return cae::KeyCode::Space;
-    case XK_Control_L: return cae::KeyCode::LCtrl;
-    case XK_Shift_L: return cae::KeyCode::LShift;
-    case XK_Alt_L: return cae::KeyCode::LAlt;
-    default: return cae::KeyCode::Count;
+        case XK_w:
+            return cae::KeyCode::W;
+        case XK_a:
+            return cae::KeyCode::A;
+        case XK_s:
+            return cae::KeyCode::S;
+        case XK_d:
+            return cae::KeyCode::D;
+        case XK_Up:
+            return cae::KeyCode::Up;
+        case XK_Down:
+            return cae::KeyCode::Down;
+        case XK_Left:
+            return cae::KeyCode::Left;
+        case XK_Right:
+            return cae::KeyCode::Right;
+        case XK_Escape:
+            return cae::KeyCode::Escape;
+        case XK_space:
+            return cae::KeyCode::Space;
+        case XK_Control_L:
+            return cae::KeyCode::LCtrl;
+        case XK_Shift_L:
+            return cae::KeyCode::LShift;
+        case XK_Alt_L:
+            return cae::KeyCode::LAlt;
+        default:
+            return cae::KeyCode::Count;
     }
 }
 
@@ -53,9 +67,8 @@ bool cae::X11::create(const std::string &name, const WindowSize size)
     XStoreName(m_display, m_window, name.c_str());
 
     XSelectInput(m_display, m_window,
-        ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
-        PointerMotionMask | ButtonPressMask | ButtonReleaseMask
-    );
+                 ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask | PointerMotionMask |
+                     ButtonPressMask | ButtonReleaseMask);
     m_wmDeleteMessage = XInternAtom(m_display, "WM_DELETE_WINDOW", False);
     XSetWMProtocols(m_display, m_window, &m_wmDeleteMessage, 1);
 
@@ -140,9 +153,7 @@ bool cae::X11::setIcon(const std::string &path) const
 
 bool cae::X11::shouldClose() const { return m_shouldClose; }
 
-void cae::X11::pollEvents()
-{
-}
+void cae::X11::pollEvents() {}
 
 bool cae::X11::pollEvent(WindowEvent &outEvent)
 {
@@ -197,7 +208,8 @@ bool cae::X11::pollEvent(WindowEvent &outEvent)
 
             case ButtonPress:
             case ButtonRelease:
-                e.type = (event.type == ButtonPress) ? WindowEventType::MouseButtonDown : WindowEventType::MouseButtonUp;
+                e.type =
+                    (event.type == ButtonPress) ? WindowEventType::MouseButtonDown : WindowEventType::MouseButtonUp;
                 e.mouseButton.button = static_cast<MouseButton>(event.xbutton.button);
                 m_eventQueue.push(e);
                 break;
@@ -219,4 +231,3 @@ bool cae::X11::pollEvent(WindowEvent &outEvent)
 
     return false;
 }
-
