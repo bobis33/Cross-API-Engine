@@ -35,10 +35,6 @@ include(ClangTidy)
 include(ClangFormat)
 include(CopyAssets)
 
-add_subdirectory(modules)
-add_subdirectory(plugins)
-add_subdirectory(tests)
-
 include(FetchContent)
 FetchContent_Declare(
         nlohmann-json
@@ -50,16 +46,18 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(nlohmann-json)
 set(GLM_BUILD_TESTS OFF CACHE INTERNAL "")
 set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
-
 FetchContent_Declare(
         glm
-        GIT_REPOSITORY https://github.com/g-truc/glm.git
+        GIT_REPOSITORY "https://github.com/g-truc/glm.git"
         GIT_TAG 1.0.3
         GIT_SHALLOW    TRUE
         GIT_PROGRESS   TRUE
 )
-
 FetchContent_MakeAvailable(glm)
+
+add_subdirectory(modules)
+add_subdirectory(plugins)
+add_subdirectory(tests)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_dependencies(${PROJECT_NAME} cae-modules)

@@ -55,14 +55,11 @@ namespace cae
             void resetResizedFlag() override { m_frameBufferResized = false; }
 
         private:
-
             std::queue<WindowEvent> m_eventQueue;
-
-            WindowSize m_frameBufferSize;
-            mutable bool m_frameBufferResized = false;
-
             Display *m_display = nullptr;
             Window m_window = 0;
+            WindowSize m_frameBufferSize;
+            mutable bool m_frameBufferResized = false;
             Atom m_wmDeleteMessage = 0;
             bool m_shouldClose = false;
 

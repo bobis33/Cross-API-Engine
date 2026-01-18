@@ -109,7 +109,6 @@ namespace cae
             std::unique_ptr<Camera> m_camera = nullptr;
 
             std::unordered_map<KeyCode, bool> m_keyState;
-
             bool m_logFps = false;
 
             ///

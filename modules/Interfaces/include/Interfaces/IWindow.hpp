@@ -35,6 +35,11 @@ namespace cae
             void *display;
     };
 
+    ///
+    /// @enum WindowEventType
+    /// @brief Enum for window event types
+    /// @namespace cae
+    ///
     enum class WindowEventType {
         KeyDown,
         KeyUp,
@@ -47,6 +52,11 @@ namespace cae
         Close
     };
 
+    ///
+    /// @struct WindowEvent
+    /// @brief Struct for window events
+    /// @namespace cae
+    ///
     struct WindowEvent {
         WindowEventType type;
 

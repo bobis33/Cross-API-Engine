@@ -8,7 +8,8 @@
 
 #include "Interfaces/IWindow.hpp"
 #include "Interfaces/Shader/IShaderFrontend.hpp"
-#include "glm/fwd.hpp"
+
+#include <glm/mat4x4.hpp>
 
 namespace cae
 {
@@ -24,12 +25,6 @@ namespace cae
             float g;
             float b;
             float a;
-    };
-
-    struct Vertex
-    {
-            float x, y, z;
-            float r, g, b;
     };
 
     ///

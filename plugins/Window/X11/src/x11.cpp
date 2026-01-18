@@ -6,7 +6,6 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
-#include <utility>
 #include <vector>
 
 static cae::KeyCode translateKey(const KeySym keysym)
@@ -150,7 +149,6 @@ bool cae::X11::pollEvent(WindowEvent &outEvent)
     if (m_eventQueue.empty() && XPending(m_display) == 0)
         return false;
 
-    // vider la queue X11 et remplir m_eventQueue
     while (XPending(m_display) > 0)
     {
         XEvent event;
@@ -205,7 +203,6 @@ bool cae::X11::pollEvent(WindowEvent &outEvent)
                 break;
 
             case Expose:
-                // Tu peux gérer le repaint ici ou laisser le moteur appeler draw
                 break;
 
             default:

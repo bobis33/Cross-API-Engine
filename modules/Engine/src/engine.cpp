@@ -85,13 +85,11 @@ void cae::Engine::run()
         glm::vec3 moveDir(0.0f);
         glm::vec2 lookDir(0.0f);
 
-        // Rotation
         if (m_keyState[KeyCode::Up])    lookDir.y += 1.0f;
         if (m_keyState[KeyCode::Down])  lookDir.y -= 1.0f;
         if (m_keyState[KeyCode::Left])  lookDir.x -= 1.0f;
         if (m_keyState[KeyCode::Right]) lookDir.x += 1.0f;
 
-        // Appliquer la rotation
         if (glm::length(lookDir) > 0.0f)
         {
             lookDir *= m_camera->getLookSpeed() * m_clock->getDeltaSeconds();
