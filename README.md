@@ -68,6 +68,15 @@ Options:
   -c, --config <path>     Specify JSON configuration file
 ```
 
+### CMake Build options
+
+- `CAE_BUILD_TESTS` (default: `OFF`): Enable building unit tests.
+
+## Testing
+
+```
+```
+
 ## External Libraries
 
 - [Doxygen Awesome CSS](https://github.com/jothepro/doxygen-awesome-css): A custom CSS theme for Doxygen documentation.
@@ -80,6 +89,11 @@ Options:
 - [Plugins](https://github.com/bobis33/Cross-API-Engine/blob/main/plugins/README.md): Information on available plugins and how to create new ones.
 
 Visit the [Doxygen documentation](https://bobis33.github.io/Cross-API-Engine/) for detailed information on architecture, modules, and usage.
+
+### Build documentation
+
+```
+```
 
 ## Contributing
 
