@@ -58,7 +58,7 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
     }
     catch (const std::exception &e)
     {
-        std::cerr << "Error: " << e.what() << '\n';
+        utl::Logger::log(std::string("Application initialization failed: ") + e.what(), utl::LogLevel::WARNING);
     }
 }
 

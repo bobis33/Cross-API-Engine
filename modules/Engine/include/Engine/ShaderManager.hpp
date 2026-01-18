@@ -63,19 +63,22 @@ namespace cae
                 if (auto it = m_irs.find(irType); it != m_irs.end())
                 {
                     std::vector<ShaderIRModule *> ptrs;
-                    for (auto &m : modules) {
+                    for (auto &m : modules)
+                    {
                         ptrs.push_back(&m);
                     }
 
                     std::vector<ShaderIRModule> tmp;
                     tmp.reserve(ptrs.size());
-                    for (auto *p : ptrs) {
+                    for (auto *p : ptrs)
+                    {
                         tmp.push_back(*p);
                     }
 
                     it->second->optimize(tmp);
 
-                    for (size_t i = 0; i < ptrs.size(); ++i) {
+                    for (size_t i = 0; i < ptrs.size(); ++i)
+                    {
                         *ptrs[i] = std::move(tmp[i]);
                     }
                 }

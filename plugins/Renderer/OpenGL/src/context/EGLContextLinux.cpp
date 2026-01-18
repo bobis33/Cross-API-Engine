@@ -81,9 +81,7 @@ void cae::EGLContextLinux::initialize(const NativeWindowHandle &window)
 
     eglSwapInterval(m_display, 0);
 
-    if (gladLoadGLContext(
-            &gl,
-            eglGetProcAddress) == 0)
+    if (gladLoadGLContext(&gl, eglGetProcAddress) == 0)
     {
         throw std::runtime_error("Failed to initialize GLAD");
     }

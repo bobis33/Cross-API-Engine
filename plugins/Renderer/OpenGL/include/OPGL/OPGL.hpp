@@ -45,7 +45,11 @@ namespace cae
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::ALL; }
 
             void setVSyncEnabled(const bool enabled) override { m_context->setVSyncEnabled(enabled); }
-            void setClearColor(const Color &color) override { auto& gl = m_context->gl; gl.ClearColor(color.r, color.g, color.b, color.a); }
+            void setClearColor(const Color &color) override
+            {
+                auto &gl = m_context->gl;
+                gl.ClearColor(color.r, color.g, color.b, color.a);
+            }
 
             [[nodiscard]] bool isVSyncEnabled() const override { return m_context->isVSyncEnabled(); }
 

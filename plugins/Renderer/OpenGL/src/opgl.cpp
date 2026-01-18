@@ -21,7 +21,7 @@ void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle, const C
 #endif
 
     m_context->initialize(nativeWindowHandle);
-    auto& gl = m_context->gl;
+    auto &gl = m_context->gl;
 
     gl.Enable(GL_DEPTH_TEST);
     gl.ClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
@@ -29,7 +29,7 @@ void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle, const C
 
 void cae::OPGL::draw(const WindowSize &windowSize, const ShaderID &shaderId)
 {
-    auto& gl = m_context->gl;
+    auto &gl = m_context->gl;
     gl.Viewport(0, 0, windowSize.width, windowSize.height);
     gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -43,7 +43,7 @@ void cae::OPGL::draw(const WindowSize &windowSize, const ShaderID &shaderId)
 
 void cae::OPGL::createPipeline(const ShaderID &id, const ShaderIRModule &vertex, const ShaderIRModule &fragment)
 {
-    auto& gl = m_context->gl;
+    auto &gl = m_context->gl;
     const GLuint program = gl.CreateProgram();
 
     GLuint vs = createGLShader(GL_VERTEX_SHADER, vertex, gl);
@@ -70,7 +70,7 @@ void cae::OPGL::createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
 
 void cae::OPGL::createMesh(const std::vector<float> &vertices)
 {
-    auto& gl = m_context->gl;
+    auto &gl = m_context->gl;
     Mesh mesh{};
     mesh.vertexCount = static_cast<GLsizei>(vertices.size() / 5);
 
@@ -98,7 +98,7 @@ GLuint cae::OPGL::createGLShader(const GLenum type, const ShaderIRModule &data, 
     const GLuint shader = gl.CreateShader(type);
 
     gl.ShaderBinary(1, &shader, GL_SHADER_BINARY_FORMAT_SPIR_V, data.spirv.data(),
-                   static_cast<GLsizei>(data.spirv.size() * sizeof(uint32_t)));
+                    static_cast<GLsizei>(data.spirv.size() * sizeof(uint32_t)));
 
     gl.SpecializeShader(shader, data.entryPoint.c_str(), 0, nullptr, nullptr);
 

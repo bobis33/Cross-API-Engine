@@ -34,7 +34,6 @@ namespace cae
     {
 
         public:
-
             ///
             /// @param argsConfig Command line arguments configuration
             /// @param envConfig Environment variables configuration
@@ -59,7 +58,6 @@ namespace cae
             void stop();
 
         private:
-
             ///
             /// @param rendererName renderer plugin name
             /// @param windowName window plugin name

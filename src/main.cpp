@@ -21,12 +21,12 @@ int main(const int argc, const char *const *argv, const char *const *envp)
     }
     catch (const std::exception &e)
     {
-        std::cerr << "Error: " << e.what() << '\n';
+        utl::Logger::log(std::string("Exception: ") + e.what() + '\n', utl::LogLevel::WARNING);
         return EXIT_FAILURE;
     }
     catch (...)
     {
-        std::cerr << "Unknown error occurred\n";
+        utl::Logger::log(std::string("Unknown exception"), utl::LogLevel::WARNING);
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;

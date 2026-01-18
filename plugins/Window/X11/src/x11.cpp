@@ -1,8 +1,8 @@
 #include "X11/X11.hpp"
 
 #include "Utils/Image.hpp"
+#include "Utils/Logger.hpp"
 
-#include <iostream>
 #include <utility>
 #include <vector>
 
@@ -11,7 +11,7 @@ bool cae::X11::create(const std::string &name, const WindowSize size)
     m_display = XOpenDisplay(nullptr);
     if (m_display == nullptr)
     {
-        std::cerr << "[X11] Failed to open X display\n";
+        utl::Logger::log("Failed to open X display", utl::LogLevel::WARNING);
         return false;
     }
 
@@ -23,7 +23,7 @@ bool cae::X11::create(const std::string &name, const WindowSize size)
 
     if (m_window == 0U)
     {
-        std::cerr << "[X11] Failed to create X11 window\n";
+        utl::Logger::log("Failed to create X11 window", utl::LogLevel::WARNING);
         return false;
     }
 
@@ -108,7 +108,7 @@ bool cae::X11::setIcon(const std::string &path) const
     }
     catch (const std::exception &e)
     {
-        std::cerr << "[X11] Failed to set icon: " << e.what() << '\n';
+        utl::Logger::log(std::string("Failed to set X11 window icon: ") + e.what(), utl::LogLevel::WARNING);
         return false;
     }
 }
