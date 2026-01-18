@@ -56,7 +56,7 @@ namespace cae
             void initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor) override;
             void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                 const ShaderIRModule &fragment) override;
-            void draw(const WindowSize &windowSize, const ShaderID &shaderId) override;
+            void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override;
             void createMesh(const std::vector<float> &vertices) override;
 
         private:

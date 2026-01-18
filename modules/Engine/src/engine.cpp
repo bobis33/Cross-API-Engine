@@ -64,7 +64,11 @@ void cae::Engine::run() const
     int fpsIndex = 0;
     while (!m_windowPlugin->shouldClose())
     {
-        m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic");
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::mat4 mvp =
+            m_camera->getVP(float(m_windowPlugin->getWindowSize().width) / m_windowPlugin->getWindowSize().height) *
+            model;
+        m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic", mvp);
         m_windowPlugin->pollEvents();
         if (m_logFps)
         {

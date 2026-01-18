@@ -9,6 +9,19 @@ if (NOT OPENGL_FOUND)
     return()
 endif ()
 
+set(GLM_BUILD_TESTS OFF CACHE INTERNAL "")
+set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
+
+FetchContent_Declare(
+        glm
+        GIT_REPOSITORY https://github.com/g-truc/glm.git
+        GIT_TAG 1.0.3
+        GIT_SHALLOW    TRUE
+        GIT_PROGRESS   TRUE
+)
+
+FetchContent_MakeAvailable(glm)
+
 include(FetchContent)
 FetchContent_Declare(
         glad
@@ -41,12 +54,13 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
         ${OPENGL_INCLUDE_DIR}
+        ${glm_SOURCE_DIR}
 )
 if (UNIX AND NOT APPLE)
     target_include_directories(${PROJECT_NAME} PRIVATE ${EGL_INCLUDE_DIRS})
 endif ()
 
-set(PLATFORM_LIBS cae-modules OpenGL::GL glad)
+set(PLATFORM_LIBS cae-modules OpenGL::GL glad glm::glm)
 if (UNIX AND NOT APPLE)
     list(APPEND PLATFORM_LIBS ${EGL_LIBRARIES})
 elseif (APPLE)

@@ -48,13 +48,26 @@ FetchContent_Declare(
         GIT_PROGRESS   TRUE
 )
 FetchContent_MakeAvailable(nlohmann-json)
+set(GLM_BUILD_TESTS OFF CACHE INTERNAL "")
+set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
+
+FetchContent_Declare(
+        glm
+        GIT_REPOSITORY https://github.com/g-truc/glm.git
+        GIT_TAG 1.0.3
+        GIT_SHALLOW    TRUE
+        GIT_PROGRESS   TRUE
+)
+
+FetchContent_MakeAvailable(glm)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_dependencies(${PROJECT_NAME} cae-modules)
-target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include" ${glm_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-modules
         nlohmann_json::nlohmann_json
+        glm::glm
 )
 if (NOT WIN32 AND NOT APPLE)
     set(WARNING_FLAGS

@@ -8,7 +8,7 @@
 
 #include "Engine/Common.hpp"
 
-#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <string>
 
@@ -51,12 +51,33 @@ namespace cae
             [[nodiscard]] const float &getNear() const { return m_near; }
             [[nodiscard]] const float &getFar() const { return m_far; }
 
+            [[nodiscard]] glm::mat4 getViewMatrix() const {
+                return glm::lookAt(m_position, m_position + m_direction, glm::vec3(0.0f, 1.0f, 0.0f));
+            }
+            [[nodiscard]] glm::mat4 getProjectionMatrix(const float aspectRatio) const {
+                return glm::perspective(glm::radians(m_fov), aspectRatio, m_near, m_far);
+            }
+            [[nodiscard]] glm::mat4 getVP(const float aspectRatio) const {
+                return getProjectionMatrix(aspectRatio) * getViewMatrix();
+            }
+
+            void updateDirectionFromRotation() {
+                const float yaw = glm::radians(m_rotation.y);
+                const float pitch = glm::radians(m_rotation.x);
+
+                m_direction.x = cos(pitch) * sin(yaw);
+                m_direction.y = std::sin(pitch);
+                m_direction.z = -cos(pitch) * cos(yaw);
+                m_direction = glm::normalize(m_direction);
+            }
             ///
             /// @param direction Direction to move the camera
             /// @param deltaTime Time delta for movement
             /// @brief Move the camera in a given direction
             ///
-            void move(const glm::vec3 &direction, float deltaTime);
+            void move(const glm::vec3 &direction, const float deltaTime) {
+                m_position += direction * m_moveSpeed * deltaTime;
+            }
 
             ///
             /// @param yawOffset Yaw offset to rotate the camera
@@ -64,12 +85,20 @@ namespace cae
             /// @param deltaTime Time delta for rotation
             /// @brief Rotate the camera by given yaw and pitch offsets
             ///
-            void rotate(float yawOffset, float pitchOffset, float deltaTime);
+            void rotate(const float yawOffset, const float pitchOffset, const float deltaTime) {
+                m_rotation.y += yawOffset * m_lookSpeed * deltaTime;
+                m_rotation.x += pitchOffset * m_lookSpeed * deltaTime;
+
+                m_rotation.x = std::min(m_rotation.x, 89.0f);
+                m_rotation.x = std::max(m_rotation.x, -89.0f);
+
+                updateDirectionFromRotation();
+            }
 
         private:
             std::string m_name = CAMERA::NAME;
 
-            glm::vec3 m_position = glm::vec3(0.0F, 0.0F, 0.0F);
+            glm::vec3 m_position = glm::vec3(1.0F, 1.0F, 7.0F);
             glm::vec3 m_rotation = glm::vec3(0.0F, 0.0F, 0.0F);
             glm::vec3 m_direction = glm::vec3(0.0F, 0.0F, -1.0F);
 

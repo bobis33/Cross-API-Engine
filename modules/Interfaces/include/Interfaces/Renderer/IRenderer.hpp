@@ -8,6 +8,7 @@
 
 #include "Interfaces/IWindow.hpp"
 #include "Interfaces/Shader/IShaderFrontend.hpp"
+#include "glm/fwd.hpp"
 
 namespace cae
 {
@@ -23,6 +24,12 @@ namespace cae
             float g;
             float b;
             float a;
+    };
+
+    struct Vertex
+    {
+            float x, y, z;
+            float r, g, b;
     };
 
     ///
@@ -74,9 +81,10 @@ namespace cae
             ///
             /// @param windowSize Current window size
             /// @param shaderId Shader ID to use for drawing
+            /// @param mvp Model-View-Projection matrix
             /// @brief Draw the scene using the specified shader and window size
             ///
-            virtual void draw(const WindowSize &windowSize, const ShaderID &shaderId) = 0;
+            virtual void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) = 0;
 
             ///
             /// @param vertices Vertex data to create the mesh

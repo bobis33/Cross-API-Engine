@@ -119,6 +119,26 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
         [windowPlugin]() { return windowPlugin; });
 }
 
+static const std::vector<float> cubeVertices = {
+    // positions          // colors
+    -0.5f, -0.5f, -0.5f, 1, 0, 0, 0.5f,  -0.5f, -0.5f, 0, 1, 0, 0.5f,  0.5f,  -0.5f, 0, 0, 1,
+    0.5f,  0.5f,  -0.5f, 0, 0, 1, -0.5f, 0.5f,  -0.5f, 1, 1, 0, -0.5f, -0.5f, -0.5f, 1, 0, 0,
+
+    -0.5f, -0.5f, 0.5f,  1, 0, 1, 0.5f,  -0.5f, 0.5f,  0, 1, 1, 0.5f,  0.5f,  0.5f,  1, 1, 1,
+    0.5f,  0.5f,  0.5f,  1, 1, 1, -0.5f, 0.5f,  0.5f,  0, 0, 0, -0.5f, -0.5f, 0.5f,  1, 0, 1,
+
+    -0.5f, 0.5f,  0.5f,  1, 0, 0, -0.5f, 0.5f,  -0.5f, 0, 1, 0, -0.5f, -0.5f, -0.5f, 0, 0, 1,
+    -0.5f, -0.5f, -0.5f, 0, 0, 1, -0.5f, -0.5f, 0.5f,  1, 1, 0, -0.5f, 0.5f,  0.5f,  1, 0, 0,
+
+    0.5f,  0.5f,  0.5f,  1, 0, 1, 0.5f,  0.5f,  -0.5f, 0, 1, 1, 0.5f,  -0.5f, -0.5f, 1, 1, 1,
+    0.5f,  -0.5f, -0.5f, 1, 1, 1, 0.5f,  -0.5f, 0.5f,  0, 0, 0, 0.5f,  0.5f,  0.5f,  1, 0, 1,
+
+    -0.5f, -0.5f, -0.5f, 1, 0, 0, 0.5f,  -0.5f, -0.5f, 0, 1, 0, 0.5f,  -0.5f, 0.5f,  0, 0, 1,
+    0.5f,  -0.5f, 0.5f,  0, 0, 1, -0.5f, -0.5f, 0.5f,  1, 1, 0, -0.5f, -0.5f, -0.5f, 1, 0, 0,
+
+    -0.5f, 0.5f,  -0.5f, 1, 0, 1, 0.5f,  0.5f,  -0.5f, 0, 1, 1, 0.5f,  0.5f,  0.5f,  1, 1, 1,
+    0.5f,  0.5f,  0.5f,  1, 1, 1, -0.5f, 0.5f,  0.5f,  0, 0, 0, -0.5f, 0.5f,  -0.5f, 1, 0, 1};
+
 void cae::Application::start() const
 {
     static const std::vector<ShaderSourceDesc> shaderSources = {
@@ -132,8 +152,7 @@ void cae::Application::start() const
          .source = utl::fileToString(utl::Path::resolveRelativeToExe("assets/shaders/glsl/texture.frag")),
          .stage = ShaderStage::FRAGMENT},
     };
-    m_engine->initializeRenderResources(
-        shaderSources, std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
+    m_engine->initializeRenderResources(shaderSources, cubeVertices);
     m_engine->run();
 }
 

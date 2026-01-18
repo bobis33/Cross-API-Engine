@@ -1,4 +1,6 @@
 #include "OPGL/OPGL.hpp"
+#include "glm/ext/matrix_clip_space.hpp"
+#include "glm/ext/matrix_transform.hpp"
 
 #ifdef __linux__
 #include "OPGL/Context/EGLContextLinux.hpp"
@@ -27,13 +29,20 @@ void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle, const C
     gl.ClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 }
 
-void cae::OPGL::draw(const WindowSize &windowSize, const ShaderID &shaderId)
+void cae::OPGL::draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp)
 {
     auto &gl = m_context->gl;
     gl.Viewport(0, 0, windowSize.width, windowSize.height);
     gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     gl.UseProgram(m_programs.at(shaderId));
+    GLuint ubo;
+    gl.GenBuffers(1, &ubo);
+    gl.BindBuffer(GL_UNIFORM_BUFFER, ubo);
+    gl.BufferData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), &mvp, GL_DYNAMIC_DRAW);
+
+    // binding = 0 car dans le shader: layout(binding = 0)
+    gl.BindBufferBase(GL_UNIFORM_BUFFER, 0, ubo);
     gl.BindVertexArray(m_mesh.vao);
     gl.DrawArrays(GL_TRIANGLES, 0, m_mesh.vertexCount);
     gl.BindVertexArray(0);
@@ -81,10 +90,10 @@ void cae::OPGL::createMesh(const std::vector<float> &vertices)
     gl.BindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
     gl.BufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
-    gl.VertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), static_cast<void *>(0));
+    gl.VertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
     gl.EnableVertexAttribArray(0);
 
-    gl.VertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(2 * sizeof(float)));
+    gl.VertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
     gl.EnableVertexAttribArray(1);
 
     gl.BindBuffer(GL_ARRAY_BUFFER, 0);

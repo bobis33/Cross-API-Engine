@@ -13,7 +13,7 @@
   "renderer": {
     "vsync": false,
     "frameRateLimit": 90,
-    "clearColor": [1.0, 1.0, 1.0, 1.0]
+    "clearColor": [0.2, 0.2, 0.2, 1.0]
   },
   "user": {
     "name": "User"
