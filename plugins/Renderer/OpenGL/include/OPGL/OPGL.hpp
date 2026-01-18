@@ -64,9 +64,8 @@ namespace cae
             std::unordered_map<ShaderID, GLuint> m_programs;
             Mesh m_mesh;
 
-            GladGLContext m_device{};
-
-            static GLuint createGLShader(GLenum type, const ShaderIRModule &data, GladGLContext gl);
+            GLuint m_ubo;
+            static GLuint createGLShader(GLenum type, const ShaderIRModule &data, const GladGLContext &gl);
 
     }; // class OPGL
 

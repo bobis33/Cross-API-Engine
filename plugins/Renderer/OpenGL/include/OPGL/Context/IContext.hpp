@@ -22,14 +22,30 @@ namespace cae
         public:
             virtual ~IContext() = default;
 
+            ///
+            /// @param window The native window handle
+            /// @brief Initialize the OpenGL context with the given window
+            ///
             virtual void initialize(const NativeWindowHandle &window) = 0;
 
+            ///
+            /// @brief Swap the front and back buffers
+            ///
             virtual void swapBuffers() = 0;
 
+            ///
+            /// @param enabled Whether VSync should be enabled
+            /// @brief Enable or disable VSync
+            ///
             virtual void setVSyncEnabled(bool enabled) = 0;
+
+            ///
+            /// @return  Whether VSync is enabled
+            /// @brief Check if VSync is enabled
+            ///
             [[nodiscard]] virtual bool isVSyncEnabled() const = 0;
 
-            GladGLContext gl{0};
+            GladGLContext gl{nullptr};
 
     }; // interface IContext
 

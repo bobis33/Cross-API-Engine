@@ -36,7 +36,7 @@ static void *win32GetGLProc(const char *name)
 {
     auto *proc = (void *)wglGetProcAddress(name);
 
-    if (proc == nullptr || proc == (void *)0x1 || proc == (void *)0x2 || proc == (void *)0x3 || proc == (void *)-1)
+    if (proc == nullptr || proc == reinterpret_cast<void *>(0x1) || proc == reinterpret_cast<void *>(0x2) || proc == reinterpret_cast<void *>(0x3) || proc == reinterpret_cast<void *>(-1))
     {
         if (g_opengl32 == nullptr)
         {
@@ -134,7 +134,7 @@ void cae::WGLContextWindows::initialize(const NativeWindowHandle &window)
     {
         throw std::runtime_error("Current WGL context is not the one just created");
     }
-    if (const int version = gladLoadGLContext(&gl, GLADloadfunc(win32GetGLProc)); version == 0)
+    if (const int version = gladLoadGLContext(&gl, reinterpret_cast<GLADloadfunc>(win32GetGLProc)); version == 0)
     {
         throw std::runtime_error("Failed to initialize GLAD MX (Windows)");
     }
