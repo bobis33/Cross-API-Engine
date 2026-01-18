@@ -3,8 +3,32 @@
 #include "Utils/Image.hpp"
 #include "Utils/Logger.hpp"
 
+#include <X11/Xlib.h>
+#include <X11/keysym.h>
+
 #include <utility>
 #include <vector>
+
+static cae::KeyCode translateKey(const KeySym keysym)
+{
+    switch (keysym)
+    {
+    case XK_w: return cae::KeyCode::W;
+    case XK_a: return cae::KeyCode::A;
+    case XK_s: return cae::KeyCode::S;
+    case XK_d: return cae::KeyCode::D;
+    case XK_Up: return cae::KeyCode::Up;
+    case XK_Down: return cae::KeyCode::Down;
+    case XK_Left: return cae::KeyCode::Left;
+    case XK_Right: return cae::KeyCode::Right;
+    case XK_Escape: return cae::KeyCode::Escape;
+    case XK_space: return cae::KeyCode::Space;
+    case XK_Control_L: return cae::KeyCode::LCtrl;
+    case XK_Shift_L: return cae::KeyCode::LShift;
+    case XK_Alt_L: return cae::KeyCode::LAlt;
+    default: return cae::KeyCode::Count;
+    }
+}
 
 bool cae::X11::create(const std::string &name, const WindowSize size)
 {
@@ -29,8 +53,10 @@ bool cae::X11::create(const std::string &name, const WindowSize size)
 
     XStoreName(m_display, m_window, name.c_str());
 
-    XSelectInput(m_display, m_window, ExposureMask | KeyPressMask | StructureNotifyMask);
-
+    XSelectInput(m_display, m_window,
+        ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
+        PointerMotionMask | ButtonPressMask | ButtonReleaseMask
+    );
     m_wmDeleteMessage = XInternAtom(m_display, "WM_DELETE_WINDOW", False);
     XSetWMProtocols(m_display, m_window, &m_wmDeleteMessage, 1);
 
@@ -117,48 +143,83 @@ bool cae::X11::shouldClose() const { return m_shouldClose; }
 
 void cae::X11::pollEvents()
 {
-    while (XPending(m_display) != 0)
+}
+
+bool cae::X11::pollEvent(WindowEvent &outEvent)
+{
+    if (m_eventQueue.empty() && XPending(m_display) == 0)
+        return false;
+
+    // vider la queue X11 et remplir m_eventQueue
+    while (XPending(m_display) > 0)
     {
         XEvent event;
         XNextEvent(m_display, &event);
+        WindowEvent e{};
 
         switch (event.type)
         {
-            case Expose:
-            {
-                XGCValues gcValues;
-                GC gc = XCreateGC(m_display, m_window, 0, &gcValues);
-
-                XColor color;
-                const Colormap colormap = DefaultColormap(m_display, DefaultScreen(m_display));
-                color.red = 0x0000;
-                color.green = 0x0000;
-                color.blue = 0x0000;
-                color.flags = DoRed | DoGreen | DoBlue;
-                XAllocColor(m_display, colormap, &color);
-
-                XSetForeground(m_display, gc, color.pixel);
-
-                XFillRectangle(m_display, m_window, gc, 0, 0, m_frameBufferSize.width, m_frameBufferSize.height);
-
-                XFreeGC(m_display, gc);
+            case KeyPress:
+                e.type = WindowEventType::KeyDown;
+                e.key.key = translateKey(XLookupKeysym(&event.xkey, 0));
+                m_eventQueue.push(e);
                 break;
-            }
+
+            case KeyRelease:
+                e.type = WindowEventType::KeyUp;
+                e.key.key = translateKey(XLookupKeysym(&event.xkey, 0));
+                m_eventQueue.push(e);
+                break;
+
             case ConfigureNotify:
                 m_frameBufferResized = true;
                 m_frameBufferSize.width = event.xconfigure.width;
                 m_frameBufferSize.height = event.xconfigure.height;
+                e.type = WindowEventType::Resize;
+                e.resize.w = event.xconfigure.width;
+                e.resize.h = event.xconfigure.height;
+                m_eventQueue.push(e);
                 break;
+
             case ClientMessage:
-                if (std::cmp_equal(event.xclient.data.l[0], m_wmDeleteMessage))
+                if (static_cast<Atom>(event.xclient.data.l[0]) == m_wmDeleteMessage)
                 {
                     m_shouldClose = true;
+                    e.type = WindowEventType::Close;
+                    m_eventQueue.push(e);
                 }
                 break;
+
+            case MotionNotify:
+                e.type = WindowEventType::MouseMove;
+                e.mouseMove.x = event.xmotion.x;
+                e.mouseMove.y = event.xmotion.y;
+                m_eventQueue.push(e);
+                break;
+
+            case ButtonPress:
+            case ButtonRelease:
+                e.type = (event.type == ButtonPress) ? WindowEventType::MouseButtonDown : WindowEventType::MouseButtonUp;
+                e.mouseButton.button = static_cast<MouseButton>(event.xbutton.button);
+                m_eventQueue.push(e);
+                break;
+
+            case Expose:
+                // Tu peux gérer le repaint ici ou laisser le moteur appeler draw
+                break;
+
             default:
                 break;
         }
     }
 
-    XFlush(m_display);
+    if (!m_eventQueue.empty())
+    {
+        outEvent = m_eventQueue.front();
+        m_eventQueue.pop();
+        return true;
+    }
+
+    return false;
 }
+
