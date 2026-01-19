@@ -1,12 +1,30 @@
 # Plugins
 
-| Type            | Plugin Name | Status              |
-|-----------------|-------------|---------------------|
-| Audio           | ALSA        | Not supported       |
-| Renderer        | OpenGL      | Supported partially | 
-| Renderer        | Vulkan      | Not supported       |
-| Shader frontend | GLSL        | Supported partially |
-| Shader IR       | SPIR-V      | Supported partially |
-| Windowing       | GLFW        | Supported           |
-| Windowing       | Win32       | Supported           |
-| Windowing       | X11         | Supported           |
+| Type            | Name      | Status |
+|-----------------|-----------|--------|
+| Audio           | ALSA      | ❌      |
+| Audio           | Core      | ❌      |
+| Audio           | OpenAL    | ❌      |
+| Audio           | XAudio2   | ❌      |
+| Model           | Assimp    | ❌      |
+| Model           | fastgltf  | ❌      |
+| Network         | Asio      | ❌      |
+| Network         | Posix     | ❌      |
+| Network         | WinSock   | ❌      |
+| Physic          |           | ❌      |
+| Renderer        | DirectX12 | ❌      |
+| Renderer        | Metal     | ❌      |
+| Renderer        | OpenGL    | 🚧     |
+| Renderer        | Vulkan    | ❌      |
+| Shader IR       | SPIR-V    | 🚧     |
+| Shader IR       | DXC       | ❌      |
+| Shader Frontend | GLSL      | 🚧     |
+| Shader Frontend | HLSL      | ❌      |
+| Shader Frontend | MSL       | ❌      |
+| Shader Frontend | WGSL      | ❌      |
+| UI              | Imgui     | ❌      |
+| Window          | Cocoa     | ❌      |
+| Window          | GLFW      | ✅      |
+| Window          | Win32     | ✅      |
+| Window          | X11       | ✅      |
+
