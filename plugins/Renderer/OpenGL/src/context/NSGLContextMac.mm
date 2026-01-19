@@ -2,6 +2,8 @@
 
 #include "OPGL/Context/NSGLContextMac.hpp"
 
+#include "Utils/Logger.hpp"
+
 #import <AppKit/AppKit.h>
 
 cae::NSGLContextMac::~NSGLContextMac() {
@@ -18,7 +20,7 @@ void cae::NSGLContextMac::initialize(const NativeWindowHandle &window)
 
     m_context = [contentView openGLContext];
     if (!m_context) {
-        throw std::runtime_error("No context");
+        utl::Logger::log("no context", utl::LogLevel::WARNING);
     }
 
     [m_context makeCurrentContext];
