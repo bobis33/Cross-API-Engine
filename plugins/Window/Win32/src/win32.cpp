@@ -60,9 +60,12 @@ cae::KeyCode cae::Win32::mapWinKey(const WPARAM key)
         {VK_RETURN, KeyCode::Enter},
         {VK_BACK, KeyCode::Backspace},
         {VK_TAB, KeyCode::Tab},
-        {VK_SHIFT, KeyCode::LShift},
-        {VK_CONTROL, KeyCode::LCtrl},
-        {VK_MENU, KeyCode::LAlt}
+        {VK_LSHIFT, KeyCode::LShift},
+        {VK_RSHIFT, KeyCode::RShift},
+        {VK_LCONTROL, KeyCode::LCtrl},
+        {VK_RCONTROL, KeyCode::RCtrl},
+        {VK_LMENU, KeyCode::LAlt},
+        {VK_RMENU, KeyCode::RAlt}
         // ...
     };
 
@@ -93,7 +96,7 @@ LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const W
             self->m_frameBufferResized = true;
             self->m_frameBufferSize = {.width = LOWORD(lParam), .height = HIWORD(lParam)};
             e.type = WindowEventType::Resize;
-            e.resize = {LOWORD(lParam), HIWORD(lParam)};
+            e.resize = {.w=LOWORD(lParam), .h=HIWORD(lParam)};
             self->m_eventQueue.push(e);
             return 0;
 
@@ -117,7 +120,7 @@ LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const W
             self->m_eventQueue.push(e);
             return 0;
 
-            // souris, scroll, etc
+            // mouse, scroll, ...
     }
 
     return DefWindowProcW(hwnd, msg, wParam, lParam);
