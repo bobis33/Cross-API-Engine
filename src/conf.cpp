@@ -11,7 +11,7 @@ using json = nlohmann::json;
 
 cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
 {
-    auto confPath = utl::Path::resolveRelativeToExe(path);
+    auto confPath = utl::Path::resolveRelativeToCwd(path);
     if (!utl::Path::existsFile(confPath))
     {
         utl::Logger::log("Config file does not exist: " + confPath.string(), utl::LogLevel::WARNING);
