@@ -96,10 +96,8 @@ namespace cae
             void initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
                                            const std::vector<float> &vertices) const;
 
-            ///
-            /// @brief Run the engine main loop
-            ///
-            void run();
+            void update(std::array<float, 10> &fpsBuffer, int &fpsIndex);
+            void render();
 
             ///
             /// @brief Stop the engine
@@ -116,7 +114,6 @@ namespace cae
             std::unique_ptr<ShaderManager> m_shaderManager = nullptr;
             std::unique_ptr<Camera> m_camera = nullptr;
 
-            std::unordered_map<KeyCode, bool> m_keyState;
             bool m_logFps = false;
 
             ///

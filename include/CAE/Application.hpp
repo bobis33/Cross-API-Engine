@@ -50,7 +50,7 @@ namespace cae
             ///
             /// @brief Start the application
             ///
-            void start() const;
+            void start();
 
             ///
             /// @brief Stop the application
@@ -75,10 +75,14 @@ namespace cae
             ///
             static EngineConfig parseEngineConf(const std::string &path);
 
+            void mainLoop();
+
             std::unique_ptr<utl::PluginLoader> m_pluginLoader = nullptr;
             std::unique_ptr<Engine> m_engine = nullptr;
 
             AppConfig m_appConfig;
+            std::unordered_map<KeyCode, bool> m_keyState;
+
 
     }; // class Application
 
