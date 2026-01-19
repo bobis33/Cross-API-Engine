@@ -12,7 +12,7 @@ cae::NSGLContextMac::~NSGLContextMac() {
 }
 
 void cae::NSGLContextMac::initialize(const NativeWindowHandle &window) {
-    NSView* nsview = (__bridge NSView*)window.window;
+    NSView* nsview = (__bridge NSView*)window.display;
 
     NSOpenGLPixelFormatAttribute attrs[] = {
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
