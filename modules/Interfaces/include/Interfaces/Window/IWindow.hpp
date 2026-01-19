@@ -41,7 +41,7 @@ namespace cae
     /// @brief Enum for window event types
     /// @namespace cae
     ///
-    enum class WindowEventType
+    enum class WindowEventType : uint8_t
     {
         KeyDown,
         KeyUp,

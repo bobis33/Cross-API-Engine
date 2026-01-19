@@ -1,11 +1,10 @@
 #include "Engine/Engine.hpp"
 
 #include "Utils/Logger.hpp"
+#include "Utils/Path.hpp"
 
 #include <numeric>
 #include <ranges>
-
-#include "Utils/Path.hpp"
 
 void printFps(std::array<float, 10> &fpsBuffer, int &fpsIndex, const float deltaTime)
 {
@@ -89,29 +88,29 @@ void cae::Engine::run()
 
         if (m_keyState[KeyCode::Up])
         {
-            lookDir.y += 1.0f;
+            lookDir.y += 1.0F;
         }
         if (m_keyState[KeyCode::Down])
         {
-            lookDir.y -= 1.0f;
+            lookDir.y -= 1.0F;
         }
         if (m_keyState[KeyCode::Left])
         {
-            lookDir.x -= 1.0f;
+            lookDir.x -= 1.0F;
         }
         if (m_keyState[KeyCode::Right])
         {
-            lookDir.x += 1.0f;
+            lookDir.x += 1.0F;
         }
 
-        if (glm::length(lookDir) > 0.0f)
+        if (glm::length(lookDir) > 0.0F)
         {
             lookDir *= m_camera->getLookSpeed() * m_clock->getDeltaSeconds();
-            m_camera->rotate(lookDir.x, lookDir.y, 1.0f);
+            m_camera->rotate(lookDir.x, lookDir.y, 1.0F);
         }
 
-        glm::vec3 forward = glm::normalize(glm::vec3(m_camera->getDirection().x, 0.0f, m_camera->getDirection().z));
-        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0f, 1.0f, 0.0f)));
+        glm::vec3 forward = glm::normalize(glm::vec3(m_camera->getDirection().x, 0.0F, m_camera->getDirection().z));
+        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0F, 1.0F, 0.0F)));
 
         if (m_keyState[KeyCode::W])
         {
@@ -162,6 +161,10 @@ void cae::Engine::stop()
     m_networkPlugin = nullptr;
     m_rendererPlugin = nullptr;
     m_windowPlugin = nullptr;
+
+    m_clock = nullptr;
+    m_shaderManager = nullptr;
+    m_camera = nullptr;
 }
 
 void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize,
