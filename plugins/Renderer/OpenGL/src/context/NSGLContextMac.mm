@@ -2,6 +2,8 @@
 
 #include "OPGL/Context/NSGLContextMac.hpp"
 
+#include "Utils/Logger.hpp"
+
 #import <AppKit/AppKit.h>
 
 cae::NSGLContextMac::~NSGLContextMac() {

@@ -148,8 +148,11 @@ bool cae::GLFW::create(const std::string &name, const WindowSize size)
         utl::Logger::log("Failed to init glfw", utl::LogLevel::WARNING);
         return false;
     }
-
+#ifdef __APPLE__
+#else
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+#endif
+
     m_window = glfwCreateWindow(size.width, size.height, name.c_str(), nullptr, nullptr);
     if (m_window == nullptr)
     {
@@ -165,6 +168,9 @@ bool cae::GLFW::create(const std::string &name, const WindowSize size)
     glfwSetMouseButtonCallback(m_window, mouseButtonCallback);
     glfwSetCursorPosCallback(m_window, cursorPosCallback);
     glfwSetScrollCallback(m_window, scrollCallback);
+#ifdef __APPLE__
+    glfwMakeContextCurrent((GLFWwindow*)m_window);
+#endif
     return true;
 }
 
@@ -197,7 +203,7 @@ cae::NativeWindowHandle cae::GLFW::getNativeHandle() const
     handle.display = glfwGetX11Display();
 #elifdef __APPLE__
     handle.window = glfwGetCocoaWindow(m_window);
-    handle.display = glfwGetCocoaView(m_window);
+    handle.display = nullptr;
 #endif
     return handle;
 }
