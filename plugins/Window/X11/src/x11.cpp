@@ -8,36 +8,39 @@
 
 #include <vector>
 
-static cae::KeyCode translateKey(const KeySym keysym)
+static cae::KeyCode translateKeycode(const unsigned int keycode)
 {
-    switch (keysym)
+    switch (keycode)
     {
-        case XK_w:
+        case 25:
             return cae::KeyCode::W;
-        case XK_a:
+        case 38:
             return cae::KeyCode::A;
-        case XK_s:
+        case 39:
             return cae::KeyCode::S;
-        case XK_d:
+        case 40:
             return cae::KeyCode::D;
-        case XK_Up:
+
+        case 111:
             return cae::KeyCode::Up;
-        case XK_Down:
+        case 116:
             return cae::KeyCode::Down;
-        case XK_Left:
+        case 113:
             return cae::KeyCode::Left;
-        case XK_Right:
+        case 114:
             return cae::KeyCode::Right;
-        case XK_Escape:
-            return cae::KeyCode::Escape;
-        case XK_space:
+
+        case 65:
             return cae::KeyCode::Space;
-        case XK_Control_L:
+        case 37:
             return cae::KeyCode::LCtrl;
-        case XK_Shift_L:
+        case 50:
             return cae::KeyCode::LShift;
-        case XK_Alt_L:
+        case 64:
             return cae::KeyCode::LAlt;
+
+        case 9:
+            return cae::KeyCode::Escape;
         default:
             return cae::KeyCode::Count;
     }
@@ -158,7 +161,9 @@ void cae::X11::pollEvents() {}
 bool cae::X11::pollEvent(WindowEvent &outEvent)
 {
     if (m_eventQueue.empty() && XPending(m_display) == 0)
+    {
         return false;
+    }
 
     while (XPending(m_display) > 0)
     {
@@ -170,13 +175,13 @@ bool cae::X11::pollEvent(WindowEvent &outEvent)
         {
             case KeyPress:
                 e.type = WindowEventType::KeyDown;
-                e.key.key = translateKey(XLookupKeysym(&event.xkey, 0));
+                e.key.key = translateKeycode(event.xkey.keycode);
                 m_eventQueue.push(e);
                 break;
 
             case KeyRelease:
                 e.type = WindowEventType::KeyUp;
-                e.key.key = translateKey(XLookupKeysym(&event.xkey, 0));
+                e.key.key = translateKeycode(event.xkey.keycode);
                 m_eventQueue.push(e);
                 break;
 
