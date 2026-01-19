@@ -17,14 +17,13 @@ void printFps(std::array<float, 10> &fpsBuffer, int &fpsIndex, const float delta
 }
 
 cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
-                    const std::function<std::shared_ptr<IInput>()> &inputFactory,
                     const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
                     const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
                     const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
                     const std::function<std::shared_ptr<IWindow>()> &windowFactory)
-    : m_audioPlugin(audioFactory()), m_inputPlugin(inputFactory()), m_networkPlugin(networkFactory()),
-      m_rendererPlugin(rendererFactory()), m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>()),
+    : m_audioPlugin(audioFactory()), m_networkPlugin(networkFactory()), m_rendererPlugin(rendererFactory()),
+      m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>()),
       m_shaderManager(std::make_unique<ShaderManager>(shaderFrontendFactories, shaderIRFactory)),
       m_camera(std::make_unique<Camera>(config.camera_position, config.camera_rotation, config.camera_direction,
                                         config.camera_move_speed, config.camera_look_speed, config.camera_fov,
@@ -160,7 +159,6 @@ void cae::Engine::stop()
     m_windowPlugin->close();
 
     m_audioPlugin = nullptr;
-    m_inputPlugin = nullptr;
     m_networkPlugin = nullptr;
     m_rendererPlugin = nullptr;
     m_windowPlugin = nullptr;

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/Shader/IShaderFrontend.hpp"
+#include "Interfaces/Shader/Frontend/IShaderFrontend.hpp"
 
 #include <span>
 #include <stdexcept>

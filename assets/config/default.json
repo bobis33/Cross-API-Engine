@@ -8,7 +8,7 @@
     "rotation": [0.0, 0.0, 0.0],
     "direction": [0.0, 0.0, -1.0],
     "movementSpeed": 2.5,
-    "rotationSpeed": 10.0,
+    "rotationSpeed": 7.5,
     "fov": 45,
     "nearPlane": 0.1,
     "farPlane": 1000.0

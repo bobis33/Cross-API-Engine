@@ -6,8 +6,9 @@
 
 #pragma once
 
-#include "Input/Key/Keyboard.hpp"
-#include "Input/Key/Mouse.hpp"
+#include "Interfaces/Input/Key/Keyboard.hpp"
+#include "Interfaces/Input/Key/Mouse.hpp"
+
 #include "Utils/Interfaces/IPlugin.hpp"
 
 namespace cae
@@ -161,9 +162,6 @@ namespace cae
 
             // virtual bool isFullScreen() const = 0;
             // virtual void setFullScreen(bool fullScreen) const = 0;
-
-        private:
-            // std::unique_ptr<IInput> m_inputManager;
 
     }; // interface IWindow
 

@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "Interfaces/IWindow.hpp"
-#include "Interfaces/Shader/IShaderFrontend.hpp"
+#include "Interfaces/Shader/Frontend/IShaderFrontend.hpp"
+#include "Interfaces/Window/IWindow.hpp"
 
 #include <glm/mat4x4.hpp>
 

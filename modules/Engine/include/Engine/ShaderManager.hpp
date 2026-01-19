@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/Shader/IShaderIR.hpp"
+#include "Interfaces/Shader/IR/IShaderIR.hpp"
 
 #include <memory>
 

@@ -114,7 +114,7 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
         utl::Logger::log("No shader plugin found with name: " + shaderFrontendName, utl::LogLevel::WARNING);
     }
     m_engine = std::make_unique<Engine>(
-        m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
+        m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; },
         [rendererPlugin]() { return rendererPlugin; }, [shaderIRPlugin]() { return shaderIRPlugin; }, shaderFactories,
         [windowPlugin]() { return windowPlugin; });
 }

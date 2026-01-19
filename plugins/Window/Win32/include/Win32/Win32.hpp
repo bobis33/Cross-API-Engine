@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/IWindow.hpp"
+#include "Interfaces/Window/AWindow.hpp"
 
 #include <windows.h>
 
@@ -20,7 +20,7 @@ namespace cae
     /// @brief Class for the Win32 plugin
     /// @namespace cae
     ///
-    class Win32 final : public IWindow
+    class Win32 final : public AWindow
     {
 
         public:

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/IWindow.hpp"
+#include "Interfaces/Window/IWindow.hpp"
 
 #include <glad/gl.h>
 

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/IWindow.hpp"
+#include "Interfaces/Window/AWindow.hpp"
 
 #include <X11/Xlib.h>
 
@@ -20,7 +20,7 @@ namespace cae
     /// @brief Class for the X11 plugin
     /// @namespace cae
     ///
-    class X11 final : public IWindow
+    class X11 final : public AWindow
     {
 
         public:

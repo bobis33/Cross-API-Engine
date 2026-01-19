@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/IWindow.hpp"
+#include "Interfaces/Window/AWindow.hpp"
 
 #ifdef _WIN32
 #define GLFW_EXPOSE_NATIVE_WIN32
@@ -27,7 +27,7 @@ namespace cae
     /// @brief Class for the GLFW plugin
     /// @namespace cae
     ///
-    class GLFW final : public IWindow
+    class GLFW final : public AWindow
     {
 
         public:
