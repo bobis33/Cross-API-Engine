@@ -197,7 +197,7 @@ cae::NativeWindowHandle cae::GLFW::getNativeHandle() const
     handle.display = glfwGetX11Display();
 #elifdef __APPLE__
     handle.window = glfwGetCocoaWindow(m_window);
-    handle.display = glfwGetCocoaView(m_window);
+    handle.display = nullptr;
 #endif
     return handle;
 }

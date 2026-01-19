@@ -11,24 +11,17 @@ cae::NSGLContextMac::~NSGLContextMac() {
     }
 }
 
-void cae::NSGLContextMac::initialize(const NativeWindowHandle &window) {
-    NSView* nsview = (__bridge NSView*)window.display;
+void cae::NSGLContextMac::initialize(const NativeWindowHandle &window)
+{
+    NSWindow* cocoaWindow = (__bridge NSWindow*)window.window;
+    NSView* contentView = [cocoaWindow contentView];
 
-    NSOpenGLPixelFormatAttribute attrs[] = {
-        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-        NSOpenGLPFAColorSize, 24,
-        NSOpenGLPFADepthSize, 24,
-        NSOpenGLPFAAccelerated,
-        NSOpenGLPFADoubleBuffer,
-        0
-    };
+    m_context = [contentView openGLContext];
+    if (!m_context) {
+        throw std::runtime_error("No context");
+    }
 
-    NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-    if (!pixelFormat) throw std::runtime_error("Failed to create NSOpenGLPixelFormat");
-
-    m_context = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
-    [(NSOpenGLContext*)m_context setView:nsview];
-    [(NSOpenGLContext*)m_context makeCurrentContext];
+    [m_context makeCurrentContext];
 
     if (!gladLoadGLContext(&gl, nullptr)) {
         throw std::runtime_error("Failed to initialize GLAD");
