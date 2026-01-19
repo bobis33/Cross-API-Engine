@@ -42,7 +42,7 @@ namespace cae
             [[nodiscard]] NativeWindowHandle getNativeHandle() const override;
             [[nodiscard]] WindowSize getWindowSize() const override;
 
-            [[nodiscard]] bool setIcon(const std::string &path) const override;
+            void setIcon(const std::string &path) const override;
 
             [[nodiscard]] bool shouldClose() const override { return m_shouldClose; }
             void pollEvents() override;

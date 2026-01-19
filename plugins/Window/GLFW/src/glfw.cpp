@@ -202,16 +202,15 @@ cae::NativeWindowHandle cae::GLFW::getNativeHandle() const
     return handle;
 }
 
-bool cae::GLFW::setIcon(const std::string &path) const
+void cae::GLFW::setIcon(const std::string &path) const
 {
     static const utl::Image image(path);
     if (image.pixels == nullptr)
     {
-        return false;
+        utl::Logger::log("Failed to create icon.", utl::LogLevel::WARNING);
     }
     static const GLFWimage appIcon{.width = image.width, .height = image.height, .pixels = image.pixels};
     glfwSetWindowIcon(m_window, 1, &appIcon);
-    return true;
 }
 
 bool cae::GLFW::pollEvent(WindowEvent &event)

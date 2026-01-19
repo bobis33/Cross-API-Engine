@@ -106,11 +106,12 @@ cae::WindowSize cae::X11::getWindowSize() const
     return {.width = static_cast<uint16_t>(attrs.width), .height = static_cast<uint16_t>(attrs.height)};
 }
 
-bool cae::X11::setIcon(const std::string &path) const
+void cae::X11::setIcon(const std::string &path) const
 {
     if ((m_display == nullptr) || m_window == 0)
     {
-        return false;
+        utl::Logger::log("Failed to create window icon", utl::LogLevel::WARNING);
+        return;
     }
 
     try
@@ -145,12 +146,10 @@ bool cae::X11::setIcon(const std::string &path) const
                         reinterpret_cast<const unsigned char *>(iconData.data()), static_cast<int>(iconData.size()));
 
         XFlush(m_display);
-        return true;
     }
     catch (const std::exception &e)
     {
         utl::Logger::log(std::string("Failed to set X11 window icon: ") + e.what(), utl::LogLevel::WARNING);
-        return false;
     }
 }
 

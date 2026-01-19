@@ -194,7 +194,7 @@ cae::WindowSize cae::Win32::getWindowSize() const
             .height = static_cast<uint16_t>(rect.bottom - rect.top)};
 }
 
-bool cae::Win32::setIcon(const std::string &path) const
+void cae::Win32::setIcon(const std::string &path) const
 {
     try
     {
@@ -228,7 +228,8 @@ bool cae::Win32::setIcon(const std::string &path) const
 
         if (hBitmap == nullptr)
         {
-            return false;
+            utl::Logger::log("Failed to create window icon", utl::LogLevel::WARNING);
+            return;
         }
 
         std::memcpy(pBits, image.pixels, static_cast<size_t>(image.width * image.height * 4));
@@ -243,18 +244,17 @@ bool cae::Win32::setIcon(const std::string &path) const
 
         if (hIcon == nullptr)
         {
-            return false;
+            utl::Logger::log("Failed to create window icon", utl::LogLevel::WARNING);
+            return;
         }
 
         SendMessageW(m_hwnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hIcon));
         SendMessageW(m_hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(hIcon));
 
-        return true;
     }
     catch (const std::exception &e)
     {
         utl::Logger::log("Failed to load icon: " + std::string(e.what()), utl::LogLevel::WARNING);
-        return false;
     }
 }
 

@@ -129,7 +129,7 @@ namespace cae
             /// @return True if the icon was set successfully
             /// @brief Set the window icon from the given image path
             ///
-            virtual bool setIcon(const std::string &path) const = 0;
+            virtual void setIcon(const std::string &path) const = 0;
 
             ///
             /// @return True if the window should close

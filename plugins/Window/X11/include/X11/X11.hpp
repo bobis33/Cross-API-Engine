@@ -45,7 +45,7 @@ namespace cae
             }
             [[nodiscard]] WindowSize getWindowSize() const override;
 
-            [[nodiscard]] bool setIcon(const std::string &path) const override;
+            void setIcon(const std::string &path) const override;
 
             [[nodiscard]] bool shouldClose() const override;
             void pollEvents() override;

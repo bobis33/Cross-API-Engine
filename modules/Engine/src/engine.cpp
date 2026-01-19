@@ -12,7 +12,7 @@ void printFps(std::array<float, 10> &fpsBuffer, int &fpsIndex, const float delta
     fpsBuffer[fpsIndex % 10] = 1.0F / deltaTime;
     fpsIndex++;
 
-    float avgFps = std::accumulate(fpsBuffer.begin(), fpsBuffer.end(), 0.0f) / 10.0f;
+    float avgFps = std::accumulate(fpsBuffer.begin(), fpsBuffer.end(), 0.0F) / 10.0F;
     utl::Logger::log(std::format("FPS: {}", avgFps), utl::LogLevel::INFO);
 }
 
@@ -130,7 +130,7 @@ void cae::Engine::run()
             moveDir += right;
         }
 
-        if (glm::length(moveDir) > 0.0f)
+        if (glm::length(moveDir) > 0.0F)
         {
             moveDir = glm::normalize(moveDir);
             m_camera->move(moveDir, m_clock->getDeltaSeconds());
@@ -138,11 +138,11 @@ void cae::Engine::run()
 
         if (m_keyState[KeyCode::LCtrl])
         {
-            m_camera->move(glm::vec3(0.0f, -1.0f, 0.0f), m_clock->getDeltaSeconds());
+            m_camera->move(glm::vec3(0.0F, -1.0F, 0.0F), m_clock->getDeltaSeconds());
         }
         if (m_keyState[KeyCode::Space])
         {
-            m_camera->move(glm::vec3(0.0f, 1.0f, 0.0f), m_clock->getDeltaSeconds());
+            m_camera->move(glm::vec3(0.0F, 1.0F, 0.0F), m_clock->getDeltaSeconds());
         }
 
         if (m_logFps)
