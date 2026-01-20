@@ -5,12 +5,12 @@ project(cae-shaders-frontend-glsl
 
 find_package(glslang QUIET CONFIG)
 if (NOT glslang_FOUND)
-    message(STATUS "glslang not found.")
-
     include(FetchContent)
+    set(BUILD_EXTERNAL OFF CACHE BOOL "" FORCE)
     set(ENABLE_HLSL OFF CACHE BOOL "" FORCE)
     set(ENABLE_OPT OFF CACHE BOOL "" FORCE)
     set(ENABLE_SPIRV ON CACHE BOOL "" FORCE)
+    set(ENABLE_GLSLANG_BINARIES ON CACHE BOOL "" FORCE)
     set(GLSLANG_TESTS OFF CACHE BOOL "" FORCE)
     FetchContent_Declare(
             glslang

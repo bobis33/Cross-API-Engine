@@ -44,8 +44,8 @@ FetchContent_Declare(
         GIT_PROGRESS   TRUE
 )
 FetchContent_MakeAvailable(nlohmann-json)
-set(GLM_BUILD_TESTS OFF CACHE INTERNAL "")
-set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
+set(GLM_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
         glm
         GIT_REPOSITORY "https://github.com/g-truc/glm.git"
@@ -103,9 +103,3 @@ if (MSVC)
 else ()
     target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS} -O3)
 endif ()
-
-copy_directory_to_target(
-        cae
-        "${CMAKE_SOURCE_DIR}/assets"
-        "assets"
-)

@@ -75,6 +75,9 @@ namespace cae
             ///
             static EngineConfig parseEngineConf(const std::string &path);
 
+            ///
+            /// @brief main loop
+            ///
             void mainLoop();
 
             std::unique_ptr<utl::PluginLoader> m_pluginLoader = nullptr;
@@ -82,7 +85,6 @@ namespace cae
 
             AppConfig m_appConfig;
             std::unordered_map<KeyCode, bool> m_keyState;
-
 
     }; // class Application
 

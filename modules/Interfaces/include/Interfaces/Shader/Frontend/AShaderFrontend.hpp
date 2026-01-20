@@ -12,7 +12,7 @@ namespace cae
 {
 
     ///
-    /// @interface IShaderFrontend
+    /// @interface AShaderFrontend
     /// @brief Abstract class for shader frontend
     /// @namespace cae
     ///

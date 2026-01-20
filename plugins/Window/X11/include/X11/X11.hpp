@@ -6,6 +6,8 @@
 
 #pragma once
 
+#ifdef __unix__
+
 #include "Interfaces/Window/AWindow.hpp"
 
 #include <X11/Xlib.h>
@@ -66,3 +68,5 @@ namespace cae
     }; // class X11
 
 } // namespace cae
+
+#endif

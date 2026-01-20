@@ -7,6 +7,7 @@
 
 #include <cstring>
 #include <unordered_map>
+#include <utility>
 
 constexpr wchar_t WINDOW_CLASS_NAME[] = L"CAE_WindowsWindowClass";
 
@@ -86,8 +87,9 @@ LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const W
     }
 
     self = reinterpret_cast<Win32 *>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
-    if (!self)
+    if (self == nullptr) {
         return DefWindowProcW(hwnd, msg, wParam, lParam);
+}
 
     WindowEvent e{};
     switch (msg)
@@ -203,7 +205,7 @@ void cae::Win32::setIcon(const std::string &path) const
     {
         const utl::Image image(path);
 
-        for (size_t i = 0; i < static_cast<size_t>(image.width * image.height); ++i)
+        for (size_t i = 0; std::cmp_less(i ,image.width * image.height); ++i)
         {
             std::swap(image.pixels[(i * 4) + 0], image.pixels[(i * 4) + 2]);
         }
@@ -231,7 +233,7 @@ void cae::Win32::setIcon(const std::string &path) const
 
         if (hBitmap == nullptr)
         {
-            utl::Logger::log("Failed to create window icon", utl::LogLevel::WARNING);
+            utl::Logger::log("Failed to create window icon.", utl::LogLevel::WARNING);
             return;
         }
 

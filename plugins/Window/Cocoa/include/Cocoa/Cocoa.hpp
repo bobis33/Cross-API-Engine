@@ -1,13 +1,25 @@
+///
+/// @file Cocoa.hpp
+/// @brief This file contains the hpp class declaration
+/// @namespace cae
+///
+
 #pragma once
+
+#ifdef __APPLE__
 
 #include "Interfaces/Window/AWindow.hpp"
 
 #include <queue>
 
-#ifdef __APPLE__
-
 namespace cae
 {
+
+    ///
+    /// @class Cocoa
+    /// @brief Class for the Cocoa plugin
+    /// @namespace cae
+    ///
     class Cocoa final : public AWindow
     {
         public:
@@ -46,7 +58,9 @@ namespace cae
 
             std::queue<WindowEvent> m_eventQueue;
             WindowSize m_size{};
-    };
-}
+
+    }; // class Cocoa
+
+} // namespace cae
 
 #endif

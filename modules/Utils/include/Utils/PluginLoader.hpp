@@ -143,6 +143,7 @@ namespace utl
                 }
                 catch (const std::exception &e)
                 {
+                    throw std::runtime_error(std::string("Unknown exception: ") + e.what());
                     return nullptr;
                 }
             }

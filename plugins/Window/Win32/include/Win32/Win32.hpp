@@ -6,6 +6,8 @@
 
 #pragma once
 
+#ifdef _WIN32
+
 #include "Interfaces/Window/AWindow.hpp"
 
 #include <windows.h>
@@ -64,4 +66,7 @@ namespace cae
             bool m_shouldClose = false;
 
     }; // class Win32
+
 } // namespace cae
+
+#endif

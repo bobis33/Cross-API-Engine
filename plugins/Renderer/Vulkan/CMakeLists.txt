@@ -5,12 +5,9 @@ project(cae-renderer-vulkan
 
 find_package(Vulkan QUIET CONFIG)
 if(NOT Vulkan_FOUND)
-    message(STATUS "Vulkan SDK not found.")
-
     include(FetchContent)
-
     set(VULKAN_VERSION "v1.4.329")
-
+    set(VULKAN_HEADERS_ENABLE_TESTS OFF CACHE BOOL "" FORCE)
     FetchContent_Declare(
             VulkanHeaders
             GIT_REPOSITORY "https://github.com/KhronosGroup/Vulkan-Headers.git"

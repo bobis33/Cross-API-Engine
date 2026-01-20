@@ -29,8 +29,8 @@ namespace cae
             float audio_master_volume = AUDIO::VOLUME;
             bool audio_muted = AUDIO::MUTED;
 
-            glm::vec3 camera_position = glm::vec3(0.0F, 0.0F, 5.0F);
-            glm::vec3 camera_rotation = glm::vec3(0.0F, 0.0F, -1.0F);
+            glm::vec3 camera_position = glm::vec3(0.0F, 0.0F, 0.0F);
+            glm::vec3 camera_rotation = glm::vec3(0.0F, 0.0F, 0.0F);
             glm::vec3 camera_direction = glm::vec3(0.0F, 0.0F, -1.0F);
             float camera_move_speed = CAMERA::MOVE_SPEED;
             float camera_look_speed = CAMERA::LOOK_SPEED;

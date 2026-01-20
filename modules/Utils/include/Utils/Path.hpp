@@ -132,7 +132,6 @@ namespace utl
                 return normalize(fs::current_path() / relativePath);
             }
 
-
     }; // class Path
 
 } // namespace utl

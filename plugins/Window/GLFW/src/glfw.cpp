@@ -4,6 +4,7 @@
 #include "Utils/Logger.hpp"
 
 #include <GLFW/glfw3native.h>
+
 #include <unordered_map>
 
 static cae::KeyCode translateKey(const int key)
@@ -67,16 +68,18 @@ static cae::KeyCode translateKey(const int key)
 void cae::GLFW::keyCallback(GLFWwindow *window, const int key, int, const int action, int)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (!self)
+    if (self == nullptr) {
         return;
+    }
 
     WindowEvent e{};
-    if (action == GLFW_PRESS)
+    if (action == GLFW_PRESS) {
         e.type = WindowEventType::KeyDown;
-    else if (action == GLFW_RELEASE)
+    } else if (action == GLFW_RELEASE) {
         e.type = WindowEventType::KeyUp;
-    else
+    } else {
         return;
+    }
 
     e.key.key = translateKey(key);
     self->m_eventQueue.push(e);
@@ -85,8 +88,9 @@ void cae::GLFW::keyCallback(GLFWwindow *window, const int key, int, const int ac
 void cae::GLFW::mouseButtonCallback(GLFWwindow *window, int button, const int action, int)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (!self)
+    if (self == nullptr) {
         return;
+    }
 
     WindowEvent e{};
     e.type = (action == GLFW_PRESS) ? WindowEventType::MouseButtonDown : WindowEventType::MouseButtonUp;
@@ -98,8 +102,9 @@ void cae::GLFW::mouseButtonCallback(GLFWwindow *window, int button, const int ac
 void cae::GLFW::cursorPosCallback(GLFWwindow *window, const double x, const double y)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (!self)
+    if (self == nullptr) {
         return;
+    }
 
     WindowEvent e{};
     e.type = WindowEventType::MouseMove;
@@ -112,8 +117,9 @@ void cae::GLFW::cursorPosCallback(GLFWwindow *window, const double x, const doub
 void cae::GLFW::scrollCallback(GLFWwindow *window, const double xoffset, const double yoffset)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (!self)
+    if (self == nullptr) {
         return;
+    }
 
     WindowEvent e{};
     e.type = WindowEventType::MouseScroll;
@@ -126,11 +132,12 @@ void cae::GLFW::scrollCallback(GLFWwindow *window, const double xoffset, const d
 void cae::GLFW::frameBufferResizeCallback(GLFWwindow *window, const int width, const int height)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (!self)
+    if (self == nullptr) {
         return;
+    }
 
     self->m_frameBufferResized = true;
-    self->m_frameBufferSize = {static_cast<uint16_t>(width), static_cast<uint16_t>(height)};
+    self->m_frameBufferSize = {.width=static_cast<uint16_t>(width), .height=static_cast<uint16_t>(height)};
 
     WindowEvent e{};
     e.type = WindowEventType::Resize;
@@ -214,6 +221,7 @@ void cae::GLFW::setIcon(const std::string &path) const
     if (image.pixels == nullptr)
     {
         utl::Logger::log("Failed to create icon.", utl::LogLevel::WARNING);
+        return;
     }
     static const GLFWimage appIcon{.width = image.width, .height = image.height, .pixels = image.pixels};
     glfwSetWindowIcon(m_window, 1, &appIcon);
@@ -221,8 +229,9 @@ void cae::GLFW::setIcon(const std::string &path) const
 
 bool cae::GLFW::pollEvent(WindowEvent &event)
 {
-    if (m_eventQueue.empty())
+    if (m_eventQueue.empty()) {
         return false;
+    }
 
     event = m_eventQueue.front();
     m_eventQueue.pop();
