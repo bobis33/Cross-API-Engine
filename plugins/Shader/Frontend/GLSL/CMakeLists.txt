@@ -1,4 +1,4 @@
-project(cae-glsl
+project(cae-shaders-frontend-glsl
         DESCRIPTION "CAE GLSL Shader Frontend Plugin"
         LANGUAGES C CXX
 )

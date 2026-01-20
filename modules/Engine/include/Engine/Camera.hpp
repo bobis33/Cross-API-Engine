@@ -112,7 +112,7 @@ namespace cae
         private:
             std::string m_name = CAMERA::NAME;
 
-            glm::vec3 m_position = glm::vec3(1.0F, 1.0F, 5.0F);
+            glm::vec3 m_position = glm::vec3(0.0F, 0.0F, 0.0F);
             glm::vec3 m_rotation = glm::vec3(0.0F, 0.0F, 0.0F);
             glm::vec3 m_direction = glm::vec3(0.0F, 0.0F, -1.0F);
 

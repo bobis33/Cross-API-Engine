@@ -53,7 +53,7 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
         {
             m_appConfig.engineConfig = parseEngineConf(argsConfig.config_path);
         }
-        setupEngine(PLUGINS::NAME::RENDERER::OPENGL, PLUGINS::NAME::WINDOW::COCOA, PLUGINS::NAME::SHADER::FRONTEND::GLSL,
+        setupEngine(PLUGINS::NAME::RENDERER::OPENGL, PLUGINS::NAME::WINDOW::GLFW, PLUGINS::NAME::SHADER::FRONTEND::GLSL,
                     PLUGINS::NAME::SHADER::IR::SPIRV);
     }
     catch (const std::exception &e)

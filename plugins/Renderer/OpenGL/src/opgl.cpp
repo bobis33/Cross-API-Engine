@@ -1,11 +1,11 @@
 #include "OPGL/OPGL.hpp"
 
 #ifdef __linux__
-#include "OPGL/Context/EGLContextLinux.hpp"
+#include "OPGL/Context/EGLContext.hpp"
 #elifdef _WIN32
-#include "OPGL/Context/WGLContextWindows.hpp"
+#include "OPGL/Context/WGLContext.hpp"
 #elifdef __APPLE__
-#include "OPGL/Context/NSGLContextMac.hpp"
+#include "OPGL/Context/NSGLContext.hpp"
 #endif
 
 #include <glm/ext/matrix_transform.hpp>
@@ -15,11 +15,11 @@
 void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor)
 {
 #ifdef __linux__
-    m_context = std::make_unique<EGLContextLinux>();
+    m_context = std::make_unique<EGLContext_>();
 #elifdef _WIN32
-    m_context = std::make_unique<WGLContextWindows>();
+    m_context = std::make_unique<WGLContext>();
 #elifdef __APPLE__
-    m_context = std::make_unique<NSGLContextMac>();
+    m_context = std::make_unique<NSGLContext>();
 #endif
 
     m_context->initialize(nativeWindowHandle);

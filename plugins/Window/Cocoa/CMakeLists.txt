@@ -1,11 +1,13 @@
-project(cae-cocoa
+project(cae-window-cocoa
         DESCRIPTION "CAE Cocoa Window Plugin"
-        LANGUAGES C CXX OBJCXX
+        LANGUAGES C CXX
 )
 
 if (NOT APPLE)
     message(WARNING "${PROJECT_NAME} can only be build on MacOS")
     return()
+else ()
+    enable_language(OBJCXX)
 endif ()
 
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.mm" "${PROJECT_SOURCE_DIR}/src/*.cpp")

@@ -10,7 +10,7 @@
 ## set(SPIRV_TOOLS_INCLUDE_DIR ${spirv-headers_SOURCE_DIR})
 ## FetchContent_MakeAvailable(spirv-tools)
 
-project(cae-spirv
+project(cae-shaders-ir-spirv
         DESCRIPTION "CAE SPIRV Shader Intermediate Representation Plugin"
         LANGUAGES C CXX
 )

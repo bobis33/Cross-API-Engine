@@ -1,19 +1,17 @@
-#if defined(__APPLE__)
+#ifdef __APPLE__
 
-#include "OPGL/Context/NSGLContextMac.hpp"
-
-#include "Utils/Logger.hpp"
+#include "OPGL/Context/NSGLContext.hpp"
 
 #import <AppKit/AppKit.h>
 
-cae::NSGLContextMac::~NSGLContextMac() {
+cae::NSGLContext::~NSGLContext() {
     if (m_context) {
         [(NSOpenGLContext*)m_context clearDrawable];
         m_context = nil;
     }
 }
 
-void cae::NSGLContextMac::initialize(const NativeWindowHandle &window) {
+void cae::NSGLContext::initialize(const NativeWindowHandle &window) {
     NSView* nsview = (__bridge NSView*)window.display;
 
     NSOpenGLPixelFormatAttribute attrs[] = {
@@ -37,19 +35,19 @@ void cae::NSGLContextMac::initialize(const NativeWindowHandle &window) {
     }
 }
 
-void cae::NSGLContextMac::swapBuffers() {
+void cae::NSGLContext::swapBuffers() {
     if (m_context)
         [(NSOpenGLContext*)m_context flushBuffer];
 }
 
-void cae::NSGLContextMac::setVSyncEnabled(const bool enabled) {
+void cae::NSGLContext::setVSyncEnabled(const bool enabled) {
     if (m_context) {
         GLint sync = enabled ? 1 : 0;
         [(NSOpenGLContext*)m_context setValues:&sync forParameter:NSOpenGLContextParameterSwapInterval];
     }
 }
 
-bool cae::NSGLContextMac::isVSyncEnabled() const {
+bool cae::NSGLContext::isVSyncEnabled() const {
     if (m_context) {
         GLint sync = 0;
         [(NSOpenGLContext*)m_context getValues:&sync forParameter:NSOpenGLContextParameterSwapInterval];
@@ -58,4 +56,4 @@ bool cae::NSGLContextMac::isVSyncEnabled() const {
     return false;
 }
 
-#endif // defined(__APPLE__)
+#endif

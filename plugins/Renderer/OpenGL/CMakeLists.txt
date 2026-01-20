@@ -1,4 +1,4 @@
-project(cae-opengl
+project(cae-renderer-opengl
         DESCRIPTION "CAE OpenGL Renderer Plugin"
         LANGUAGES CXX
 )

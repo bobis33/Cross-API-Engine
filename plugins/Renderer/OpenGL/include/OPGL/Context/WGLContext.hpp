@@ -1,6 +1,6 @@
 ///
-/// @file WGLContextWindows.hpp
-/// @brief This file contains the WGLContextWindows class declaration
+/// @file WGLContext.hpp
+/// @brief This file contains the WGLContext class declaration
 /// @namespace cae
 ///
 
@@ -16,15 +16,15 @@ namespace cae
 {
 
     ///
-    /// @class WGLContextWindows
+    /// @class WGLContext
     /// @brief Implementation of IContext for Windows using WGL
     /// @namespace cae
     ///
-    class WGLContextWindows final : public IContext
+    class WGLContext final : public IContext
     {
         public:
-            WGLContextWindows() = default;
-            ~WGLContextWindows() override;
+            WGLContext() = default;
+            ~WGLContext() override;
 
             void initialize(const NativeWindowHandle &window) override;
             void swapBuffers() override;
@@ -40,7 +40,7 @@ namespace cae
             HDC m_hdc = nullptr;
             HGLRC m_hglrc = nullptr;
 
-    }; // class WGLContextWindows
+    }; // class WGLContext
 
 } // namespace cae
 

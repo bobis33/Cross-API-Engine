@@ -1,4 +1,4 @@
-project(cae-vulkan
+project(cae-renderer-vulkan
         DESCRIPTION "CAE Vulkan Renderer Plugin"
         LANGUAGES C CXX
 )

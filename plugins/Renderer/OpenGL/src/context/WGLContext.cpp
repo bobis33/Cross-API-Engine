@@ -1,6 +1,6 @@
 #ifdef _WIN32
 
-#include "OPGL/Context/WGLContextWindows.hpp"
+#include "OPGL/Context/WGLContext.hpp"
 
 #include "Utils/Logger.hpp"
 
@@ -50,7 +50,7 @@ static void *win32GetGLProc(const char *name)
     return proc;
 }
 
-cae::WGLContextWindows::~WGLContextWindows()
+cae::WGLContext::~WGLContext()
 {
     if (m_hglrc != nullptr)
     {
@@ -63,7 +63,7 @@ cae::WGLContextWindows::~WGLContextWindows()
     }
 }
 
-void cae::WGLContextWindows::initialize(const NativeWindowHandle &window)
+void cae::WGLContext::initialize(const NativeWindowHandle &window)
 {
     m_hwnd = static_cast<HWND>(window.window);
     m_hdc = GetDC(m_hwnd);
@@ -149,7 +149,7 @@ void cae::WGLContextWindows::initialize(const NativeWindowHandle &window)
     }
 }
 
-void cae::WGLContextWindows::swapBuffers()
+void cae::WGLContext::swapBuffers()
 {
     if (m_hdc != nullptr)
     {
@@ -157,7 +157,7 @@ void cae::WGLContextWindows::swapBuffers()
     }
 }
 
-void cae::WGLContextWindows::setVSyncEnabled(const bool enabled)
+void cae::WGLContext::setVSyncEnabled(const bool enabled)
 {
     using PFNWGLSWAPINTERVALEXTPROC = BOOL(WINAPI *)(int);
     static auto wglSwapIntervalEXT =

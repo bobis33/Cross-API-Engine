@@ -1,4 +1,4 @@
-project(cae-glfw
+project(cae-window-glfw
         DESCRIPTION "CAE GLFW Window Plugin"
         LANGUAGES C CXX
 )

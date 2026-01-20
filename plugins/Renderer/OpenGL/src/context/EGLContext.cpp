@@ -1,10 +1,10 @@
 #ifdef __linux__
 
-#include "OPGL/Context/EGLContextLinux.hpp"
+#include "OPGL/Context/EGLContext.hpp"
 
 #include <stdexcept>
 
-cae::EGLContextLinux::~EGLContextLinux()
+cae::EGLContext_::~EGLContext_()
 {
     if (m_display != EGL_NO_DISPLAY)
     {
@@ -21,7 +21,7 @@ cae::EGLContextLinux::~EGLContextLinux()
     }
 }
 
-void cae::EGLContextLinux::initialize(const NativeWindowHandle &window)
+void cae::EGLContext_::initialize(const NativeWindowHandle &window)
 {
     if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE)
     {
@@ -87,7 +87,7 @@ void cae::EGLContextLinux::initialize(const NativeWindowHandle &window)
     }
 }
 
-void cae::EGLContextLinux::swapBuffers()
+void cae::EGLContext_::swapBuffers()
 {
     if (m_display != EGL_NO_DISPLAY && m_surface != EGL_NO_SURFACE)
     {
@@ -95,7 +95,7 @@ void cae::EGLContextLinux::swapBuffers()
     }
 }
 
-void cae::EGLContextLinux::setVSyncEnabled(const bool enabled)
+void cae::EGLContext_::setVSyncEnabled(const bool enabled)
 {
     if (m_display != EGL_NO_DISPLAY)
     {

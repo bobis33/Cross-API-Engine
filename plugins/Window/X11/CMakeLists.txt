@@ -1,4 +1,4 @@
-project(cae-x11
+project(cae-window-x11
         DESCRIPTION "CAE X11 Window Plugin"
         LANGUAGES C CXX
 )

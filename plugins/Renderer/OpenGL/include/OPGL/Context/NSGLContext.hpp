@@ -1,6 +1,6 @@
 ///
-/// @file NSGLContextMac.hpp
-/// @brief This file contains the NSGLContextMac class declaration
+/// @file NSGLContext.hpp
+/// @brief This file contains the NSGLContext class declaration
 /// @namespace cae
 ///
 
@@ -14,15 +14,15 @@ namespace cae
 {
 
     ///
-    /// @class NSGLContextMac
+    /// @class NSGLContext
     /// @brief Implementation of IContext for macOS using NSGL
     /// @namespace cae
     ///
-    class NSGLContextMac final : public IContext
+    class NSGLContext final : public IContext
     {
         public:
-            NSGLContextMac() = default;
-            ~NSGLContextMac() override;
+            NSGLContext() = default;
+            ~NSGLContext() override;
 
             void initialize(const NativeWindowHandle &window) override;
 
@@ -34,7 +34,7 @@ namespace cae
         private:
             void *m_context = nullptr;
 
-    }; // class NSGLContextMac
+    }; // class NSGLContext
 
 } // namespace cae
 

@@ -96,7 +96,16 @@ namespace cae
             void initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
                                            const std::vector<float> &vertices) const;
 
+            ///
+            /// @param fpsBuffer
+            /// @param fpsIndex
+            /// @brief
+            ///
             void update(std::array<float, 10> &fpsBuffer, int &fpsIndex);
+
+            ///
+            /// @brief
+            ///
             void render();
 
             ///
