@@ -55,8 +55,6 @@ elseif (APPLE)
 endif ()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PLATFORM_LIBS})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${PLUGIN_DIR}"
         RUNTIME_OUTPUT_DIRECTORY "${PLUGIN_DIR}"

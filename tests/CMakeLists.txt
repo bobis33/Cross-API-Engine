@@ -20,11 +20,10 @@ if (BUILD_CAE_TESTS)
 
     add_executable(${PROJECT_NAME} ${SOURCES})
 
-    target_link_libraries(${PROJECT_NAME} PRIVATE GTest::gtest_main)
+    target_link_libraries(${PROJECT_NAME} PRIVATE GTest::gtest_main cae-compile-options)
     target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
     include(GoogleTest)
     gtest_discover_tests(${PROJECT_NAME})
-    target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
     set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 endif()

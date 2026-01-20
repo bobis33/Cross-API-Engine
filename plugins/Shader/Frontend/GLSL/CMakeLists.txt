@@ -12,6 +12,7 @@ if (NOT glslang_FOUND)
     set(ENABLE_SPIRV ON CACHE BOOL "" FORCE)
     set(ENABLE_GLSLANG_BINARIES ON CACHE BOOL "" FORCE)
     set(GLSLANG_TESTS OFF CACHE BOOL "" FORCE)
+    set(ENABLE_PCH ON CACHE BOOL "" FORCE)
     FetchContent_Declare(
             glslang
             GIT_REPOSITORY "https://github.com/KhronosGroup/glslang.git"
@@ -29,8 +30,6 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
 )
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-modules
         glslang::glslang

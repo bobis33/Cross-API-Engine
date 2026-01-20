@@ -44,8 +44,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
         ${GLFW_INCLUDE_DIR}
 )
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-modules
         ${GLFW_LIB}

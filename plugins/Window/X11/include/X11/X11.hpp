@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifdef __unix__
+#ifdef __linux__
 
 #include "Interfaces/Window/AWindow.hpp"
 

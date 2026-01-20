@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "CAE/Generated/Version.hpp"
+#include "CAE/Version.hpp"
 
 #include "Engine/Common.hpp"
 

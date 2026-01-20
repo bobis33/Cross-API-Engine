@@ -3,6 +3,11 @@ project(cae-window-x11
         LANGUAGES C CXX
 )
 
+if (NOT LINUX)
+    message(WARNING "${PROJECT_NAME} can only be build on Linux")
+    return()
+endif ()
+
 find_package(X11)
 if (NOT X11_FOUND)
     message(WARNING "X11 not found, skipping ${PROJECT_NAME} build")
@@ -17,8 +22,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
         ${X11_INCLUDE_DIR}
 )
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-modules
         ${X11_LIBRARIES}

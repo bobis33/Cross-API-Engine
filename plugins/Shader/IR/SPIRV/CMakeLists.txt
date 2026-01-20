@@ -82,8 +82,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-modules
         ${SPIRV_CROSS_LIBS}
 )
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 set_target_properties(${PROJECT_NAME} PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${PLUGIN_DIR}"
         RUNTIME_OUTPUT_DIRECTORY "${PLUGIN_DIR}"

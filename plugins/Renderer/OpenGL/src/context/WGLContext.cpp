@@ -4,8 +4,6 @@
 
 #include "Utils/Logger.hpp"
 
-#include <Windows.h>
-
 #include <stdexcept>
 
 typedef HGLRC(WINAPI *PFNWGLCREATECONTEXTATTRIBSARBPROC)(HDC, HGLRC, const int *);
@@ -67,8 +65,9 @@ void cae::WGLContext::initialize(const NativeWindowHandle &window)
 {
     m_hwnd = static_cast<HWND>(window.window);
     m_hdc = GetDC(m_hwnd);
-    if (m_hdc == nullptr)
+    if (m_hdc == nullptr) {
         throw std::runtime_error("Failed to get HDC from HWND");
+    }
 
     PIXELFORMATDESCRIPTOR pfd{};
     pfd.nSize = sizeof(pfd);
@@ -90,10 +89,12 @@ void cae::WGLContext::initialize(const NativeWindowHandle &window)
     }
 
     const HGLRC tempContext = wglCreateContext(m_hdc);
-    if (tempContext == nullptr)
+    if (tempContext == nullptr) {
         throw std::runtime_error("Failed to create temporary WGL context");
-    if (wglMakeCurrent(m_hdc, tempContext) == 0)
+    }
+    if (wglMakeCurrent(m_hdc, tempContext) == 0) {
         throw std::runtime_error("Failed to make temporary context current");
+    }
 
     const auto wglCreateContextAttribsARB =
         reinterpret_cast<PFNWGLCREATECONTEXTATTRIBSARBPROC>(wglGetProcAddress("wglCreateContextAttribsARB"));
@@ -142,10 +143,11 @@ void cae::WGLContext::initialize(const NativeWindowHandle &window)
     if (gl.Enable != nullptr)
     {
         gl.Enable(GL_DEBUG_OUTPUT);
+#ifdef CAE_DEBUG
         gl.DebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                    const GLchar *message, const void *userParam)
-                                { utl::Logger::log("[GL DEBUG] " + std::string(message), utl::LogLevel::WARNING); },
-                                nullptr);
+        { utl::Logger::log("[GL DEBUG] " + std::string(message), utl::LogLevel::WARNING); }, nullptr);
+#endif
     }
 }
 
