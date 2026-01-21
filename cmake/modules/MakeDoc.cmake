@@ -6,6 +6,11 @@ endif()
 
 find_package(Doxygen REQUIRED)
 
+file(DOWNLOAD https://raw.githubusercontent.com/jothepro/doxygen-awesome-css/v2.4.1/doxygen-awesome.css
+        ${CMAKE_CURRENT_BINARY_DIR}/doxygen-awesome.css)
+file(DOWNLOAD https://raw.githubusercontent.com/jothepro/doxygen-awesome-css/v2.4.1/doxygen-awesome-sidebar-only.css
+        ${CMAKE_CURRENT_BINARY_DIR}/doxygen-awesome-sidebar-only.css)
+
 set(DOXYGEN_DIR "${CMAKE_SOURCE_DIR}/documentation/.doxygen")
 set(DOXYFILE_OUT "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
 configure_file("${DOXYGEN_DIR}/Doxyfile" ${DOXYFILE_OUT} @ONLY)
