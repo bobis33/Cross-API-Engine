@@ -15,6 +15,7 @@ Rather than focusing only on graphics API abstraction, the objective is to creat
 This enables rapid experimentation, platform portability, performance benchmarking, and true freedom in engine architecture research.
 
 ![Architecture Diagram](https://raw.githubusercontent.com/bobis33/Cross-API-Engine/main/assets/diagram.png)
+
 ## Supported Platforms
 | Platform | Compiler                         | Build system    | Status |
 |----------|----------------------------------|-----------------|--------|
@@ -26,7 +27,7 @@ This enables rapid experimentation, platform portability, performance benchmarki
 | Android  |                                  |                 | ❌      |
 | Web      |                                  |                 | ❌      |
 
-## Build & Run
+## Quick Start
 
 ### Prerequisites
 
@@ -35,11 +36,21 @@ Make sure you have the following dependencies installed on your system:
 - [CMake ≥ 4.0.0](https://cmake.org/)
 - [C++23](https://en.cppreference.com/w/cpp/23)
 
-### UNIX (Linux, MacOS)
+### Build (UNIX: Linux, macOS)
 
 ```bash
-./scripts/unix/build.sh release
+cmake -S . -G "Ninja" -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
+cmake --build cmake-build-release --config Release
 ```
+
+### Build (Windows)
+
+```powershell
+cmake -S . -G "Visual Studio 18 2026" -A "x64" -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
+cmake --build cmake-build-release --config Release
+```
+
+### Run
 
 ```bash
 ./cmake-build-release/bin/cae -h          
@@ -51,49 +62,45 @@ Options:
   -c, --config <path>     Specify JSON configuration file
 ```
 
-### Windows
+## Documentation
 
-```powershell
-cmake -S . -G "Visual Studio 18 2026" -A "x64" -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
-cmake --build cmake-build-release --config Release
-```
+- [Online Doxygen documentation](https://bobis33.github.io/Cross-API-Engine/):  Full engine architecture, APIs and design rationale.
+- [Modules](https://github.com/bobis33/Cross-API-Engine/blob/main/modules/README.md): Overview of available modules and their responsibilities.
+- [Plugins](https://github.com/bobis33/Cross-API-Engine/blob/main/plugins/README.md): Plugin system and how to create new runtime modules.
 
-```bash
-cmake-build-release\bin\cae.exe -h          
-Usage: cae.exe [options]
+## Development
 
-Options:
-  -h, --help              Show this help message
-  -v, --version           Show version information
-  -c, --config <path>     Specify JSON configuration file
-```
+This section targets engine developers and contributors.
 
 ### CMake Build options
 
-- `CAE_BUILD_TESTS` (default: `OFF`): Enable building unit tests.
+- `CAE_STRICT_WARNINGS` (default: `OFF`): Enable strict warning level.
+- `CAE_ENABLE_SANITIZERS` (default: `OFF`): Enable address and undefined sanitizers.
+- `CAE_ENABLE_LTO` (default: `OFF`): Enable LTO on final targets.
+- `BUILD_CAE_TESTS` (default: `OFF`): Enable building unit tests.
+- `USE_CLANG_TIDY` (default: `OFF`): Enable clang tidy usage.
+- `USE_CLANG_FORMAT` (default: `OFF`): Enable clang format usage.
+- `BUILD_DOC` (default: `OFF`): Enable building doxygen documentation.
 
-## Testing
+### Testing
+
+Unit tests are based on [Google Test](https://github.com/google/googletest).
 
 ```
 ```
 
-## External Libraries
+### Build Doxygen documentation
+
+documentation is generated using [Doxygen](https://www.doxygen.nl/).
+
+```
+```
+
+## Third-party libraries
 
 - [Doxygen Awesome CSS](https://github.com/jothepro/doxygen-awesome-css): A custom CSS theme for Doxygen documentation.
 - [Google Test](https://github.com/google/googletest): A testing framework for C++.
 - [nlohmann-json](https://github.com/nlohmann/json): A JSON library for C++.
-
-## Documentation
-
-- [Modules](https://github.com/bobis33/Cross-API-Engine/blob/main/modules/README.md): Overview of available modules and their functionalities.
-- [Plugins](https://github.com/bobis33/Cross-API-Engine/blob/main/plugins/README.md): Information on available plugins and how to create new ones.
-
-Visit the [Doxygen documentation](https://bobis33.github.io/Cross-API-Engine/) for detailed information on architecture, modules, and usage.
-
-### Build documentation
-
-```
-```
 
 ## Contributing
 
