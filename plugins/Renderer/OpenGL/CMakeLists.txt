@@ -1,6 +1,6 @@
 project(cae-renderer-opengl
         DESCRIPTION "CAE OpenGL Renderer Plugin"
-        LANGUAGES CXX
+        LANGUAGES C CXX
 )
 
 find_package(OpenGL REQUIRED)

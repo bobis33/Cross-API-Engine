@@ -1,15 +1,18 @@
 #!/bin/bash
+set -e
+
+doc_dir=documentation/.doxygen/html/
 
 function nodeServer() {
-    npx http-server documentation/.doxygen/html/ -p 8080
+    npx http-server $doc_dir -p 8080
 }
 
 function phpServer() {
-    php -S localhost:8080 -t documentation/.doxygen/html/
+    php -S localhost:8080 -t $doc_dir
 }
 
 function pythonServer() {
-    python3 -m http.server 8080 --directory documentation/.doxygen/html/
+    python3 -m http.server 8080 --directory $doc_dir
 }
 
 case $1 in

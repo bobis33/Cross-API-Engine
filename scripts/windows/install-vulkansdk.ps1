@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$VulkanSDKVer = "1.4.321.1"
+$VulkanSDKVer = "1.4.328.1"
 $ExeFile = "vulkansdk-windows-X64-$VulkanSDKVer.exe"
 $Uri = "https://sdk.lunarg.com/sdk/download/$VulkanSDKVer/windows/$ExeFile"
 $Destination = "./$ExeFile"

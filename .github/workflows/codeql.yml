@@ -40,8 +40,8 @@ jobs:
         if: matrix.language == 'cpp'
         shell: bash
         run: |
-          ./scripts/unix/install-cmake.sh
-          sudo apt update && sudo apt install -y cmake xorg-dev libegl1-mesa-dev
+          ./scripts/unix/linux/install-cmake.sh
+          sudo apt update && sudo apt install -y xorg-dev libegl1-mesa-dev
           ./scripts/unix/build.sh release
 
       - name: Perform CodeQL Analysis

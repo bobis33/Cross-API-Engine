@@ -30,8 +30,8 @@ jobs:
             build_test: scripts/unix/build.sh release --tests
             binary_test: cmake-build-release/bin/cae-tests
             deps: |
-              ./scripts/unix/install-cmake.sh
-              sudo apt update && sudo apt install -y cmake xorg-dev libegl1-mesa-dev
+              ./scripts/unix/linux/install-cmake.sh
+              sudo apt update && sudo apt install -y xorg-dev libegl1-mesa-dev
 
           - os: macos-15
             shell: bash
@@ -39,7 +39,7 @@ jobs:
             binary: cmake-build-release/bin/cae
             build_test: scripts/unix/build.sh release --tests
             binary_test: cmake-build-release/bin/cae-tests
-            deps: brew upgrade cmake
+            deps: echo ""
 
           - os: windows-2025
             shell: powershell
