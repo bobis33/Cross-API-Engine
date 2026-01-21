@@ -10,15 +10,26 @@
 
 namespace cae
 {
-    enum class MouseButton : uint8_t
-    {
-        Left = 0,
-        Right,
-        Middle,
-        XButton1,
-        XButton2,
-        WheelUp,
-        WheelDown,
-        Count
-    };
+        enum class MouseButton : std::uint8_t
+        {
+            Unknown = 0,
+            Left,
+            Right,
+            Middle,
+            XButton1,
+            XButton2,
+
+            Count
+        };
+
+        enum class MouseAxis : std::uint8_t
+        {
+            Unknown = 0,
+            X,
+            Y,
+            Wheel,
+
+            Count
+        };
+
 } // namespace cae
