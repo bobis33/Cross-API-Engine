@@ -80,6 +80,7 @@ This section targets engine developers and contributors.
 - `CAE_BUILD_TESTS` (default: `OFF`): Enable building unit tests.
 - `CAE_CLANG_FORMAT` (default: `OFF`): Enable clang format usage.
 - `CAE_CLANG_TIDY` (default: `OFF`): Enable clang tidy usage.
+- `CAE_DYNAMIC_PLUGINS` (default: `ON`): Enable dynamic plugins.
 - `CAE_ENABLE_LTO` (default: `OFF`): Enable LTO on final targets.
 - `CAE_ENABLE_SANITIZERS` (default: `OFF`): Enable address and undefined sanitizers.
 - `CAE_STRICT_WARNINGS` (default: `OFF`): Enable strict warning level.

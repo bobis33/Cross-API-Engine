@@ -153,7 +153,6 @@ void cae::WGLContext::initialize(const NativeWindowHandle &window)
                                 nullptr);
     }
 #endif
-
 }
 
 void cae::WGLContext::swapBuffers()

@@ -8,6 +8,7 @@
 static std::vector<std::shared_ptr<cae::utl::IPlugin>> loadPlugins(const std::unique_ptr<cae::utl::PluginLoader> &loader)
 {
     std::vector<std::shared_ptr<cae::utl::IPlugin>> loadedPlugins;
+#if CAE_DYNAMIC_PLUGINS
     const std::filesystem::path pluginDir{CAE_PLUGINS_DIR};
     if (!cae::utl::Path::existsDir(pluginDir))
     {
@@ -36,6 +37,8 @@ static std::vector<std::shared_ptr<cae::utl::IPlugin>> loadPlugins(const std::un
     {
         cae::utl::Logger::log("No plugins loaded from directory: " + pluginDir.string(), cae::utl::LogLevel::WARNING);
     }
+#else
+#endif
 
     return loadedPlugins;
 }

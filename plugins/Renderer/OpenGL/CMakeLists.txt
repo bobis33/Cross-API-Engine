@@ -35,7 +35,11 @@ if (APPLE)
     list(APPEND SOURCES ${SOURCES_MM})
 endif ()
 
-add_library(${PROJECT_NAME} MODULE ${SOURCES})
+if(CAE_DYNAMIC_PLUGINS)
+    add_library(${PROJECT_NAME} MODULE ${SOURCES})
+else()
+    add_library(${PROJECT_NAME} STATIC ${SOURCES})
+endif()
 
 if (CAE_ENABLE_LTO)
     cae_enable_lto(${PROJECT_NAME})

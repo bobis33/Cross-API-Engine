@@ -8,7 +8,7 @@ if (NOT WIN32)
     return()
 endif ()
 
-add_compile_definitions(UNICODE _UNICODE)
+target_compile_definitions(${PROJECT_NAME} PRIVATE UNICODE _UNICODE)
 
 find_library(USER32_LIB user32)
 find_library(GDI32_LIB gdi32)
@@ -23,7 +23,11 @@ endif()
 
 file(GLOB_RECURSE SOURCE "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
-add_library(${PROJECT_NAME} MODULE ${SOURCE})
+if (CAE_DYNAMIC_PLUGINS)
+    add_library(${PROJECT_NAME} MODULE ${SOURCES})
+else ()
+    add_library(${PROJECT_NAME} STATIC ${SOURCES})
+endif ()
 
 if (CAE_ENABLE_LTO)
     cae_enable_lto(${PROJECT_NAME})

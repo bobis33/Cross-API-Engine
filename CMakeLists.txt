@@ -11,6 +11,7 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
 option(CAE_BUILD_DOC_HTML "Build html documentation" OFF)
 option(CAE_BUILD_DOC_PDF "Build pdf documentation" OFF)
+option(CAE_DYNAMIC_PLUGINS "Enable dynamic plugins" OFF)
 option(CAE_CLANG_FORMAT "Enable clang-format" OFF)
 option(CAE_CLANG_TIDY "Enable clang-tidy static analysis" OFF)
 
@@ -40,6 +41,10 @@ endif ()
 if (CAE_CLANG_TIDY)
     run_clang_tidy(${PROJECT_FILES})
 endif ()
+
+if(EMSCRIPTEN OR IOS)
+    set(CAE_DYNAMIC_PLUGINS OFF CACHE BOOL "" FORCE)
+endif()
 
 if (CAE_BUILD_DOC_HTML OR CAE_BUILD_DOC_PDF)
     find_package(Doxygen REQUIRED)
