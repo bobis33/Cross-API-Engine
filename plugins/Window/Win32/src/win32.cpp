@@ -87,9 +87,10 @@ LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const W
     }
 
     self = reinterpret_cast<Win32 *>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
-    if (self == nullptr) {
+    if (self == nullptr)
+    {
         return DefWindowProcW(hwnd, msg, wParam, lParam);
-}
+    }
 
     WindowEvent e{};
     switch (msg)
@@ -98,7 +99,7 @@ LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const W
             self->m_frameBufferResized = true;
             self->m_frameBufferSize = {.width = LOWORD(lParam), .height = HIWORD(lParam)};
             e.type = WindowEventType::Resize;
-            e.resize = {.w=LOWORD(lParam), .h=HIWORD(lParam)};
+            e.resize = {.w = LOWORD(lParam), .h = HIWORD(lParam)};
             self->m_eventQueue.push(e);
             return 0;
 
@@ -205,7 +206,7 @@ void cae::Win32::setIcon(const std::string &path) const
     {
         const utl::Image image(path);
 
-        for (size_t i = 0; std::cmp_less(i ,image.width * image.height); ++i)
+        for (size_t i = 0; std::cmp_less(i, image.width * image.height); ++i)
         {
             std::swap(image.pixels[(i * 4) + 0], image.pixels[(i * 4) + 2]);
         }
@@ -255,7 +256,6 @@ void cae::Win32::setIcon(const std::string &path) const
 
         SendMessageW(m_hwnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hIcon));
         SendMessageW(m_hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(hIcon));
-
     }
     catch (const std::exception &e)
     {

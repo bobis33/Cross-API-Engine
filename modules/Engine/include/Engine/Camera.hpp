@@ -23,13 +23,14 @@ namespace cae
     class Camera
     {
         public:
-            Camera(const glm::vec3 position, const glm::vec3 rotation, const glm::vec3 direction, const float moveSpeed = CAMERA::MOVE_SPEED,
-                   const float lookSpeed = CAMERA::LOOK_SPEED, const float fov = CAMERA::FOV, const float nearPlane = CAMERA::NEAR_PLANE,
-               const float farPlane = CAMERA::FAR_PLANE)
+            Camera(const glm::vec3 position, const glm::vec3 rotation, const glm::vec3 direction,
+                   const float moveSpeed = CAMERA::MOVE_SPEED, const float lookSpeed = CAMERA::LOOK_SPEED,
+                   const float fov = CAMERA::FOV, const float nearPlane = CAMERA::NEAR_PLANE,
+                   const float farPlane = CAMERA::FAR_PLANE)
                 : m_position(position), m_rotation(rotation), m_direction(direction), m_moveSpeed(moveSpeed),
-                m_lookSpeed(lookSpeed), m_fov(fov), m_near(nearPlane), m_far(farPlane)
-                {
-                }
+                  m_lookSpeed(lookSpeed), m_fov(fov), m_near(nearPlane), m_far(farPlane)
+            {
+            }
             ~Camera() = default;
 
             Camera(const Camera &) = delete;

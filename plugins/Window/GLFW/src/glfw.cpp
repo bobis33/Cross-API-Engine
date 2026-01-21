@@ -68,16 +68,22 @@ static cae::KeyCode translateKey(const int key)
 void cae::GLFW::keyCallback(GLFWwindow *window, const int key, int, const int action, int)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (self == nullptr) {
+    if (self == nullptr)
+    {
         return;
     }
 
     WindowEvent e{};
-    if (action == GLFW_PRESS) {
+    if (action == GLFW_PRESS)
+    {
         e.type = WindowEventType::KeyDown;
-    } else if (action == GLFW_RELEASE) {
+    }
+    else if (action == GLFW_RELEASE)
+    {
         e.type = WindowEventType::KeyUp;
-    } else {
+    }
+    else
+    {
         return;
     }
 
@@ -88,7 +94,8 @@ void cae::GLFW::keyCallback(GLFWwindow *window, const int key, int, const int ac
 void cae::GLFW::mouseButtonCallback(GLFWwindow *window, int button, const int action, int)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (self == nullptr) {
+    if (self == nullptr)
+    {
         return;
     }
 
@@ -102,7 +109,8 @@ void cae::GLFW::mouseButtonCallback(GLFWwindow *window, int button, const int ac
 void cae::GLFW::cursorPosCallback(GLFWwindow *window, const double x, const double y)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (self == nullptr) {
+    if (self == nullptr)
+    {
         return;
     }
 
@@ -117,7 +125,8 @@ void cae::GLFW::cursorPosCallback(GLFWwindow *window, const double x, const doub
 void cae::GLFW::scrollCallback(GLFWwindow *window, const double xoffset, const double yoffset)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (self == nullptr) {
+    if (self == nullptr)
+    {
         return;
     }
 
@@ -132,12 +141,13 @@ void cae::GLFW::scrollCallback(GLFWwindow *window, const double xoffset, const d
 void cae::GLFW::frameBufferResizeCallback(GLFWwindow *window, const int width, const int height)
 {
     auto *self = static_cast<GLFW *>(glfwGetWindowUserPointer(window));
-    if (self == nullptr) {
+    if (self == nullptr)
+    {
         return;
     }
 
     self->m_frameBufferResized = true;
-    self->m_frameBufferSize = {.width=static_cast<uint16_t>(width), .height=static_cast<uint16_t>(height)};
+    self->m_frameBufferSize = {.width = static_cast<uint16_t>(width), .height = static_cast<uint16_t>(height)};
 
     WindowEvent e{};
     e.type = WindowEventType::Resize;
@@ -176,7 +186,7 @@ bool cae::GLFW::create(const std::string &name, const WindowSize size)
     glfwSetCursorPosCallback(m_window, cursorPosCallback);
     glfwSetScrollCallback(m_window, scrollCallback);
 #ifdef __APPLE__
-    glfwMakeContextCurrent((GLFWwindow*)m_window);
+    glfwMakeContextCurrent((GLFWwindow *)m_window);
 #endif
     return true;
 }
@@ -229,7 +239,8 @@ void cae::GLFW::setIcon(const std::string &path) const
 
 bool cae::GLFW::pollEvent(WindowEvent &event)
 {
-    if (m_eventQueue.empty()) {
+    if (m_eventQueue.empty())
+    {
         return false;
     }
 

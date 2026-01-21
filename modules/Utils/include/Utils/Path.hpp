@@ -128,7 +128,8 @@ namespace utl
             /// @return Resolved path relative to the user cwd
             /// @brief
             ///
-            static fs::path resolveRelativeToCwd(const fs::path& relativePath) {
+            static fs::path resolveRelativeToCwd(const fs::path &relativePath)
+            {
                 return normalize(fs::current_path() / relativePath);
             }
 

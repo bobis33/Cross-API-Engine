@@ -118,7 +118,7 @@ void cae::X11::setIcon(const std::string &path) const
     {
         const utl::Image image(path);
 
-        const auto pixelCount = static_cast<const size_t>(image.width * image.height);
+        const auto pixelCount = image.width * image.height;
         std::vector<unsigned long> iconData;
         iconData.reserve(2 + pixelCount);
 

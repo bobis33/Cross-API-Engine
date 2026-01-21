@@ -64,8 +64,8 @@ void cae::Engine::render()
     constexpr auto model = glm::mat4(1.0F);
 
     const glm::mat4 mvp = m_camera->getViewProjection(static_cast<float>(m_windowPlugin->getWindowSize().width) /
-                                                  m_windowPlugin->getWindowSize().height) *
-                      model;
+                                                      m_windowPlugin->getWindowSize().height) *
+                          model;
     m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic", mvp);
 }
 

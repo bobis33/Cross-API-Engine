@@ -211,7 +211,8 @@ void cae::Application::mainLoop()
             m_engine->getCamera()->rotate(lookDir.x, lookDir.y, 1.0F);
         }
 
-        glm::vec3 forward = glm::normalize(glm::vec3(m_engine->getCamera()->getDirection().x, 0.0F, m_engine->getCamera()->getDirection().z));
+        glm::vec3 forward = glm::normalize(
+            glm::vec3(m_engine->getCamera()->getDirection().x, 0.0F, m_engine->getCamera()->getDirection().z));
         glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0F, 1.0F, 0.0F)));
 
         if (m_keyState[KeyCode::W])
@@ -246,6 +247,6 @@ void cae::Application::mainLoop()
             m_engine->getCamera()->move(glm::vec3(0.0F, 1.0F, 0.0F), m_engine->getClock()->getDeltaSeconds());
         }
 
-    m_engine->update(fpsBuffer, fpsIndex);
+        m_engine->update(fpsBuffer, fpsIndex);
     }
 }
