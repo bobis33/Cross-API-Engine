@@ -10,32 +10,44 @@
 
 namespace cae
 {
-    enum class GamepadButton : uint8_t
+    enum class GamepadButton : std::uint8_t
     {
-        A = 0,
+        Unknown = 0,
+        A,
         B,
         X,
         Y,
+
         Back,
         Guide,
         Start,
+
         LThumb,
         RThumb,
+
         LShoulder,
         RShoulder,
+
         DPadUp,
         DPadDown,
         DPadLeft,
-        DPadRight
+        DPadRight,
+
+        Count
     };
 
-    enum class GamepadAxis : uint8_t
+    enum class GamepadAxis : std::uint8_t
     {
-        LeftX = 0,
+        Unknown = 0,
+        LeftX,
         LeftY,
         RightX,
         RightY,
+
         TriggerLeft,
-        TriggerRight
+        TriggerRight,
+
+        Count
     };
+
 } // namespace cae

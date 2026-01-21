@@ -1,5 +1,5 @@
-project(cae-renderer-directx12
-        DESCRIPTION "CAE DirectX12 Renderer Plugin"
+project(cae-renderer-directx11
+        DESCRIPTION "CAE DirectX11 Renderer Plugin"
         LANGUAGES C CXX
 )
 

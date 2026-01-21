@@ -1,6 +1,6 @@
 ///
-/// @file DirectX12.hpp
-/// @brief This file contains the DirectX12 class declaration
+/// @file DirectX11.hpp
+/// @brief This file contains the DirectX11 class declaration
 /// @namespace cae
 ///
 
@@ -14,23 +14,23 @@ namespace cae
 {
 
     ///
-    /// @class DirectX12
-    /// @brief Class for the DirectX12 plugin
+    /// @class DirectX11
+    /// @brief Class for the DirectX11 plugin
     /// @namespace cae
     ///
-    class DirectX12 final : public ARenderer
+    class DirectX11 final : public ARenderer
     {
 
         public:
-            DirectX12() = default;
-            ~DirectX12() override = default;
+            DirectX11() = default;
+            ~DirectX11() override = default;
 
-            DirectX12(const DirectX12 &) = delete;
-            DirectX12 &operator=(const DirectX12 &) = delete;
-            DirectX12(DirectX12 &&) = delete;
-            DirectX12 &operator=(DirectX12 &&) = delete;
+            DirectX11(const DirectX11 &) = delete;
+            DirectX11 &operator=(const DirectX11 &) = delete;
+            DirectX11(DirectX11 &&) = delete;
+            DirectX11 &operator=(DirectX11 &&) = delete;
 
-            [[nodiscard]] std::string getName() const override { return "DirectX12"; }
+            [[nodiscard]] std::string getName() const override { return "DirectX11"; }
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::WINDOWS; }
 
@@ -47,6 +47,6 @@ namespace cae
             void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override {}
             void createMesh(const std::vector<float> &vertices) override {}
 
-    }; // class DirectX12
+    }; // class DirectX11
 
 } // namespace cae
