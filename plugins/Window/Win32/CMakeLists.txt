@@ -4,7 +4,7 @@ project(cae-window-win32
 )
 
 if (NOT WIN32)
-    message(WARNING "${PROJECT_NAME} can only be build on windows")
+    message(WARNING "${PROJECT_NAME} can only be build on Windows")
     return()
 endif ()
 
@@ -22,16 +22,10 @@ endif()
 
 
 file(GLOB_RECURSE SOURCE "${PROJECT_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}/include/*.hpp")
 
-add_library(${PROJECT_NAME} SHARED
-        ${SOURCE}
-        ${HEADERS}
-)
+add_library(${PROJECT_NAME} SHARED ${SOURCE})
 
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-modules
         ${USER32_LIB}

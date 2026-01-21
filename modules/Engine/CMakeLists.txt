@@ -4,21 +4,6 @@ project(cae-engine
         LANGUAGES CXX
 )
 
-include(FetchContent)
-
-set(GLM_BUILD_TESTS OFF CACHE INTERNAL "")
-set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
-
-FetchContent_Declare(
-        glm
-        GIT_REPOSITORY https://github.com/g-truc/glm.git
-        GIT_TAG 1.0.3
-        GIT_SHALLOW    TRUE
-        GIT_PROGRESS   TRUE
-)
-
-FetchContent_MakeAvailable(glm)
-
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 
@@ -36,6 +21,7 @@ target_sources(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-utils
+        cae-compile-options
         glm::glm
 )
 target_include_directories(${PROJECT_NAME}
@@ -47,8 +33,6 @@ target_include_directories(${PROJECT_NAME}
         "${CMAKE_SOURCE_DIR}/modules/Interfaces/include"
 )
 
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF

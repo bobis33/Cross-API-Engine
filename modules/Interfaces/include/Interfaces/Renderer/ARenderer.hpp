@@ -22,9 +22,6 @@ namespace cae
         public:
             ~ARenderer() override = default;
 
-        protected:
-
-        private:
     }; // interface ARenderer
 
 } // namespace cae

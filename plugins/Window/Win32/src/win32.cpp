@@ -3,9 +3,76 @@
 #include "Utils/Image.hpp"
 #include "Utils/Logger.hpp"
 
+#include <windowsx.h>
+
 #include <cstring>
+#include <unordered_map>
+#include <utility>
 
 constexpr wchar_t WINDOW_CLASS_NAME[] = L"CAE_WindowsWindowClass";
+
+cae::KeyCode cae::Win32::mapWinKey(const WPARAM key)
+{
+    static const std::unordered_map<WPARAM, KeyCode> keyMap = {
+        {'A', KeyCode::A},
+        {'B', KeyCode::B},
+        {'C', KeyCode::C},
+        {'D', KeyCode::D},
+        {'E', KeyCode::E},
+        {'F', KeyCode::F},
+        {'G', KeyCode::G},
+        {'H', KeyCode::H},
+        {'I', KeyCode::I},
+        {'J', KeyCode::J},
+        {'K', KeyCode::K},
+        {'L', KeyCode::L},
+        {'M', KeyCode::M},
+        {'N', KeyCode::N},
+        {'O', KeyCode::O},
+        {'P', KeyCode::P},
+        {'Q', KeyCode::Q},
+        {'R', KeyCode::R},
+        {'S', KeyCode::S},
+        {'T', KeyCode::T},
+        {'U', KeyCode::U},
+        {'V', KeyCode::V},
+        {'W', KeyCode::W},
+        {'X', KeyCode::X},
+        {'Y', KeyCode::Y},
+        {'Z', KeyCode::Z},
+
+        {'0', KeyCode::Num0},
+        {'1', KeyCode::Num1},
+        {'2', KeyCode::Num2},
+        {'3', KeyCode::Num3},
+        {'4', KeyCode::Num4},
+        {'5', KeyCode::Num5},
+        {'6', KeyCode::Num6},
+        {'7', KeyCode::Num7},
+        {'8', KeyCode::Num8},
+        {'9', KeyCode::Num9},
+
+        {VK_ESCAPE, KeyCode::Escape},
+        {VK_LEFT, KeyCode::Left},
+        {VK_RIGHT, KeyCode::Right},
+        {VK_UP, KeyCode::Up},
+        {VK_DOWN, KeyCode::Down},
+        {VK_SPACE, KeyCode::Space},
+        {VK_RETURN, KeyCode::Enter},
+        {VK_BACK, KeyCode::Backspace},
+        {VK_TAB, KeyCode::Tab},
+        {VK_LSHIFT, KeyCode::LShift},
+        {VK_RSHIFT, KeyCode::RShift},
+        {VK_LCONTROL, KeyCode::LCtrl},
+        {VK_RCONTROL, KeyCode::RCtrl},
+        {VK_LMENU, KeyCode::LAlt},
+        {VK_RMENU, KeyCode::RAlt}
+        // ...
+    };
+
+    const auto it = keyMap.find(key);
+    return it != keyMap.end() ? it->second : KeyCode::Count;
+}
 
 LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const WPARAM wParam, const LPARAM lParam)
 {
@@ -13,30 +80,53 @@ LRESULT CALLBACK cae::Win32::WindowProc(const HWND hwnd, const UINT msg, const W
 
     if (msg == WM_NCCREATE)
     {
-        auto *cs = reinterpret_cast<CREATESTRUCTW *>(lParam);
+        const auto *cs = reinterpret_cast<CREATESTRUCTW *>(lParam);
         self = static_cast<Win32 *>(cs->lpCreateParams);
         SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(self));
         return TRUE;
     }
 
     self = reinterpret_cast<Win32 *>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
+    if (self == nullptr)
+    {
+        return DefWindowProcW(hwnd, msg, wParam, lParam);
+    }
 
+    WindowEvent e{};
     switch (msg)
     {
         case WM_SIZE:
-            if (self != nullptr)
-            {
-                self->m_frameBufferResized = true;
-                self->m_frameBufferSize = {.width = LOWORD(lParam), .height = HIWORD(lParam)};
-            }
+            self->m_frameBufferResized = true;
+            self->m_frameBufferSize = {.width = LOWORD(lParam), .height = HIWORD(lParam)};
+            e.type = WindowEventType::Resize;
+            e.resize = {.w = LOWORD(lParam), .h = HIWORD(lParam)};
+            self->m_eventQueue.push(e);
             return 0;
 
         case WM_DESTROY:
             PostQuitMessage(0);
+            e.type = WindowEventType::Close;
+            self->m_eventQueue.push(e);
             return 0;
-        default:
-            return DefWindowProcW(hwnd, msg, wParam, lParam);
+
+        case WM_KEYDOWN:
+        case WM_SYSKEYDOWN:
+            e.type = WindowEventType::KeyDown;
+            e.key.key = mapWinKey(wParam);
+            self->m_eventQueue.push(e);
+            return 0;
+
+        case WM_KEYUP:
+        case WM_SYSKEYUP:
+            e.type = WindowEventType::KeyUp;
+            e.key.key = mapWinKey(wParam);
+            self->m_eventQueue.push(e);
+            return 0;
+
+            // mouse, scroll, ...
     }
+
+    return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
 bool cae::Win32::create(const std::string &name, const WindowSize size)
@@ -75,8 +165,8 @@ bool cae::Win32::create(const std::string &name, const WindowSize size)
         }
         classRegistered = true;
     }
-    m_hwnd = CreateWindowExW(0, WINDOW_CLASS_NAME, L"TEST TITLE VISIBLE", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
-                             CW_USEDEFAULT, size.width, size.height, nullptr, nullptr, m_hInstance, this);
+    m_hwnd = CreateWindowExW(0, WINDOW_CLASS_NAME, L"", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, size.width,
+                             size.height, nullptr, nullptr, m_hInstance, this);
 
     if (m_hwnd == nullptr)
     {
@@ -110,13 +200,13 @@ cae::WindowSize cae::Win32::getWindowSize() const
             .height = static_cast<uint16_t>(rect.bottom - rect.top)};
 }
 
-bool cae::Win32::setIcon(const std::string &path) const
+void cae::Win32::setIcon(const std::string &path) const
 {
     try
     {
         const utl::Image image(path);
 
-        for (size_t i = 0; i < static_cast<size_t>(image.width * image.height); ++i)
+        for (size_t i = 0; std::cmp_less(i, image.width * image.height); ++i)
         {
             std::swap(image.pixels[(i * 4) + 0], image.pixels[(i * 4) + 2]);
         }
@@ -144,7 +234,8 @@ bool cae::Win32::setIcon(const std::string &path) const
 
         if (hBitmap == nullptr)
         {
-            return false;
+            utl::Logger::log("Failed to create window icon.", utl::LogLevel::WARNING);
+            return;
         }
 
         std::memcpy(pBits, image.pixels, static_cast<size_t>(image.width * image.height * 4));
@@ -159,18 +250,16 @@ bool cae::Win32::setIcon(const std::string &path) const
 
         if (hIcon == nullptr)
         {
-            return false;
+            utl::Logger::log("Failed to create window icon", utl::LogLevel::WARNING);
+            return;
         }
 
         SendMessageW(m_hwnd, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(hIcon));
         SendMessageW(m_hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(hIcon));
-
-        return true;
     }
     catch (const std::exception &e)
     {
         utl::Logger::log("Failed to load icon: " + std::string(e.what()), utl::LogLevel::WARNING);
-        return false;
     }
 }
 
@@ -186,4 +275,23 @@ void cae::Win32::pollEvents()
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+}
+
+bool cae::Win32::pollEvent(WindowEvent &event)
+{
+    MSG msg{};
+    while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    if (!m_eventQueue.empty())
+    {
+        event = m_eventQueue.front();
+        m_eventQueue.pop();
+        return true;
+    }
+
+    return false;
 }

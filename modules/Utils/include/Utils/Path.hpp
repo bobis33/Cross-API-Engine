@@ -123,6 +123,16 @@ namespace utl
                 return normalize(executableDir() / relativePath);
             }
 
+            ///
+            /// @param relativePath Relative path to be resolved
+            /// @return Resolved path relative to the user cwd
+            /// @brief
+            ///
+            static fs::path resolveRelativeToCwd(const fs::path &relativePath)
+            {
+                return normalize(fs::current_path() / relativePath);
+            }
+
     }; // class Path
 
 } // namespace utl

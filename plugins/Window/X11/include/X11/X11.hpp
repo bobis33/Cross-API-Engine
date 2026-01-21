@@ -6,9 +6,13 @@
 
 #pragma once
 
-#include "Interfaces/IWindow.hpp"
+#ifdef __linux__
+
+#include "Interfaces/Window/AWindow.hpp"
 
 #include <X11/Xlib.h>
+
+#include <queue>
 
 namespace cae
 {
@@ -18,7 +22,7 @@ namespace cae
     /// @brief Class for the X11 plugin
     /// @namespace cae
     ///
-    class X11 final : public IWindow
+    class X11 final : public AWindow
     {
 
         public:
@@ -43,23 +47,26 @@ namespace cae
             }
             [[nodiscard]] WindowSize getWindowSize() const override;
 
-            [[nodiscard]] bool setIcon(const std::string &path) const override;
+            void setIcon(const std::string &path) const override;
 
             [[nodiscard]] bool shouldClose() const override;
             void pollEvents() override;
+            bool pollEvent(WindowEvent &outEvent) override;
 
             bool wasResized() const override { return m_frameBufferResized; }
             void resetResizedFlag() override { m_frameBufferResized = false; }
 
         private:
-            WindowSize m_frameBufferSize;
-            mutable bool m_frameBufferResized = false;
-
+            std::queue<WindowEvent> m_eventQueue;
             Display *m_display = nullptr;
             Window m_window = 0;
+            WindowSize m_frameBufferSize;
+            mutable bool m_frameBufferResized = false;
             Atom m_wmDeleteMessage = 0;
             bool m_shouldClose = false;
 
     }; // class X11
 
 } // namespace cae
+
+#endif

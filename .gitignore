@@ -3,5 +3,3 @@
 .vs/
 
 cmake-build-*
-
-include/CAE/Generated/

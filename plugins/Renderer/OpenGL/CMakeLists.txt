@@ -1,4 +1,4 @@
-project(cae-opengl
+project(cae-renderer-opengl
         DESCRIPTION "CAE OpenGL Renderer Plugin"
         LANGUAGES CXX
 )
@@ -41,12 +41,13 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
         ${OPENGL_INCLUDE_DIR}
+        ${glm_SOURCE_DIR}
 )
 if (UNIX AND NOT APPLE)
     target_include_directories(${PROJECT_NAME} PRIVATE ${EGL_INCLUDE_DIRS})
 endif ()
 
-set(PLATFORM_LIBS cae-modules OpenGL::GL glad)
+set(PLATFORM_LIBS cae-modules OpenGL::GL glad glm::glm)
 if (UNIX AND NOT APPLE)
     list(APPEND PLATFORM_LIBS ${EGL_LIBRARIES})
 elseif (APPLE)
@@ -54,8 +55,6 @@ elseif (APPLE)
 endif ()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PLATFORM_LIBS})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${PLUGIN_DIR}"
         RUNTIME_OUTPUT_DIRECTORY "${PLUGIN_DIR}"

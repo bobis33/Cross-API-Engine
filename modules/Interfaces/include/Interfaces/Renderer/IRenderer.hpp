@@ -6,8 +6,10 @@
 
 #pragma once
 
-#include "Interfaces/IWindow.hpp"
-#include "Interfaces/Shader/IShaderFrontend.hpp"
+#include "Interfaces/Shader/Frontend/IShaderFrontend.hpp"
+#include "Interfaces/Window/IWindow.hpp"
+
+#include <glm/mat4x4.hpp>
 
 namespace cae
 {
@@ -74,9 +76,10 @@ namespace cae
             ///
             /// @param windowSize Current window size
             /// @param shaderId Shader ID to use for drawing
+            /// @param mvp Model-View-Projection matrix
             /// @brief Draw the scene using the specified shader and window size
             ///
-            virtual void draw(const WindowSize &windowSize, const ShaderID &shaderId) = 0;
+            virtual void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) = 0;
 
             ///
             /// @param vertices Vertex data to create the mesh

@@ -9,11 +9,12 @@
 #include "Engine/Camera.hpp"
 #include "Engine/ShaderManager.hpp"
 
-#include "Interfaces/IAudio.hpp"
-#include "Interfaces/INetwork.hpp"
-#include "Interfaces/Input/IInput.hpp"
+#include "Interfaces/Audio/IAudio.hpp"
+#include "Interfaces/Network/INetwork.hpp"
 #include "Interfaces/Renderer/IRenderer.hpp"
 #include "Utils/Clock.hpp"
+
+#include <glm/glm.hpp>
 
 namespace cae
 {
@@ -27,6 +28,15 @@ namespace cae
     {
             float audio_master_volume = AUDIO::VOLUME;
             bool audio_muted = AUDIO::MUTED;
+
+            glm::vec3 camera_position = glm::vec3(0.0F, 0.0F, 0.0F);
+            glm::vec3 camera_rotation = glm::vec3(0.0F, 0.0F, 0.0F);
+            glm::vec3 camera_direction = glm::vec3(0.0F, 0.0F, -1.0F);
+            float camera_move_speed = CAMERA::MOVE_SPEED;
+            float camera_look_speed = CAMERA::LOOK_SPEED;
+            float camera_fov = CAMERA::FOV;
+            float camera_near_plane = CAMERA::NEAR_PLANE;
+            float camera_far_plane = CAMERA::FAR_PLANE;
 
             bool log_fps = LOG::LOG_FPS;
 
@@ -57,7 +67,6 @@ namespace cae
 
         public:
             Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
-                   const std::function<std::shared_ptr<IInput>()> &inputFactory,
                    const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                    const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
                    const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
@@ -71,12 +80,12 @@ namespace cae
             Engine &operator=(Engine &&) = delete;
 
             [[nodiscard]] const std::shared_ptr<IAudio> &getAudio() const { return m_audioPlugin; }
-            [[nodiscard]] const std::shared_ptr<IInput> &getInput() const { return m_inputPlugin; }
             [[nodiscard]] const std::shared_ptr<INetwork> &getNetwork() const { return m_networkPlugin; }
             [[nodiscard]] const std::shared_ptr<IRenderer> &getRenderer() const { return m_rendererPlugin; }
             [[nodiscard]] const std::shared_ptr<IWindow> &getWindow() const { return m_windowPlugin; }
 
             [[nodiscard]] const std::unique_ptr<utl::Clock> &getClock() { return m_clock; }
+            [[nodiscard]] const std::unique_ptr<ShaderManager> &getShaderManager() const { return m_shaderManager; }
             [[nodiscard]] const std::unique_ptr<Camera> &getCamera() const { return m_camera; }
 
             ///
@@ -88,9 +97,16 @@ namespace cae
                                            const std::vector<float> &vertices) const;
 
             ///
-            /// @brief Run the engine main loop
+            /// @param fpsBuffer
+            /// @param fpsIndex
+            /// @brief
             ///
-            void run() const;
+            void update(std::array<float, 10> &fpsBuffer, int &fpsIndex);
+
+            ///
+            /// @brief
+            ///
+            void render();
 
             ///
             /// @brief Stop the engine
@@ -99,7 +115,6 @@ namespace cae
 
         private:
             std::shared_ptr<IAudio> m_audioPlugin = nullptr;
-            std::shared_ptr<IInput> m_inputPlugin = nullptr;
             std::shared_ptr<INetwork> m_networkPlugin = nullptr;
             std::shared_ptr<IRenderer> m_rendererPlugin = nullptr;
             std::shared_ptr<IWindow> m_windowPlugin = nullptr;

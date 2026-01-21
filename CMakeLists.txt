@@ -13,7 +13,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib")
 set(PLUGIN_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
-set(PATH_VERSION "${PROJECT_SOURCE_DIR}/include/CAE/Generated/Version.hpp")
+set(PATH_VERSION "${PROJECT_BINARY_DIR}/include/CAE/Version.hpp")
 set(TEMPLATE_PATH "${PROJECT_SOURCE_DIR}/cmake/config/Version.hpp.in")
 
 add_compile_definitions(PLUGINS_DIR="${PLUGIN_DIR}")
@@ -34,64 +34,46 @@ include(MakeDoc)
 include(ClangTidy)
 include(ClangFormat)
 include(CopyAssets)
+include(CompileOptions)
+
+find_package(nlohmann_json QUIET CONFIG)
+if (NOT nlohmann_json_FOUND)
+    include(FetchContent)
+    FetchContent_Declare(
+            nlohmann-json
+            GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+            GIT_TAG        "v3.12.0"
+            GIT_SHALLOW    TRUE
+            GIT_PROGRESS   TRUE
+    )
+    FetchContent_MakeAvailable(nlohmann-json)
+endif ()
+find_package(glm QUIET CONFIG)
+if (NOT glm_FOUND)
+    FetchContent_Declare(
+            glm
+            GIT_REPOSITORY "https://github.com/g-truc/glm.git"
+            GIT_TAG 1.0.3
+            GIT_SHALLOW    TRUE
+            GIT_PROGRESS   TRUE
+    )
+    set(GLM_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(glm)
+endif ()
 
 add_subdirectory(modules)
 add_subdirectory(plugins)
 add_subdirectory(tests)
 
-include(FetchContent)
-FetchContent_Declare(
-        nlohmann-json
-        GIT_REPOSITORY "https://github.com/nlohmann/json.git"
-        GIT_TAG        "v3.12.0"
-        GIT_SHALLOW    TRUE
-        GIT_PROGRESS   TRUE
-)
-FetchContent_MakeAvailable(nlohmann-json)
-
 add_executable(${PROJECT_NAME} ${SOURCES})
 add_dependencies(${PROJECT_NAME} cae-modules)
-target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include" "${PROJECT_BINARY_DIR}/include" ${glm_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-modules
         nlohmann_json::nlohmann_json
+        glm::glm
 )
-if (NOT WIN32 AND NOT APPLE)
-    set(WARNING_FLAGS
-            -Wall
-            -Wextra
-            -Wdeprecated-copy
-            -Wmisleading-indentation
-            -Wnull-dereference
-            -Woverloaded-virtual
-            -Wpedantic
-            -Wshadow
-            -Wsign-conversion
-            -Wnon-virtual-dtor
-            -Wunused
-            -Wcast-align
-            -Wno-padded
-            -Wconversion
-            -Wformat
-            -Winit-self
-            -Wmissing-include-dirs
-            -Wold-style-cast
-            -Wredundant-decls
-            -Wswitch-default
-            -Wundef
-    )
-else ()
-    if (MSVC)
-        set(WARNING_FLAGS /W3)
-    else()
-        set(WARNING_FLAGS -Wno-error)
-    endif()
-endif()
-if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS} /O2)
-else ()
-    target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS} -O3)
-endif ()
 
 copy_directory_to_target(
         cae

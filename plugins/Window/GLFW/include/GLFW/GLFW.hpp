@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/IWindow.hpp"
+#include "Interfaces/Window/AWindow.hpp"
 
 #ifdef _WIN32
 #define GLFW_EXPOSE_NATIVE_WIN32
@@ -17,6 +17,8 @@
 #endif
 #include <GLFW/glfw3.h>
 
+#include <queue>
+
 namespace cae
 {
 
@@ -25,7 +27,7 @@ namespace cae
     /// @brief Class for the GLFW plugin
     /// @namespace cae
     ///
-    class GLFW final : public IWindow
+    class GLFW final : public AWindow
     {
 
         public:
@@ -47,16 +49,23 @@ namespace cae
             [[nodiscard]] NativeWindowHandle getNativeHandle() const override;
             [[nodiscard]] WindowSize getWindowSize() const override;
 
-            [[nodiscard]] bool setIcon(const std::string &path) const override;
+            void setIcon(const std::string &path) const override;
 
             [[nodiscard]] bool shouldClose() const override { return glfwWindowShouldClose(m_window) != 0; }
             void pollEvents() override { glfwPollEvents(); }
+            bool pollEvent(WindowEvent &event) override;
 
             [[nodiscard]] bool wasResized() const override { return m_frameBufferResized; }
             void resetResizedFlag() override { m_frameBufferResized = false; }
 
         private:
             static void frameBufferResizeCallback(GLFWwindow *window, int width, int height);
+            static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+            static void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
+            static void cursorPosCallback(GLFWwindow *window, double x, double y);
+            static void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);
+
+            std::queue<WindowEvent> m_eventQueue;
 
             GLFWwindow *m_window = nullptr;
             WindowSize m_frameBufferSize{};

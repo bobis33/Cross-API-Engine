@@ -1,32 +1,33 @@
 #include "Engine/Engine.hpp"
 
 #include "Utils/Logger.hpp"
+#include "Utils/Path.hpp"
 
 #include <numeric>
 #include <ranges>
-
-#include "Utils/Path.hpp"
 
 void printFps(std::array<float, 10> &fpsBuffer, int &fpsIndex, const float deltaTime)
 {
     fpsBuffer[fpsIndex % 10] = 1.0F / deltaTime;
     fpsIndex++;
 
-    float avgFps = std::accumulate(fpsBuffer.begin(), fpsBuffer.end(), 0.0f) / 10.0f;
+    float avgFps = std::accumulate(fpsBuffer.begin(), fpsBuffer.end(), 0.0F) / 10.0F;
     utl::Logger::log(std::format("FPS: {}", avgFps), utl::LogLevel::INFO);
 }
 
 cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
-                    const std::function<std::shared_ptr<IInput>()> &inputFactory,
                     const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
                     const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
                     const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
                     const std::function<std::shared_ptr<IWindow>()> &windowFactory)
-    : m_audioPlugin(audioFactory()), m_inputPlugin(inputFactory()), m_networkPlugin(networkFactory()),
-      m_rendererPlugin(rendererFactory()), m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>()),
+    : m_audioPlugin(audioFactory()), m_networkPlugin(networkFactory()), m_rendererPlugin(rendererFactory()),
+      m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>()),
       m_shaderManager(std::make_unique<ShaderManager>(shaderFrontendFactories, shaderIRFactory)),
-      m_camera(std::make_unique<Camera>()), m_logFps(config.log_fps)
+      m_camera(std::make_unique<Camera>(config.camera_position, config.camera_rotation, config.camera_direction,
+                                        config.camera_move_speed, config.camera_look_speed, config.camera_fov,
+                                        config.camera_near_plane, config.camera_far_plane)),
+      m_logFps(config.log_fps)
 {
     constexpr auto boolToStr = [](const bool b) { return b ? "true" : "false"; };
     std::ostringstream msg;
@@ -58,20 +59,23 @@ void cae::Engine::initializeRenderResources(const std::vector<ShaderSourceDesc> 
     m_rendererPlugin->createMesh(vertices);
 }
 
-void cae::Engine::run() const
+void cae::Engine::render()
 {
-    std::array<float, 10> fpsBuffer{};
-    int fpsIndex = 0;
-    while (!m_windowPlugin->shouldClose())
+    constexpr auto model = glm::mat4(1.0F);
+
+    const glm::mat4 mvp = m_camera->getViewProjection(static_cast<float>(m_windowPlugin->getWindowSize().width) /
+                                                      m_windowPlugin->getWindowSize().height) *
+                          model;
+    m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic", mvp);
+}
+
+void cae::Engine::update(std::array<float, 10> &fpsBuffer, int &fpsIndex)
+{
+    if (m_logFps)
     {
-        m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic");
-        m_windowPlugin->pollEvents();
-        if (m_logFps)
-        {
-            printFps(fpsBuffer, fpsIndex, m_clock->getDeltaSeconds());
-        }
-        m_clock->restart();
+        printFps(fpsBuffer, fpsIndex, m_clock->getDeltaSeconds());
     }
+    m_clock->restart();
 }
 
 void cae::Engine::stop()
@@ -80,10 +84,13 @@ void cae::Engine::stop()
     m_windowPlugin->close();
 
     m_audioPlugin = nullptr;
-    m_inputPlugin = nullptr;
     m_networkPlugin = nullptr;
     m_rendererPlugin = nullptr;
     m_windowPlugin = nullptr;
+
+    m_clock = nullptr;
+    m_shaderManager = nullptr;
+    m_camera = nullptr;
 }
 
 void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize,

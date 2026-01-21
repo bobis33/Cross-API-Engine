@@ -1,10 +1,8 @@
 #ifdef _WIN32
 
-#include "OPGL/Context/WGLContextWindows.hpp"
+#include "OPGL/Context/WGLContext.hpp"
 
 #include "Utils/Logger.hpp"
-
-#include <Windows.h>
 
 #include <stdexcept>
 
@@ -36,7 +34,8 @@ static void *win32GetGLProc(const char *name)
 {
     auto *proc = (void *)wglGetProcAddress(name);
 
-    if (proc == nullptr || proc == (void *)0x1 || proc == (void *)0x2 || proc == (void *)0x3 || proc == (void *)-1)
+    if (proc == nullptr || proc == reinterpret_cast<void *>(0x1) || proc == reinterpret_cast<void *>(0x2) ||
+        proc == reinterpret_cast<void *>(0x3) || proc == reinterpret_cast<void *>(-1))
     {
         if (g_opengl32 == nullptr)
         {
@@ -49,7 +48,7 @@ static void *win32GetGLProc(const char *name)
     return proc;
 }
 
-cae::WGLContextWindows::~WGLContextWindows()
+cae::WGLContext::~WGLContext()
 {
     if (m_hglrc != nullptr)
     {
@@ -62,12 +61,14 @@ cae::WGLContextWindows::~WGLContextWindows()
     }
 }
 
-void cae::WGLContextWindows::initialize(const NativeWindowHandle &window)
+void cae::WGLContext::initialize(const NativeWindowHandle &window)
 {
     m_hwnd = static_cast<HWND>(window.window);
     m_hdc = GetDC(m_hwnd);
     if (m_hdc == nullptr)
+    {
         throw std::runtime_error("Failed to get HDC from HWND");
+    }
 
     PIXELFORMATDESCRIPTOR pfd{};
     pfd.nSize = sizeof(pfd);
@@ -90,9 +91,13 @@ void cae::WGLContextWindows::initialize(const NativeWindowHandle &window)
 
     const HGLRC tempContext = wglCreateContext(m_hdc);
     if (tempContext == nullptr)
+    {
         throw std::runtime_error("Failed to create temporary WGL context");
+    }
     if (wglMakeCurrent(m_hdc, tempContext) == 0)
+    {
         throw std::runtime_error("Failed to make temporary context current");
+    }
 
     const auto wglCreateContextAttribsARB =
         reinterpret_cast<PFNWGLCREATECONTEXTATTRIBSARBPROC>(wglGetProcAddress("wglCreateContextAttribsARB"));
@@ -134,21 +139,23 @@ void cae::WGLContextWindows::initialize(const NativeWindowHandle &window)
     {
         throw std::runtime_error("Current WGL context is not the one just created");
     }
-    if (const int version = gladLoadGLContext(&gl, GLADloadfunc(win32GetGLProc)); version == 0)
+    if (const int version = gladLoadGLContext(&gl, reinterpret_cast<GLADloadfunc>(win32GetGLProc)); version == 0)
     {
         throw std::runtime_error("Failed to initialize GLAD MX (Windows)");
     }
     if (gl.Enable != nullptr)
     {
         gl.Enable(GL_DEBUG_OUTPUT);
+#ifdef CAE_DEBUG
         gl.DebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                    const GLchar *message, const void *userParam)
                                 { utl::Logger::log("[GL DEBUG] " + std::string(message), utl::LogLevel::WARNING); },
                                 nullptr);
+#endif
     }
 }
 
-void cae::WGLContextWindows::swapBuffers()
+void cae::WGLContext::swapBuffers()
 {
     if (m_hdc != nullptr)
     {
@@ -156,7 +163,7 @@ void cae::WGLContextWindows::swapBuffers()
     }
 }
 
-void cae::WGLContextWindows::setVSyncEnabled(const bool enabled)
+void cae::WGLContext::setVSyncEnabled(const bool enabled)
 {
     using PFNWGLSWAPINTERVALEXTPROC = BOOL(WINAPI *)(int);
     static auto wglSwapIntervalEXT =

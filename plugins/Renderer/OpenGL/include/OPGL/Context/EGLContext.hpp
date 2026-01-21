@@ -1,6 +1,6 @@
 ///
-/// @file EGLContextLinux.hpp
-/// @brief This file contains the EGLContextLinux class declaration
+/// @file EGLContext.hpp
+/// @brief This file contains the EGLContext_ class declaration
 /// @namespace cae
 ///
 
@@ -16,15 +16,15 @@ namespace cae
 {
 
     ///
-    /// @class EGLContextLinux
+    /// @class EGLContext_
     /// @brief Implementation of IContext for Linux using EGL
     /// @namespace cae
     ///
-    class EGLContextLinux final : public IContext
+    class EGLContext_ final : public IContext
     {
         public:
-            explicit EGLContextLinux() = default;
-            ~EGLContextLinux() override;
+            explicit EGLContext_() = default;
+            ~EGLContext_() override;
 
             void initialize(const NativeWindowHandle &window) override;
 
@@ -42,7 +42,7 @@ namespace cae
             EGLSurface m_surface = EGL_NO_SURFACE;
             EGLContext m_context = EGL_NO_CONTEXT;
 
-    }; // class EGLContextLinux
+    }; // class EGLContext_
 
 } // namespace cae
 

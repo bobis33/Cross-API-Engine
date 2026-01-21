@@ -8,6 +8,8 @@
 
 #include "Interfaces/Renderer/ARenderer.hpp"
 
+#include <glm/glm.hpp>
+
 namespace cae
 {
 
@@ -42,7 +44,7 @@ namespace cae
                                 const ShaderIRModule &fragment) override
             {
             }
-            void draw(const WindowSize &windowSize, const ShaderID &shaderId) override {}
+            void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override {}
             void createMesh(const std::vector<float> &vertices) override {}
 
     }; // class VULKN

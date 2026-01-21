@@ -1,16 +1,13 @@
-project(cae-vulkan
+project(cae-renderer-vulkan
         DESCRIPTION "CAE Vulkan Renderer Plugin"
         LANGUAGES C CXX
 )
 
 find_package(Vulkan QUIET CONFIG)
 if(NOT Vulkan_FOUND)
-    message(STATUS "Vulkan SDK not found.")
-
     include(FetchContent)
-
     set(VULKAN_VERSION "v1.4.329")
-
+    set(VULKAN_HEADERS_ENABLE_TESTS OFF CACHE BOOL "" FORCE)
     FetchContent_Declare(
             VulkanHeaders
             GIT_REPOSITORY "https://github.com/KhronosGroup/Vulkan-Headers.git"
@@ -43,8 +40,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
         ${Vulkan_INCLUDE_DIRS}
 )
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-modules
         ${Vulkan_LIBRARIES}

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/Shader/IShaderFrontend.hpp"
+#include "Interfaces/Shader/Frontend/AShaderFrontend.hpp"
 
 #include <glslang/Public/ShaderLang.h>
 
@@ -22,7 +22,7 @@ namespace cae
     /// @brief Class for the GLSL plugin
     /// @namespace cae
     ///
-    class GLSL final : public IShaderFrontend
+    class GLSL final : public AShaderFrontend
     {
 
         public:

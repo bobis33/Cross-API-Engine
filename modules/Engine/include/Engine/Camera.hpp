@@ -8,7 +8,7 @@
 
 #include "Engine/Common.hpp"
 
-#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <string>
 
@@ -23,7 +23,14 @@ namespace cae
     class Camera
     {
         public:
-            Camera() = default;
+            Camera(const glm::vec3 position, const glm::vec3 rotation, const glm::vec3 direction,
+                   const float moveSpeed = CAMERA::MOVE_SPEED, const float lookSpeed = CAMERA::LOOK_SPEED,
+                   const float fov = CAMERA::FOV, const float nearPlane = CAMERA::NEAR_PLANE,
+                   const float farPlane = CAMERA::FAR_PLANE)
+                : m_position(position), m_rotation(rotation), m_direction(direction), m_moveSpeed(moveSpeed),
+                  m_lookSpeed(lookSpeed), m_fov(fov), m_near(nearPlane), m_far(farPlane)
+            {
+            }
             ~Camera() = default;
 
             Camera(const Camera &) = delete;
@@ -51,12 +58,28 @@ namespace cae
             [[nodiscard]] const float &getNear() const { return m_near; }
             [[nodiscard]] const float &getFar() const { return m_far; }
 
+            [[nodiscard]] glm::mat4 getViewMatrix() const
+            {
+                return glm::lookAt(m_position, m_position + m_direction, glm::vec3(0.0F, 1.0F, 0.0F));
+            }
+            [[nodiscard]] glm::mat4 getProjectionMatrix(const float aspectRatio) const
+            {
+                return glm::perspective(glm::radians(m_fov), aspectRatio, m_near, m_far);
+            }
+            [[nodiscard]] glm::mat4 getViewProjection(const float aspectRatio) const
+            {
+                return getProjectionMatrix(aspectRatio) * getViewMatrix();
+            }
+
             ///
             /// @param direction Direction to move the camera
             /// @param deltaTime Time delta for movement
             /// @brief Move the camera in a given direction
             ///
-            void move(const glm::vec3 &direction, float deltaTime);
+            void move(const glm::vec3 &direction, const float deltaTime)
+            {
+                m_position += direction * m_moveSpeed * deltaTime;
+            }
 
             ///
             /// @param yawOffset Yaw offset to rotate the camera
@@ -64,7 +87,16 @@ namespace cae
             /// @param deltaTime Time delta for rotation
             /// @brief Rotate the camera by given yaw and pitch offsets
             ///
-            void rotate(float yawOffset, float pitchOffset, float deltaTime);
+            void rotate(const float yawOffset, const float pitchOffset, const float deltaTime)
+            {
+                m_rotation.y += yawOffset * m_lookSpeed * deltaTime;
+                m_rotation.x += pitchOffset * m_lookSpeed * deltaTime;
+
+                m_rotation.x = std::min(m_rotation.x, 89.0F);
+                m_rotation.x = std::max(m_rotation.x, -89.0F);
+
+                updateDirectionFromRotation();
+            }
 
         private:
             std::string m_name = CAMERA::NAME;
@@ -79,6 +111,17 @@ namespace cae
             float m_fov = CAMERA::FOV;
             float m_near = CAMERA::NEAR_PLANE;
             float m_far = CAMERA::FAR_PLANE;
+
+            void updateDirectionFromRotation()
+            {
+                const float yaw = glm::radians(m_rotation.y);
+                const float pitch = glm::radians(m_rotation.x);
+
+                m_direction.x = cos(pitch) * sin(yaw);
+                m_direction.y = std::sin(pitch);
+                m_direction.z = -cos(pitch) * cos(yaw);
+                m_direction = glm::normalize(m_direction);
+            }
 
     }; // class Camera
 

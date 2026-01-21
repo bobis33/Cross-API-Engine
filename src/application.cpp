@@ -114,12 +114,32 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
         utl::Logger::log("No shader plugin found with name: " + shaderFrontendName, utl::LogLevel::WARNING);
     }
     m_engine = std::make_unique<Engine>(
-        m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; }, []() { return nullptr; },
+        m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; },
         [rendererPlugin]() { return rendererPlugin; }, [shaderIRPlugin]() { return shaderIRPlugin; }, shaderFactories,
         [windowPlugin]() { return windowPlugin; });
 }
 
-void cae::Application::start() const
+static const std::vector<float> cubeVertices = {
+    // positions          // colors
+    -0.5f, -0.5f, -0.5f, 1, 0, 0, 0.5f,  -0.5f, -0.5f, 0, 1, 0, 0.5f,  0.5f,  -0.5f, 0, 0, 1,
+    0.5f,  0.5f,  -0.5f, 0, 0, 1, -0.5f, 0.5f,  -0.5f, 1, 1, 0, -0.5f, -0.5f, -0.5f, 1, 0, 0,
+
+    -0.5f, -0.5f, 0.5f,  1, 0, 1, 0.5f,  -0.5f, 0.5f,  0, 1, 1, 0.5f,  0.5f,  0.5f,  1, 1, 1,
+    0.5f,  0.5f,  0.5f,  1, 1, 1, -0.5f, 0.5f,  0.5f,  0, 0, 0, -0.5f, -0.5f, 0.5f,  1, 0, 1,
+
+    -0.5f, 0.5f,  0.5f,  1, 0, 0, -0.5f, 0.5f,  -0.5f, 0, 1, 0, -0.5f, -0.5f, -0.5f, 0, 0, 1,
+    -0.5f, -0.5f, -0.5f, 0, 0, 1, -0.5f, -0.5f, 0.5f,  1, 1, 0, -0.5f, 0.5f,  0.5f,  1, 0, 0,
+
+    0.5f,  0.5f,  0.5f,  1, 0, 1, 0.5f,  0.5f,  -0.5f, 0, 1, 1, 0.5f,  -0.5f, -0.5f, 1, 1, 1,
+    0.5f,  -0.5f, -0.5f, 1, 1, 1, 0.5f,  -0.5f, 0.5f,  0, 0, 0, 0.5f,  0.5f,  0.5f,  1, 0, 1,
+
+    -0.5f, -0.5f, -0.5f, 1, 0, 0, 0.5f,  -0.5f, -0.5f, 0, 1, 0, 0.5f,  -0.5f, 0.5f,  0, 0, 1,
+    0.5f,  -0.5f, 0.5f,  0, 0, 1, -0.5f, -0.5f, 0.5f,  1, 1, 0, -0.5f, -0.5f, -0.5f, 1, 0, 0,
+
+    -0.5f, 0.5f,  -0.5f, 1, 0, 1, 0.5f,  0.5f,  -0.5f, 0, 1, 1, 0.5f,  0.5f,  0.5f,  1, 1, 1,
+    0.5f,  0.5f,  0.5f,  1, 1, 1, -0.5f, 0.5f,  0.5f,  0, 0, 0, -0.5f, 0.5f,  -0.5f, 1, 0, 1};
+
+void cae::Application::start()
 {
     static const std::vector<ShaderSourceDesc> shaderSources = {
         {.id = "basic_vertex",
@@ -132,9 +152,8 @@ void cae::Application::start() const
          .source = utl::fileToString(utl::Path::resolveRelativeToExe("assets/shaders/glsl/texture.frag")),
          .stage = ShaderStage::FRAGMENT},
     };
-    m_engine->initializeRenderResources(
-        shaderSources, std::vector{-0.5F, -0.5F, 1.F, 0.F, 0.F, 0.5F, -0.5F, 0.F, 1.F, 0.F, 0.F, 0.5F, 0.F, 0.F, 1.F});
-    m_engine->run();
+    m_engine->initializeRenderResources(shaderSources, cubeVertices);
+    mainLoop();
 }
 
 void cae::Application::stop()
@@ -143,4 +162,91 @@ void cae::Application::stop()
 
     m_pluginLoader = nullptr;
     m_engine = nullptr;
+}
+
+void cae::Application::mainLoop()
+{
+    std::array<float, 10> fpsBuffer{};
+    int fpsIndex = 0;
+    WindowEvent e{};
+
+    while (!m_engine->getWindow()->shouldClose())
+    {
+        m_engine->render();
+        glm::vec3 moveDir(0.0F);
+        glm::vec2 lookDir(0.0F);
+        m_engine->getWindow()->pollEvents();
+        while (m_engine->getWindow()->pollEvent(e))
+        {
+            if (e.type == WindowEventType::KeyDown)
+            {
+                m_keyState[e.key.key] = true;
+            }
+            else if (e.type == WindowEventType::KeyUp)
+            {
+                m_keyState[e.key.key] = false;
+            }
+        }
+
+        if (m_keyState[KeyCode::Up])
+        {
+            lookDir.y += 1.0F;
+        }
+        if (m_keyState[KeyCode::Down])
+        {
+            lookDir.y -= 1.0F;
+        }
+        if (m_keyState[KeyCode::Left])
+        {
+            lookDir.x -= 1.0F;
+        }
+        if (m_keyState[KeyCode::Right])
+        {
+            lookDir.x += 1.0F;
+        }
+
+        if (glm::length(lookDir) > 0.0F)
+        {
+            lookDir *= m_engine->getCamera()->getLookSpeed() * m_engine->getClock()->getDeltaSeconds();
+            m_engine->getCamera()->rotate(lookDir.x, lookDir.y, 1.0F);
+        }
+
+        glm::vec3 forward = glm::normalize(
+            glm::vec3(m_engine->getCamera()->getDirection().x, 0.0F, m_engine->getCamera()->getDirection().z));
+        glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0.0F, 1.0F, 0.0F)));
+
+        if (m_keyState[KeyCode::W])
+        {
+            moveDir += forward;
+        }
+        if (m_keyState[KeyCode::S])
+        {
+            moveDir -= forward;
+        }
+        if (m_keyState[KeyCode::A])
+        {
+            moveDir -= right;
+        }
+        if (m_keyState[KeyCode::D])
+        {
+            moveDir += right;
+        }
+
+        if (glm::length(moveDir) > 0.0F)
+        {
+            moveDir = glm::normalize(moveDir);
+            m_engine->getCamera()->move(moveDir, m_engine->getClock()->getDeltaSeconds());
+        }
+
+        if (m_keyState[KeyCode::LCtrl])
+        {
+            m_engine->getCamera()->move(glm::vec3(0.0F, -1.0F, 0.0F), m_engine->getClock()->getDeltaSeconds());
+        }
+        if (m_keyState[KeyCode::Space])
+        {
+            m_engine->getCamera()->move(glm::vec3(0.0F, 1.0F, 0.0F), m_engine->getClock()->getDeltaSeconds());
+        }
+
+        m_engine->update(fpsBuffer, fpsIndex);
+    }
 }

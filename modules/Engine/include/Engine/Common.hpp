@@ -26,7 +26,7 @@ namespace cae
     {
         inline constexpr auto NAME = "Default name";
         inline constexpr auto MOVE_SPEED = 2.5F;
-        inline constexpr auto LOOK_SPEED = 100.F;
+        inline constexpr auto LOOK_SPEED = 10.0F;
         inline constexpr auto FOV = 45.F;
         inline constexpr auto NEAR_PLANE = 0.1F;
         inline constexpr auto FAR_PLANE = 100.F;

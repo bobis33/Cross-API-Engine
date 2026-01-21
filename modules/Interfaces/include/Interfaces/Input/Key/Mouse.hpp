@@ -18,6 +18,7 @@ namespace cae
         XButton1,
         XButton2,
         WheelUp,
-        WheelDown
+        WheelDown,
+        Count
     };
 } // namespace cae

@@ -56,7 +56,7 @@ namespace cae
             void initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor) override;
             void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                 const ShaderIRModule &fragment) override;
-            void draw(const WindowSize &windowSize, const ShaderID &shaderId) override;
+            void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override;
             void createMesh(const std::vector<float> &vertices) override;
 
         private:
@@ -64,9 +64,8 @@ namespace cae
             std::unordered_map<ShaderID, GLuint> m_programs;
             Mesh m_mesh;
 
-            GladGLContext m_device{};
-
-            static GLuint createGLShader(GLenum type, const ShaderIRModule &data, GladGLContext gl);
+            GLuint m_ubo;
+            static GLuint createGLShader(GLenum type, const ShaderIRModule &data, const GladGLContext &gl);
 
     }; // class OPGL
 

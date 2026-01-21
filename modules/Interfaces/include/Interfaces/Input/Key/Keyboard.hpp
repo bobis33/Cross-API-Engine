@@ -116,6 +116,10 @@ namespace cae
         NumLock,
         ScrollLock,
 
+        PrintScreen,
+        Pause,
+        Menu,
+
         Count
     };
 } // namespace cae

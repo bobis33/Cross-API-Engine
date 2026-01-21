@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/Shader/IShaderIR.hpp"
+#include "Interfaces/Shader/IR/AShaderIR.hpp"
 
 namespace cae
 {
@@ -16,7 +16,7 @@ namespace cae
     /// @brief Class for the SPIR-V IR plugin
     /// @namespace cae
     ///
-    class SPIRV final : public IShaderIR
+    class SPIRV final : public AShaderIR
     {
         public:
             SPIRV() = default;

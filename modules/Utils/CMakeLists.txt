@@ -29,6 +29,10 @@ target_sources(${PROJECT_NAME}
         FILES ${HEADERS}
 )
 
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        cae-compile-options
+)
+
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${INCLUDE_DIR}>
@@ -36,8 +40,6 @@ target_include_directories(${PROJECT_NAME}
         PRIVATE
         $<BUILD_INTERFACE:${stb_SOURCE_DIR}>
 )
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-target_compile_options(${PROJECT_NAME} PRIVATE ${WARNING_FLAGS})
 set_target_properties(${PROJECT_NAME} PROPERTIES
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
