@@ -1,5 +1,5 @@
-option(BUILD_CAE_TESTS "Build tests" OFF)
-if (BUILD_CAE_TESTS)
+option(CAE_BUILD_TESTS "Build tests" OFF)
+if (CAE_BUILD_TESTS)
 
     project(cae-tests
             DESCRIPTION "CAE unit tests"

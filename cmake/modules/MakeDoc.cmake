@@ -1,6 +1,6 @@
-option(BUILD_DOC "Build documentation" OFF)
+option(CAE_BUILD_DOC "Build documentation" OFF)
 
-if (NOT BUILD_DOC)
+if (NOT CAE_BUILD_DOC)
     return()
 endif()
 
