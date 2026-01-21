@@ -1,6 +1,6 @@
-option(USE_CLANG_TIDY "Enable clang-tidy static analysis" OFF)
+option(CAE_CLANG_TIDY "Enable clang-tidy static analysis" OFF)
 
-if (NOT USE_CLANG_TIDY)
+if (NOT CAE_CLANG_TIDY)
     return()
 endif()
 

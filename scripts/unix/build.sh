@@ -60,19 +60,19 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --tidy)
             RUN_TIDY=ON
-            CMAKE_CMD+=(-DUSE_CLANG_TIDY=ON)
+            CMAKE_CMD+=(-DCAE_CLANG_TIDY=ON)
             ;;
         --tests)
             RUN_TESTS=ON
-            CMAKE_CMD+=(-DBUILD_CAE_TESTS=ON)
+            CMAKE_CMD+=(-DCAE_BUILD_TESTS=ON)
             ;;
         --format)
             RUN_FORMAT=ON
-            CMAKE_CMD+=(-DUSE_CLANG_FORMAT=ON)
+            CMAKE_CMD+=(-DCAE_CLANG_FORMAT=ON)
             ;;
         --doc)
             RUN_DOC=ON
-            CMAKE_CMD+=(-DBUILD_DOC=ON)
+            CMAKE_CMD+=(-DCAE_BUILD_DOC=ON)
             ;;
         *)
             echo "[WARNING] Unknown option: $1"

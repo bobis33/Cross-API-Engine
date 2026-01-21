@@ -1,6 +1,6 @@
-option(USE_CLANG_FORMAT "Enable clang-format" OFF)
+option(CAE_CLANG_FORMAT "Enable clang-format" OFF)
 
-if (NOT USE_CLANG_FORMAT)
+if (NOT CAE_CLANG_FORMAT)
     return()
 endif()
 

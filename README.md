@@ -77,24 +77,26 @@ This section targets engine developers and contributors.
 - `CAE_STRICT_WARNINGS` (default: `OFF`): Enable strict warning level.
 - `CAE_ENABLE_SANITIZERS` (default: `OFF`): Enable address and undefined sanitizers.
 - `CAE_ENABLE_LTO` (default: `OFF`): Enable LTO on final targets.
-- `BUILD_CAE_TESTS` (default: `OFF`): Enable building unit tests.
-- `USE_CLANG_TIDY` (default: `OFF`): Enable clang tidy usage.
-- `USE_CLANG_FORMAT` (default: `OFF`): Enable clang format usage.
-- `BUILD_DOC` (default: `OFF`): Enable building doxygen documentation.
+- `CAE_BUILD_TESTS` (default: `OFF`): Enable building unit tests.
+- `CAE_CLANG_TIDY` (default: `OFF`): Enable clang tidy usage.
+- `CAE_CLANG_FORMAT` (default: `OFF`): Enable clang format usage.
+- `CAE_BUILD_DOC` (default: `OFF`): Enable building doxygen documentation.
 
 ### Testing
 
 Unit tests are based on [Google Test](https://github.com/google/googletest).
 
-```
+Use the `CAE_BUILD_TESTS` option.
+
+```bash
+./cmake-build-release/bin/cae-tests
 ```
 
 ### Build Doxygen documentation
 
 documentation is generated using [Doxygen](https://www.doxygen.nl/).
 
-```
-```
+Use the `CAE_BUILD_DOC` option.
 
 ## Third-party libraries
 
