@@ -1,5 +1,5 @@
-project(cae-renderer-directx12
-        DESCRIPTION "CAE DirectX12 Renderer Plugin"
+project(cae-renderer-webgpu
+        DESCRIPTION "CAE WebGPU Renderer Plugin"
         LANGUAGES C CXX
 )
 
