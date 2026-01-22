@@ -9,7 +9,6 @@
 #include "Interfaces/Renderer/ARenderer.hpp"
 
 #include <glm/glm.hpp>
-
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl/client.h>
@@ -55,18 +54,15 @@ namespace cae
             static constexpr uint32_t FrameCount = 2;
 
             // Core
-            Microsoft::WRL::ComPtr<ID3D12Device>        m_device;
+            Microsoft::WRL::ComPtr<ID3D12Device> m_device;
             Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_commandQueue;
-            Microsoft::WRL::ComPtr<IDXGISwapChain3>    m_swapChain;
-
+            Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapChain;
             // Frame resources
             Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_commandAllocator;
             Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList;
-
             // RTV
             Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
             UINT m_rtvDescriptorSize = 0;
-
             // Sync
             Microsoft::WRL::ComPtr<ID3D12Fence> m_fence;
             UINT64 m_fenceValue = 0;

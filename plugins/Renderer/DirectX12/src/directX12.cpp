@@ -40,7 +40,7 @@ void cae::DirectX12::draw(const WindowSize &, const ShaderID &, glm::mat4)
     m_commandAllocator->Reset();
     m_commandList->Reset(m_commandAllocator.Get(), nullptr);
 
-    // clear, barriers, etc (à compléter)
+    // clear, barriers, etc
     m_commandList->Close();
 
     ID3D12CommandList* lists[] = { m_commandList.Get() };

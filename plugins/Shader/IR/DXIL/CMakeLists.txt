@@ -1,5 +1,5 @@
-project(cae-shader-ir-dxc
-        DESCRIPTION "CAE DXC Shader Intermediate Representation Plugin"
+project(cae-shader-ir-dxil
+        DESCRIPTION "CAE DXIL Shader Intermediate Representation Plugin"
         LANGUAGES C CXX
 )
 
