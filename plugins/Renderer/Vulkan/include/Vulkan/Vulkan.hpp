@@ -1,6 +1,6 @@
 ///
-/// @file VULKN.hpp
-/// @brief This file contains the VULKN class declaration
+/// @file Vulkan.hpp
+/// @brief This file contains the Vulkan class declaration
 /// @namespace cae
 ///
 
@@ -9,26 +9,27 @@
 #include "Interfaces/Renderer/ARenderer.hpp"
 
 #include <glm/glm.hpp>
+#include <vulkan/vulkan.h>
 
 namespace cae
 {
 
     ///
-    /// @class VULKN
+    /// @class Vulkan
     /// @brief Class for the Vulkan plugin
     /// @namespace cae
     ///
-    class VULKN final : public ARenderer
+    class Vulkan final : public ARenderer
     {
 
         public:
-            VULKN() = default;
-            ~VULKN() override = default;
+            Vulkan() = default;
+            ~Vulkan() override = default;
 
-            VULKN(const VULKN &) = delete;
-            VULKN &operator=(const VULKN &) = delete;
-            VULKN(VULKN &&) = delete;
-            VULKN &operator=(VULKN &&) = delete;
+            Vulkan(const Vulkan &) = delete;
+            Vulkan &operator=(const Vulkan &) = delete;
+            Vulkan(Vulkan &&) = delete;
+            Vulkan &operator=(Vulkan &&) = delete;
 
             [[nodiscard]] std::string getName() const override { return "Vulkan"; }
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
@@ -47,6 +48,8 @@ namespace cae
             void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override {}
             void createMesh(const std::vector<float> &vertices) override {}
 
-    }; // class VULKN
+        private:
+
+    }; // class Vulkan
 
 } // namespace cae

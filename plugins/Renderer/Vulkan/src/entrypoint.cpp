@@ -1,8 +1,8 @@
-#include "VULKN/VULKN.hpp"
+#include "Vulkan/Vulkan.hpp"
 
 #include <memory>
 
 extern "C"
 {
-    PLUGIN_EXPORT cae::IRenderer *entryPoint() { return std::make_unique<cae::VULKN>().release(); }
+    PLUGIN_EXPORT cae::IRenderer *entryPoint() { return std::make_unique<cae::Vulkan>().release(); }
 }
