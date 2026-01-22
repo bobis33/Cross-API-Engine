@@ -10,6 +10,8 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
+#include <functional>
+#include <mutex>
 
 namespace utl
 {
@@ -35,6 +37,8 @@ namespace utl
             }
 
         public:
+            using LogSink = std::function<void(const std::string&, LogLevel)>;
+
             Logger(const Logger &) = delete;
             Logger &operator=(const Logger &) = delete;
             Logger(Logger &&) = delete;
@@ -44,6 +48,11 @@ namespace utl
             /// @brief Initialize the logger
             ///
             static void init();
+
+            static void addSink(LogSink sink) {
+                std::scoped_lock lock(m_sinksMutex);
+                m_sinks.push_back(std::move(sink));
+            }
 
             ///
             /// @tparam Func Function to be measured
@@ -70,10 +79,17 @@ namespace utl
             ///
             static void log(const std::string &message, const LogLevel &logLevel)
             {
+                const std::string formatted = formatLogMessage(logLevel, message);
+
                 std::cout << (logLevel == LogLevel::INFO ? LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_INFO)]
                                                          : LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_WARNING)])
-                          << formatLogMessage(logLevel, message)
+                          << formatted
                           << LOG_LEVEL_COLOR[to_underlying(ColorIndex::COLOR_RESET)];
+
+                std::scoped_lock lock(m_sinksMutex);
+                for (auto &sink : m_sinks) {
+                    sink(formatted, logLevel);
+}
             }
 
         private:
@@ -119,6 +135,9 @@ namespace utl
 
                 return ss.str();
             }
+
+            static inline std::vector<LogSink> m_sinks;
+            static inline std::mutex m_sinksMutex;
 
     }; // class Logger
 

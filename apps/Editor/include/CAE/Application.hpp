@@ -7,6 +7,8 @@
 #pragma once
 
 #include "CAE/ArgsHandler.hpp"
+#include "Cli.hpp"
+#include "Console.hpp"
 
 #include "Engine/Engine.hpp"
 #include "Utils/PluginLoader.hpp"
@@ -82,6 +84,7 @@ namespace cae
 
             std::unique_ptr<utl::PluginLoader> m_pluginLoader = nullptr;
             std::unique_ptr<Engine> m_engine = nullptr;
+            std::unique_ptr<Console> m_console = nullptr;
 
             AppConfig m_appConfig;
             std::unordered_map<KeyCode, bool> m_keyState;
