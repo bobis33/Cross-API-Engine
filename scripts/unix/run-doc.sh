@@ -22,7 +22,7 @@ case $1 in
     php)
         phpServer
         ;;
-    py)
+    python)
         pythonServer
         ;;
     *)
