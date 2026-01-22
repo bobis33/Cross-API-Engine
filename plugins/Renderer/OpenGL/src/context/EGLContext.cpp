@@ -4,7 +4,11 @@
 
 #include "Utils/Logger.hpp"
 
+#include <EGL/eglext.h>
+
+#include <iostream>
 #include <stdexcept>
+#include <vector>
 
 cae::EGLContext_::~EGLContext_()
 {
@@ -23,14 +27,65 @@ cae::EGLContext_::~EGLContext_()
     }
 }
 
+void selectDevice(EGLDisplay &display, const PFNEGLQUERYDEVICESEXTPROC eglQueryDevicesEXT, const PFNEGLQUERYDEVICESTRINGEXTPROC eglQueryDeviceStringEXT, const PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT)
+{
+    EGLint numDevices = 0;
+    eglQueryDevicesEXT(0, nullptr, &numDevices);
+
+    if (numDevices == 0)
+    {
+        throw std::runtime_error("No EGL devices found");
+    }
+
+    std::vector<EGLDeviceEXT> devices(numDevices);
+    eglQueryDevicesEXT(numDevices, devices.data(), &numDevices);
+
+    for (EGLint i = 0; i < numDevices; ++i)
+    {
+        const char* vendor =
+            eglQueryDeviceStringEXT(devices[i], EGL_VENDOR);
+
+        const char* extensions =
+            eglQueryDeviceStringEXT(devices[i], EGL_EXTENSIONS);
+
+        std::cout << "[EGL] Device " << i << "\n";
+        std::cout << "  Vendor     : " << ((vendor != nullptr) ? vendor : "unknown") << "\n";
+        std::cout << "  Extensions : " << ((extensions != nullptr) ? extensions : "none") << "\n";
+    }
+
+    display = eglGetPlatformDisplayEXT(
+        EGL_PLATFORM_DEVICE_EXT,
+        devices[0],
+        nullptr
+    );
+}
+
 void cae::EGLContext_::initialize(const NativeWindowHandle &window)
 {
+    const auto eglQueryDevicesEXT =
+    reinterpret_cast<PFNEGLQUERYDEVICESEXTPROC>(
+        eglGetProcAddress("eglQueryDevicesEXT"));
+
+    const auto eglQueryDeviceStringEXT =
+        reinterpret_cast<PFNEGLQUERYDEVICESTRINGEXTPROC>(
+            eglGetProcAddress("eglQueryDeviceStringEXT"));
+
+    const auto eglGetPlatformDisplayEXT =
+    reinterpret_cast<PFNEGLGETPLATFORMDISPLAYEXTPROC>(
+        eglGetProcAddress("eglGetPlatformDisplayEXT"));
+
+    if ((eglQueryDevicesEXT == nullptr) || (eglQueryDeviceStringEXT == nullptr))
+    {
+        throw std::runtime_error("EGL device enumeration not supported");
+    }
+
     if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE)
     {
         throw std::runtime_error("Failed to bind OpenGL API");
     }
 
-    m_display = eglGetDisplay(window.display);
+    selectDevice(m_display, eglQueryDevicesEXT, eglQueryDeviceStringEXT, eglGetPlatformDisplayEXT);
+
     if (m_display == EGL_NO_DISPLAY)
     {
         throw std::runtime_error("Failed to get EGL display");

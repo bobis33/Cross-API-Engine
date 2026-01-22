@@ -87,6 +87,8 @@ namespace cae
             ///
             virtual void createMesh(const std::vector<float> &vertices) = 0;
 
+            // virtual void selectDevice() = 0;
+
     }; // interface IRenderer
 
 } // namespace cae
