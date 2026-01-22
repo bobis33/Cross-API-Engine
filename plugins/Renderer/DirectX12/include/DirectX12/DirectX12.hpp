@@ -10,6 +10,10 @@
 
 #include <glm/glm.hpp>
 
+#include <d3d12.h>
+#include <dxgi1_6.h>
+#include <wrl/client.h>
+
 namespace cae
 {
 
@@ -39,13 +43,37 @@ namespace cae
 
             [[nodiscard]] bool isVSyncEnabled() const override { return false; }
 
-            void initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor) override {}
+            void initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor) override;
             void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                 const ShaderIRModule &fragment) override
             {
             }
-            void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override {}
+            void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override;
             void createMesh(const std::vector<float> &vertices) override {}
+
+        private:
+            static constexpr uint32_t FrameCount = 2;
+
+            // Core
+            Microsoft::WRL::ComPtr<ID3D12Device>        m_device;
+            Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_commandQueue;
+            Microsoft::WRL::ComPtr<IDXGISwapChain3>    m_swapChain;
+
+            // Frame resources
+            Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_commandAllocator;
+            Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList;
+
+            // RTV
+            Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
+            UINT m_rtvDescriptorSize = 0;
+
+            // Sync
+            Microsoft::WRL::ComPtr<ID3D12Fence> m_fence;
+            UINT64 m_fenceValue = 0;
+            HANDLE m_fenceEvent = nullptr;
+
+            bool  m_vsync = true;
+            Color m_clearColor{};
 
     }; // class DirectX12
 

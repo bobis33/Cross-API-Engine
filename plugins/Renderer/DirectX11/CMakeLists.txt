@@ -3,6 +3,11 @@ project(cae-renderer-directx11
         LANGUAGES C CXX
 )
 
+if (NOT WIN32)
+    message(WARNING "${PROJECT_NAME} can only be build on Windows")
+    return()
+endif ()
+
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 add_library(${PROJECT_NAME} MODULE ${SOURCES})
@@ -18,6 +23,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-compile-options
         cae-interfaces
         cae-utils
+        d3d11
+        dxgi
+        dxguid
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 23

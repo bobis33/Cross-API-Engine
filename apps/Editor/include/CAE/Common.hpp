@@ -29,8 +29,11 @@ namespace cae
     {
         namespace RENDERER
         {
+            inline constexpr auto DIRECTX11 = "DirectX11";
+            inline constexpr auto DIRECTX12 = "DirectX12";
             inline constexpr auto OPENGL = "OpenGL";
             inline constexpr auto VULKAN = "Vulkan";
+            inline constexpr auto WEB_GPU = "WebGPU";
         } // namespace RENDERER
 
         namespace SHADER
