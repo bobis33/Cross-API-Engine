@@ -18,7 +18,7 @@
 namespace utl
 {
 
-    enum class PluginType : uint8_t
+    enum class PluginType : std::uint8_t
     {
         AUDIO = 0,
         NETWORK = 1,
@@ -29,7 +29,7 @@ namespace utl
         UNDEFINED = 255,
     };
 
-    enum class PluginPlatform : uint8_t
+    enum class PluginPlatform : std::uint8_t
     {
         LINUX = 0,
         MACOSX = 1,

@@ -255,7 +255,7 @@ void cae::GLFW::frameBufferResizeCallback(GLFWwindow *window, const int width, c
     }
 
     self->m_frameBufferResized = true;
-    self->m_frameBufferSize = {.width = static_cast<uint16_t>(width), .height = static_cast<uint16_t>(height)};
+    self->m_frameBufferSize = {.width = static_cast<std::uint16_t>(width), .height = static_cast<uint16_t>(height)};
 
     WindowEvent e{};
     e.type = WindowEventType::Resize;

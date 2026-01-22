@@ -14,7 +14,7 @@
 namespace utl
 {
 
-    enum class LogLevel : uint8_t
+    enum class LogLevel : std::uint8_t
     {
         INFO,
         WARNING
@@ -77,7 +77,7 @@ namespace utl
             }
 
         private:
-            enum class ColorIndex : uint8_t
+            enum class ColorIndex : std::uint8_t
             {
                 COLOR_ERROR = 0,
                 COLOR_INFO = 1,
@@ -115,7 +115,7 @@ namespace utl
                 std::ostringstream ss;
                 ss << "[" << std::put_time(std::localtime(&inTimeT), "%Y-%m-%d %H:%M:%S");
                 ss << ":" << std::setfill('0') << std::setw(3) << ms.count() << "] ";
-                ss << "[" << LOG_LEVEL_STRING[static_cast<uint8_t>(level)] << "] " << message;
+                ss << "[" << LOG_LEVEL_STRING[static_cast<std::uint8_t>(level)] << "] " << message;
 
                 return ss.str();
             }

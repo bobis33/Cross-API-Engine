@@ -55,8 +55,8 @@ namespace cae
 
     namespace WINDOW
     {
-        inline constexpr uint16_t WIDTH = 960;
-        inline constexpr uint16_t HEIGHT = 540;
+        inline constexpr std::uint16_t WIDTH = 960;
+        inline constexpr std::uint16_t HEIGHT = 540;
         inline constexpr auto NAME = "Default name";
         inline constexpr auto FULLSCREEN = false;
         inline constexpr auto ICON_PATH = "";

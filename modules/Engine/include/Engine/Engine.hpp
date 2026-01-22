@@ -41,17 +41,17 @@ namespace cae
             bool log_fps = LOG::LOG_FPS;
 
             std::string network_host = NETWORK::HOST;
-            uint16_t network_port = NETWORK::PORT;
+            std::uint16_t network_port = NETWORK::PORT;
 
             bool renderer_vsync = RENDERER::VSYNC;
-            uint16_t renderer_frame_rate_limit = RENDERER::FRAME_RATE_LIMIT;
+            std::uint16_t renderer_frame_rate_limit = RENDERER::FRAME_RATE_LIMIT;
             Color renderer_clear_color = {.r = RENDERER::CLEAR_COLOR_R,
                                           .g = RENDERER::CLEAR_COLOR_G,
                                           .b = RENDERER::CLEAR_COLOR_B,
                                           .a = RENDERER::CLEAR_COLOR_A};
 
-            uint16_t window_width = WINDOW::WIDTH;
-            uint16_t window_height = WINDOW::HEIGHT;
+            std::uint16_t window_width = WINDOW::WIDTH;
+            std::uint16_t window_height = WINDOW::HEIGHT;
             bool window_fullscreen = WINDOW::FULLSCREEN;
             std::string window_name = WINDOW::NAME;
             std::string window_icon_path = WINDOW::ICON_PATH;

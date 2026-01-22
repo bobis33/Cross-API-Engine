@@ -68,7 +68,7 @@ namespace cae
                 }
             }
 
-            static std::vector<uint32_t> compileGLSLtoSPIRV(const std::string &src, ShaderStage stage);
+            static std::vector<std::uint32_t> compileGLSLtoSPIRV(const std::string &src, ShaderStage stage);
 
     }; // class GLSL
 

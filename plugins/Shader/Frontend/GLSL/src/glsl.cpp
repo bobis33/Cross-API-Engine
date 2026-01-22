@@ -2,7 +2,7 @@
 
 #include <SPIRV/GlslangToSpv.h>
 
-std::vector<uint32_t> cae::GLSL::compileGLSLtoSPIRV(const std::string &src, const ShaderStage stage)
+std::vector<std::uint32_t> cae::GLSL::compileGLSLtoSPIRV(const std::string &src, const ShaderStage stage)
 {
     static bool glslangInitialized = false;
     if (!glslangInitialized)
@@ -76,7 +76,7 @@ std::vector<uint32_t> cae::GLSL::compileGLSLtoSPIRV(const std::string &src, cons
         throw std::runtime_error("GLSL linking failed: " + std::string(program.getInfoLog()));
     }
 
-    std::vector<uint32_t> spirv;
+    std::vector<std::uint32_t> spirv;
     glslang::GlslangToSpv(*program.getIntermediate(lang), spirv);
 
     return spirv;

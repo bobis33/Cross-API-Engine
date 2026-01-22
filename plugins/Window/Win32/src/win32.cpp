@@ -196,8 +196,8 @@ cae::WindowSize cae::Win32::getWindowSize() const
 {
     RECT rect{};
     GetClientRect(m_hwnd, &rect);
-    return {.width = static_cast<uint16_t>(rect.right - rect.left),
-            .height = static_cast<uint16_t>(rect.bottom - rect.top)};
+    return {.width = static_cast<std::uint16_t>(rect.right - rect.left),
+            .height = static_cast<std::uint16_t>(rect.bottom - rect.top)};
 }
 
 void cae::Win32::setIcon(const std::string &path) const

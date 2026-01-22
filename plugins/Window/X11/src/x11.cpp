@@ -238,7 +238,7 @@ cae::WindowSize cae::X11::getWindowSize() const
 
     XWindowAttributes attrs;
     XGetWindowAttributes(m_display, m_window, &attrs);
-    return {.width = static_cast<uint16_t>(attrs.width), .height = static_cast<uint16_t>(attrs.height)};
+    return {.width = static_cast<std::uint16_t>(attrs.width), .height = static_cast<std::uint16_t>(attrs.height)};
 }
 
 void cae::X11::setIcon(const std::string &path) const
