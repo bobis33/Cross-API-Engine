@@ -1,1 +1,1 @@
-## add_subdirectory(Assimp)
+add_subdirectory(Assimp)
