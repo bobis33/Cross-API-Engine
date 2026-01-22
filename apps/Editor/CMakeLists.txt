@@ -11,6 +11,8 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+target_compile_definitions(${PROJECT_NAME} PRIVATE PLUGINS_DIR="${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
         "${CMAKE_BINARY_DIR}/include"
