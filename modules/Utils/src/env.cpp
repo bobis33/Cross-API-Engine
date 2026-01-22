@@ -6,7 +6,7 @@
 
 #include <cstring>
 
-std::unordered_map<std::string, std::string> utl::getEnvMap(const char *const *env)
+std::unordered_map<std::string, std::string> cae::utl::getEnvMap(const char *const *env)
 {
     std::unordered_map<std::string, std::string> cpyEnv;
 

@@ -21,7 +21,7 @@ namespace cae
     ///
     struct AppConfig
     {
-            EngineConfig engineConfig;
+            eng::EngineConfig engineConfig;
             EnvConfig envConfig;
     };
 
@@ -73,7 +73,7 @@ namespace cae
             /// @return Parsed EngineConfig
             /// @brief Parse the engine configuration file
             ///
-            static EngineConfig parseEngineConf(const std::string &path);
+            static eng::EngineConfig parseEngineConf(const std::string &path);
 
             ///
             /// @brief main loop
@@ -81,7 +81,7 @@ namespace cae
             void mainLoop();
 
             std::unique_ptr<utl::PluginLoader> m_pluginLoader = nullptr;
-            std::unique_ptr<Engine> m_engine = nullptr;
+            std::unique_ptr<eng::Engine> m_engine = nullptr;
 
             AppConfig m_appConfig;
             std::unordered_map<KeyCode, bool> m_keyState;

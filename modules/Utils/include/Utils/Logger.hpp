@@ -1,7 +1,7 @@
 ///
 /// @file Logger.hpp
 /// @brief This file contains the Logger class
-/// @namespace utl
+/// @namespace cae::utl
 ///
 
 #pragma once
@@ -11,7 +11,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace utl
+namespace cae::utl
 {
 
     enum class LogLevel : std::uint8_t
@@ -23,7 +23,7 @@ namespace utl
     ///
     /// @class Logger
     /// @brief Class for logging
-    /// @namespace utl
+    /// @namespace cae::utl
     ///
     class Logger
     {
@@ -122,4 +122,4 @@ namespace utl
 
     }; // class Logger
 
-} // namespace utl
+} // namespace cae::utl

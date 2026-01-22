@@ -1,7 +1,7 @@
 ///
 /// @file Path.hpp
 /// @brief This file contains Path resolution utilities
-/// @namespace utl
+/// @namespace cae::utl
 ///
 
 #pragma once
@@ -16,7 +16,7 @@
 
 #include <filesystem>
 
-namespace utl
+namespace cae::utl
 {
 
     namespace fs = std::filesystem;
@@ -24,7 +24,7 @@ namespace utl
     ///
     /// @class Path
     /// @brief Class for path resolution utilities
-    /// @namespace utl
+    /// @namespace cae::utl
     ///
     class Path
     {
@@ -135,4 +135,4 @@ namespace utl
 
     }; // class Path
 
-} // namespace utl
+} // namespace cae::utl

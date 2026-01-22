@@ -1,20 +1,20 @@
 ///
 /// @file Image.hpp
 /// @brief This file contains image struct
-/// @namespace utl
+/// @namespace cae::utl
 ///
 
 #pragma once
 
 #include <filesystem>
 
-namespace utl
+namespace cae::utl
 {
 
     ///
     /// @struct Image
     /// @brief Struct for image
-    /// @namespace utl
+    /// @namespace cae::utl
     ///
     struct Image
     {
@@ -36,4 +36,4 @@ namespace utl
 
     }; // struct Image
 
-} // namespace utl
+} // namespace cae::utl

@@ -1,7 +1,7 @@
 ///
 /// @file Engine.hpp
 /// @brief This file contains the engine class declaration
-/// @namespace cae
+/// @namespace cae::eng
 ///
 
 #pragma once
@@ -16,13 +16,13 @@
 
 #include <glm/glm.hpp>
 
-namespace cae
+namespace cae::eng
 {
 
     ///
     /// @struct EngineConfig
     /// @brief Struct for engine configuration
-    /// @namespace cae
+    /// @namespace cae::eng
     ///
     struct EngineConfig
     {
@@ -142,4 +142,4 @@ namespace cae
 
     }; // class Engine
 
-} // namespace cae
+} // namespace cae::eng

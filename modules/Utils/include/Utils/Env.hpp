@@ -1,7 +1,7 @@
 ///
 /// @file Env.hpp
 /// @brief This file contains env utility functions
-/// @namespace utl
+/// @namespace cae::utl
 ///
 
 #pragma once
@@ -9,7 +9,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace utl
+namespace cae::utl
 {
     ///
     /// @param env Pointer to environment variables
@@ -17,4 +17,5 @@ namespace utl
     /// @brief Get environment variables as a map
     ///
     [[nodiscard]] std::unordered_map<std::string, std::string> getEnvMap(const char *const *env);
-} // namespace utl
+
+} // namespace cae::utl

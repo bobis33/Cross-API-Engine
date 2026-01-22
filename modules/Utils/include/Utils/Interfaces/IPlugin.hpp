@@ -1,7 +1,7 @@
 ///
 /// @file IPlugin.hpp
 /// @brief This file contains the plugin interface
-/// @namespace utl
+/// @namespace cae::utl
 ///
 
 #pragma once
@@ -15,7 +15,7 @@
 #define PLUGIN_EXPORT
 #endif
 
-namespace utl
+namespace cae::utl
 {
 
     enum class PluginType : std::uint8_t
@@ -40,7 +40,7 @@ namespace utl
     ///
     /// @interface IPlugin
     /// @brief Interface for plugins
-    /// @namespace utl
+    /// @namespace cae::utl
     ///
     class IPlugin
     {
@@ -67,4 +67,5 @@ namespace utl
             [[nodiscard]] virtual PluginPlatform getPlatform() const = 0;
 
     }; // interface IPlugin
-} // namespace utl
+
+} // namespace cae::utl

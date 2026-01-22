@@ -1,20 +1,20 @@
 ///
 /// @file Clock.hpp
 /// @brief This file contains the Clock class
-/// @namespace utl
+/// @namespace cae::utl
 ///
 
 #pragma once
 
 #include <chrono>
 
-namespace utl
+namespace cae::utl
 {
 
     ///
     /// @class Clock
     /// @brief Class for clock
-    /// @namespace utl
+    /// @namespace cae::utl
     ///
     class Clock
     {
@@ -108,4 +108,4 @@ namespace utl
 
     }; // class Clock
 
-} // namespace utl
+} // namespace cae::utl

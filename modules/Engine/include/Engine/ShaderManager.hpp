@@ -1,7 +1,7 @@
 ///
 /// @file ShaderManager.hpp
 /// @brief This file contains the ShaderManager class declaration
-/// @namespace cae
+/// @namespace cae::eng
 ///
 
 #pragma once
@@ -10,12 +10,12 @@
 
 #include <memory>
 
-namespace cae
+namespace cae::eng
 {
     ///
     /// @class ShaderManager
     /// @brief Class for managing shaders
-    /// @namespace cae
+    /// @namespace cae::eng
     ///
     class ShaderManager
     {
@@ -93,4 +93,4 @@ namespace cae
 
     }; // class ShaderManager
 
-} // namespace cae
+} // namespace cae::eng

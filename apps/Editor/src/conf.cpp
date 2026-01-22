@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
+cae::eng::EngineConfig cae::Application::parseEngineConf(const std::string &path)
 {
     auto confPath = utl::Path::resolveRelativeToCwd(path);
     if (!utl::Path::existsFile(confPath))
@@ -36,7 +36,7 @@ cae::EngineConfig cae::Application::parseEngineConf(const std::string &path)
                          utl::LogLevel::WARNING);
         return {};
     }
-    EngineConfig config;
+    eng::EngineConfig config;
     utl::Logger::log("Loading config: " + confPath.string(), utl::LogLevel::INFO);
     if (j.contains("audio"))
     {

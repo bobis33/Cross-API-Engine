@@ -4,7 +4,7 @@
 #include <windows.h>
 #endif
 
-void utl::Logger::init()
+void cae::utl::Logger::init()
 {
 #ifdef _WIN32
     const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);

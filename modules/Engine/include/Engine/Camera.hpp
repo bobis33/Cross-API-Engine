@@ -1,7 +1,7 @@
 ///
 /// @file Camera.hpp
 /// @brief This file contains the camera class declaration
-/// @namespace cae
+/// @namespace cae::eng
 ///
 
 #pragma once
@@ -12,13 +12,13 @@
 
 #include <string>
 
-namespace cae
+namespace cae::eng
 {
 
     ///
     /// @class Camera
     /// @brief Class for camera
-    /// @namespace cae
+    /// @namespace cae::eng
     ///
     class Camera
     {
@@ -125,4 +125,4 @@ namespace cae
 
     }; // class Camera
 
-} // namespace cae
+} // namespace cae::eng

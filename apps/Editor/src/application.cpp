@@ -5,13 +5,13 @@
 #include "Utils/Logger.hpp"
 #include "Utils/Path.hpp"
 
-static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_ptr<utl::PluginLoader> &loader)
+static std::vector<std::shared_ptr<cae::utl::IPlugin>> loadPlugins(const std::unique_ptr<cae::utl::PluginLoader> &loader)
 {
-    std::vector<std::shared_ptr<utl::IPlugin>> loadedPlugins;
+    std::vector<std::shared_ptr<cae::utl::IPlugin>> loadedPlugins;
     const std::filesystem::path pluginDir{PLUGINS_DIR};
-    if (!utl::Path::existsDir(pluginDir))
+    if (!cae::utl::Path::existsDir(pluginDir))
     {
-        utl::Logger::log("Plugins directory does not exist: " + pluginDir.string(), utl::LogLevel::WARNING);
+        cae::utl::Logger::log("Plugins directory does not exist: " + pluginDir.string(), cae::utl::LogLevel::WARNING);
         return loadedPlugins;
     }
 
@@ -22,19 +22,19 @@ static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_
             continue;
         }
         const std::string pluginPath = entry.path().string();
-        if (auto plugin = loader->loadPlugin<utl::IPlugin>(pluginPath, "cae-"); plugin != nullptr)
+        if (auto plugin = loader->loadPlugin<cae::utl::IPlugin>(pluginPath, "cae-"); plugin != nullptr)
         {
-            utl::Logger::log("Loaded plugin:\t " + plugin->getName() + " from " + pluginPath, utl::LogLevel::INFO);
+            cae::utl::Logger::log("Loaded plugin:\t " + plugin->getName() + " from " + pluginPath, cae::utl::LogLevel::INFO);
             loadedPlugins.push_back(plugin);
         }
         else
         {
-            utl::Logger::log("Failed to load plugin: " + pluginPath, utl::LogLevel::WARNING);
+            cae::utl::Logger::log("Failed to load plugin: " + pluginPath, cae::utl::LogLevel::WARNING);
         }
     }
     if (loadedPlugins.empty())
     {
-        utl::Logger::log("No plugins loaded from directory: " + pluginDir.string(), utl::LogLevel::WARNING);
+        cae::utl::Logger::log("No plugins loaded from directory: " + pluginDir.string(), cae::utl::LogLevel::WARNING);
     }
 
     return loadedPlugins;
@@ -113,7 +113,7 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
     {
         utl::Logger::log("No shader plugin found with name: " + shaderFrontendName, utl::LogLevel::WARNING);
     }
-    m_engine = std::make_unique<Engine>(
+    m_engine = std::make_unique<eng::Engine>(
         m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; },
         [rendererPlugin]() { return rendererPlugin; }, [shaderIRPlugin]() { return shaderIRPlugin; }, shaderFactories,
         [windowPlugin]() { return windowPlugin; });

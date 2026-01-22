@@ -12,10 +12,10 @@ void printFps(std::array<float, 10> &fpsBuffer, int &fpsIndex, const float delta
     fpsIndex++;
 
     float avgFps = std::accumulate(fpsBuffer.begin(), fpsBuffer.end(), 0.0F) / 10.0F;
-    utl::Logger::log(std::format("FPS: {}", avgFps), utl::LogLevel::INFO);
+    cae::utl::Logger::log(std::format("FPS: {}", avgFps), cae::utl::LogLevel::INFO);
 }
 
-cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
+cae::eng::Engine::Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                     const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
                     const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
@@ -52,14 +52,14 @@ cae::Engine::Engine(const EngineConfig &config, const std::function<std::shared_
     m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle(), config.renderer_clear_color);
 }
 
-void cae::Engine::initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
+void cae::eng::Engine::initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
                                             const std::vector<float> &vertices) const
 {
     initShaders(shaderSources);
     m_rendererPlugin->createMesh(vertices);
 }
 
-void cae::Engine::render()
+void cae::eng::Engine::render()
 {
     constexpr auto model = glm::mat4(1.0F);
 
@@ -69,7 +69,7 @@ void cae::Engine::render()
     m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic", mvp);
 }
 
-void cae::Engine::update(std::array<float, 10> &fpsBuffer, int &fpsIndex)
+void cae::eng::Engine::update(std::array<float, 10> &fpsBuffer, int &fpsIndex)
 {
     if (m_logFps)
     {
@@ -78,7 +78,7 @@ void cae::Engine::update(std::array<float, 10> &fpsBuffer, int &fpsIndex)
     m_clock->restart();
 }
 
-void cae::Engine::stop()
+void cae::eng::Engine::stop()
 {
     utl::Logger::log("Stopping engine...", utl::LogLevel::INFO);
     m_windowPlugin->close();
@@ -93,7 +93,7 @@ void cae::Engine::stop()
     m_camera = nullptr;
 }
 
-void cae::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize,
+void cae::eng::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize,
                              const std::string &iconPath) const
 {
     m_windowPlugin->create(windowName, windowSize);
@@ -103,7 +103,7 @@ void cae::Engine::initWindow(const std::string &windowName, const WindowSize &wi
     }
 }
 
-void cae::Engine::initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const
+void cae::eng::Engine::initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const
 {
     auto shaders = m_shaderManager->build(shaderSources, ShaderSourceType::SPIRV);
     m_shaderManager->optimizeAll(ShaderSourceType::SPIRV, shaders | std::views::values);

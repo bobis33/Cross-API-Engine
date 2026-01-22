@@ -1,7 +1,7 @@
 ///
 /// @file File.hpp
 /// @brief This file contains file utility functions
-/// @namespace utl
+/// @namespace cae::utl
 ///
 
 #pragma once
@@ -9,7 +9,7 @@
 #include <filesystem>
 #include <vector>
 
-namespace utl
+namespace cae::utl
 {
     ///
     /// @param path Path to the file
@@ -24,4 +24,5 @@ namespace utl
     /// @brief Read a file and return its contents as a string
     ///
     [[nodiscard]] std::string fileToString(const std::filesystem::path &path);
-} // namespace utl
+
+} // namespace cae::utl

@@ -5,7 +5,7 @@
 
 #include <stdexcept>
 
-utl::Image::Image(const std::filesystem::path &path, const bool flip)
+cae::utl::Image::Image(const std::filesystem::path &path, const bool flip)
 {
     if (flip)
     {
@@ -18,4 +18,4 @@ utl::Image::Image(const std::filesystem::path &path, const bool flip)
     }
 }
 
-utl::Image::~Image() { stbi_image_free(pixels); }
+cae::utl::Image::~Image() { stbi_image_free(pixels); }

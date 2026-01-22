@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-std::vector<char> utl::fileToVector(const std::filesystem::path &path)
+std::vector<char> cae::utl::fileToVector(const std::filesystem::path &path)
 {
     std::ifstream file(path, std::ios::in);
     if (!file.is_open())
@@ -24,7 +24,7 @@ std::vector<char> utl::fileToVector(const std::filesystem::path &path)
     return buffer;
 }
 
-std::string utl::fileToString(const std::filesystem::path &path)
+std::string cae::utl::fileToString(const std::filesystem::path &path)
 {
     const std::ifstream file(path, std::ios::in);
     if (!file.is_open())

@@ -1,7 +1,7 @@
 ///
 /// @file PluginLoader.hpp
 /// @brief Modern, cross-platform plugin loader
-/// @namespace utl
+/// @namespace cae::utl
 ///
 
 #pragma once
@@ -23,7 +23,7 @@
 #define PLUGINS_PREFIX "lib"
 #endif
 
-namespace utl
+namespace cae::utl
 {
 
     using LibHandle =
@@ -36,7 +36,7 @@ namespace utl
     ///
     /// @struct SharedLib
     /// @brief RAII wrapper for shared libraries
-    /// @namespace utl
+    /// @namespace cae::utl
     ///
     struct SharedLib
     {
@@ -81,7 +81,7 @@ namespace utl
     ///
     /// @class PluginLoader
     /// @brief Modern, type-safe plugin loader
-    /// @namespace utl
+    /// @namespace cae::utl
     ///
     class PluginLoader
     {
@@ -222,4 +222,4 @@ namespace utl
 
     }; // class PluginLoader
 
-} // namespace utl
+} // namespace cae::utl

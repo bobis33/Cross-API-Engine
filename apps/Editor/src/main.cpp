@@ -6,7 +6,7 @@ int main(const int argc, const char *const *argv, const char *const *envp)
 {
     std::unique_ptr<cae::Application> app = nullptr;
 
-    utl::Logger::init();
+    cae::utl::Logger::init();
     try
     {
         cae::ArgsConfig argsConfig = cae::ArgsHandler::ParseArgs(argc, argv);
@@ -21,12 +21,12 @@ int main(const int argc, const char *const *argv, const char *const *envp)
     }
     catch (const std::exception &e)
     {
-        utl::Logger::log(std::string("Exception: ") + e.what() + '\n', utl::LogLevel::WARNING);
+        cae::utl::Logger::log(std::string("Exception: ") + e.what() + '\n', cae::utl::LogLevel::WARNING);
         return EXIT_FAILURE;
     }
     catch (...)
     {
-        utl::Logger::log(std::string("Unknown exception"), utl::LogLevel::WARNING);
+        cae::utl::Logger::log(std::string("Unknown exception"), cae::utl::LogLevel::WARNING);
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;

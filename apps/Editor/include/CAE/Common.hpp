@@ -10,6 +10,8 @@
 
 #include "Engine/Common.hpp"
 
+#include <string_view>
+
 namespace cae
 {
     namespace MESSAGE

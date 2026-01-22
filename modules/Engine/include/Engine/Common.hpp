@@ -1,7 +1,7 @@
 ///
 /// @file Common.hpp
 /// @brief This file contains common constants used across the engine
-/// @namespace cae
+/// @namespace cae::eng
 ///
 
 #pragma once
@@ -14,7 +14,7 @@
 #define APP_EXTENSION ""
 #endif
 
-namespace cae
+namespace cae::eng
 {
     namespace AUDIO
     {
@@ -62,4 +62,4 @@ namespace cae
         inline constexpr auto ICON_PATH = "";
     } // namespace WINDOW
 
-} // namespace cae
+} // namespace cae::eng
