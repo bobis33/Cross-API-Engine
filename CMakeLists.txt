@@ -16,15 +16,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib")
 set(PLUGIN_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
-set(PATH_VERSION "${PROJECT_BINARY_DIR}/include/CAE/Version.hpp")
-set(TEMPLATE_PATH "${PROJECT_SOURCE_DIR}/cmake/config/Version.hpp.in")
 
 add_compile_definitions(PLUGINS_DIR="${PLUGIN_DIR}")
 
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.cpp")
 file(GLOB_RECURSE PROJECT_FILES
         ${SOURCES}
-        "${PROJECT_SOURCE_DIR}/include/*.hpp"
+        "${PROJECT_SOURCE_DIR}/apps/*.cpp"
+        "${PROJECT_SOURCE_DIR}/apps/*.hpp"
         "${PROJECT_SOURCE_DIR}/modules/*.cpp"
         "${PROJECT_SOURCE_DIR}/modules/*.hpp"
         "${PROJECT_SOURCE_DIR}/plugins/*.cpp"
@@ -68,18 +66,4 @@ endif ()
 add_subdirectory(modules)
 add_subdirectory(plugins)
 add_subdirectory(tests)
-
-add_executable(${PROJECT_NAME} ${SOURCES})
-add_dependencies(${PROJECT_NAME} cae-modules)
-target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include" "${PROJECT_BINARY_DIR}/include" ${glm_SOURCE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE
-        cae-modules
-        nlohmann_json::nlohmann_json
-        glm::glm
-)
-
-copy_directory_to_target(
-        ${PROJECT_NAME}
-        "${CMAKE_SOURCE_DIR}/assets"
-        "assets"
-)
+add_subdirectory(apps)

@@ -41,8 +41,9 @@ static std::vector<std::shared_ptr<utl::IPlugin>> loadPlugins(const std::unique_
 }
 
 cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &envConfig)
-    : m_pluginLoader(std::make_unique<utl::PluginLoader>())
+    : m_pluginLoader(std::make_unique<utl::PluginLoader>()), m_console(std::make_unique<Console>())
 {
+    m_console->create();
     utl::Logger::log("PROJECT INFO:\n" + std::string(MESSAGE::VERSION_MSG) + '\n', utl::LogLevel::INFO);
 
     try
@@ -152,6 +153,9 @@ void cae::Application::start()
          .source = utl::fileToString(utl::Path::resolveRelativeToExe("assets/shaders/glsl/texture.frag")),
          .stage = ShaderStage::FRAGMENT},
     };
+    m_console->attachTo(m_engine->getWindow()->getNativeHandle());
+    m_console->startInput();
+
     m_engine->initializeRenderResources(shaderSources, cubeVertices);
     mainLoop();
 }
@@ -159,6 +163,7 @@ void cae::Application::start()
 void cae::Application::stop()
 {
     m_engine->stop();
+    m_console->stop();
 
     m_pluginLoader = nullptr;
     m_engine = nullptr;
@@ -172,6 +177,7 @@ void cae::Application::mainLoop()
 
     while (!m_engine->getWindow()->shouldClose())
     {
+        m_console->syncWith(m_engine->getWindow()->getNativeHandle());
         m_engine->render();
         glm::vec3 moveDir(0.0F);
         glm::vec2 lookDir(0.0F);
