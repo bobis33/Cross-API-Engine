@@ -91,7 +91,6 @@ endfunction()
 if (EMSCRIPTEN)
     target_compile_definitions(cae-compile-options INTERFACE
             CAE_PLATFORM_WEB
-            CAE_PLATFORM_EMSCRIPTEN
     )
 elseif (ANDROID)
     target_compile_definitions(cae-compile-options INTERFACE CAE_PLATFORM_ANDROID)

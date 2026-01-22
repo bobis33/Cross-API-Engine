@@ -2,6 +2,8 @@
 
 #include "OPGL/Context/NSGLContext.hpp"
 
+#include "Utils/Logger.hpp"
+
 #import <AppKit/AppKit.h>
 
 cae::NSGLContext::~NSGLContext() {
@@ -33,6 +35,17 @@ void cae::NSGLContext::initialize(const NativeWindowHandle &window) {
     if (!gladLoadGLContext(&gl, nullptr)) {
         throw std::runtime_error("Failed to initialize GLAD");
     }
+#ifdef CAE_DEBUG
+    if (gl.Enable != nullptr)
+    {
+        gl.Enable(GL_DEBUG_OUTPUT);
+
+        gl.DebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+                               const GLchar *message, const void *userParam)
+                            { utl::Logger::log("[GL DEBUG] " + std::string(message), utl::LogLevel::WARNING); },
+                            nullptr);
+    }
+#endif
 }
 
 void cae::NSGLContext::swapBuffers() {

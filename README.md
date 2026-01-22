@@ -83,6 +83,18 @@ This section targets engine developers and contributors.
 - `CAE_CLANG_FORMAT` (default: `OFF`): Enable clang format usage.
 - `CAE_BUILD_DOC` (default: `OFF`): Enable building doxygen documentation.
 
+### Preprocessor macros
+
+- `PLUGINS_DIR`: Path of plugins binaries directory.
+- `CAE_DEBUG`: Defined if build mode is debug.
+- `CAE_DYNAMIC_PLUGINS`: Defined if plugins are build dynamically.
+- `CAE_PLATFORM_WEB`: Defined if platform is Web.
+- `CAE_PLATFORM_ANDROID`: Defined if platform is Android.
+- `CAE_PLATFORM_IOS`: Defined if platform is IOS.
+- `CAE_PLATFORM_MACOS`: Defined if platform is macOS.
+- `CAE_PLATFORM_WINDOWS`: Defined if platform is Windows.
+- `CAE_PLATFORM_LINUX`: Defined if platform is Linux.
+
 ### Testing
 
 Unit tests are based on [Google Test](https://github.com/google/googletest).

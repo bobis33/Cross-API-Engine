@@ -2,6 +2,8 @@
 
 #include "OPGL/Context/EGLContext.hpp"
 
+#include "Utils/Logger.hpp"
+
 #include <stdexcept>
 
 cae::EGLContext_::~EGLContext_()
@@ -85,6 +87,17 @@ void cae::EGLContext_::initialize(const NativeWindowHandle &window)
     {
         throw std::runtime_error("Failed to initialize GLAD");
     }
+#ifdef CAE_DEBUG
+    if (gl.Enable != nullptr)
+    {
+        gl.Enable(GL_DEBUG_OUTPUT);
+
+        gl.DebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+                               const GLchar *message, const void *userParam)
+                            { utl::Logger::log("[GL DEBUG] " + std::string(message), utl::LogLevel::WARNING); },
+                            nullptr);
+    }
+#endif
 }
 
 void cae::EGLContext_::swapBuffers()

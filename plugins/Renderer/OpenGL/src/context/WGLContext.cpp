@@ -143,16 +143,17 @@ void cae::WGLContext::initialize(const NativeWindowHandle &window)
     {
         throw std::runtime_error("Failed to initialize GLAD MX (Windows)");
     }
+#ifdef CAE_DEBUG
     if (gl.Enable != nullptr)
     {
         gl.Enable(GL_DEBUG_OUTPUT);
-#ifdef CAE_DEBUG
         gl.DebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                    const GLchar *message, const void *userParam)
                                 { utl::Logger::log("[GL DEBUG] " + std::string(message), utl::LogLevel::WARNING); },
                                 nullptr);
-#endif
     }
+#endif
+
 }
 
 void cae::WGLContext::swapBuffers()

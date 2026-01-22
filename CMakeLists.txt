@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 4.0.0)
 project(cae
         VERSION 0.0.0
         DESCRIPTION "Cross-API graphics engine"
+        HOMEPAGE_URL "https://bobis33.github.io/Cross-API-Engine/"
         LANGUAGES C CXX
 )
 
