@@ -14,6 +14,10 @@ file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.mm" "${PROJECT_SOURCE_DIR
 
 add_library(${PROJECT_NAME} MODULE ${SOURCES})
 
+if (CAE_ENABLE_LTO)
+    cae_enable_lto(${PROJECT_NAME})
+endif ()
+
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
 )

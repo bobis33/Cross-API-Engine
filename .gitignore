@@ -1,5 +1,9 @@
-.git/
-.idea/
-.vs/
+.git
+.idea
+.vs
 
 cmake-build-*
+
+documentation/.doxygen/css
+documentation/.doxygen/html
+documentation/.doxygen/latex

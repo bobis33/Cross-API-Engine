@@ -5,6 +5,10 @@ project(cae-renderer-webgpu
 
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
+if (CAE_ENABLE_LTO)
+    cae_enable_lto(${PROJECT_NAME})
+endif ()
+
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE

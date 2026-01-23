@@ -25,6 +25,10 @@ file(GLOB_RECURSE SOURCE "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 add_library(${PROJECT_NAME} MODULE ${SOURCE})
 
+if (CAE_ENABLE_LTO)
+    cae_enable_lto(${PROJECT_NAME})
+endif ()
+
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
 )
