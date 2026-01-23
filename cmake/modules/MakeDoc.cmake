@@ -1,7 +1,5 @@
 include_guard(GLOBAL)
 
-find_package(Doxygen REQUIRED)
-
 set(DOXYGEN_DIR "${CMAKE_SOURCE_DIR}/documentation/.doxygen")
 set(DOXYFILE_OUT "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
 
@@ -14,7 +12,6 @@ endfunction()
 
 function(cae_add_doxygen_html TARGET FILES)
     configure_file("${DOXYGEN_DIR}/Doxyfile" ${DOXYFILE_OUT} @ONLY)
-    cae_download_extra_css()
     doxygen_add_docs(${TARGET} ${FILES})
     add_custom_command(TARGET ${TARGET} POST_BUILD
             WORKING_DIRECTORY ${DOXYGEN_DIR}
@@ -25,7 +22,6 @@ endfunction()
 
 function(cae_add_doxygen_pdf TARGET FILES)
     configure_file("${DOXYGEN_DIR}/Doxyfile" ${DOXYFILE_OUT} @ONLY)
-    cae_download_extra_css()
     doxygen_add_docs(${TARGET} ${FILES})
     add_custom_command(TARGET ${TARGET} POST_BUILD
             WORKING_DIRECTORY "${DOXYGEN_DIR}/latex"

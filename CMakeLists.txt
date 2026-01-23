@@ -12,6 +12,7 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 option(CAE_BUILD_DOC_HTML "Build html documentation" OFF)
 option(CAE_BUILD_DOC_PDF "Build pdf documentation" OFF)
 option(CAE_CLANG_FORMAT "Enable clang-format" OFF)
+option(CAE_CLANG_TIDY "Enable clang-tidy static analysis" OFF)
 
 file(GLOB_RECURSE PROJECT_FILES
         ${SOURCES}
@@ -34,10 +35,18 @@ if (CAE_CLANG_FORMAT)
     format_project(${PROJECT_FILES})
 endif ()
 
-if (CAE_BUILD_DOC_HTML)
-    cae_add_doxygen_html(cae-doc-html ${PROJECT_FILES})
-elseif (CAE_BUILD_DOC_PDF)
-    cae_add_doxygen_pdf(cae-doc-pdf ${PROJECT_FILES})
+if (CAE_CLANG_TIDY)
+    run_clang_tidy(${PROJECT_FILES})
+endif ()
+
+if (CAE_BUILD_DOC_HTML OR CAE_BUILD_DOC_PDF)
+    find_package(Doxygen REQUIRED)
+    cae_download_extra_css()
+    if (CAE_BUILD_DOC_HTML)
+        cae_add_doxygen_html(cae-doc-html ${PROJECT_FILES})
+    elseif (CAE_BUILD_DOC_PDF)
+        cae_add_doxygen_pdf(cae-doc-pdf ${PROJECT_FILES})
+    endif ()
 endif ()
 
 find_package(nlohmann_json QUIET CONFIG)

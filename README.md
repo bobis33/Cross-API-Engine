@@ -110,7 +110,7 @@ Use the `CAE_BUILD_TESTS` option.
 
 documentation is generated using [Doxygen](https://www.doxygen.nl/).
 
-Use the `CAE_BUILD_DOC` option.
+Use the `CAE_BUILD_DOC_HTML` or/and `CAE_BUILD_DOC_PDF` option.
 
 ## Third-party libraries
 

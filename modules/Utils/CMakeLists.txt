@@ -22,6 +22,10 @@ FetchContent_MakeAvailable(stb)
 
 add_library(${PROJECT_NAME} STATIC)
 
+if (CAE_ENABLE_LTO)
+    cae_enable_lto(${PROJECT_NAME})
+endif ()
+
 target_sources(${PROJECT_NAME}
         PRIVATE ${SOURCES}
         PUBLIC FILE_SET HEADERS
