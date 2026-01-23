@@ -40,12 +40,17 @@ namespace cae
         {
             namespace IR
             {
+                inline constexpr auto DXBC = "DXBC";
+                inline constexpr auto DXIL = "DXIL";
                 inline constexpr auto SPIRV = "SPIRV";
             } // namespace IR
 
             namespace FRONTEND
             {
                 inline constexpr auto GLSL = "GLSL";
+                inline constexpr auto HLSL = "HLSL";
+                inline constexpr auto MSL = "MSL";
+                inline constexpr auto WGL = "WGL";
             } // namespace FRONTEND
 
         } // namespace SHADER

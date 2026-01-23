@@ -22,6 +22,8 @@ namespace cae
         WGSL = 2,
         MSL = 3,
         SPIRV = 4,
+        DXIL = 5,
+        DXBC = 6,
         UNDEFINED = 255
     };
 
@@ -56,6 +58,8 @@ namespace cae
     {
             ShaderID id;
             ShaderStage stage;
+            // std::vector<uint8_t> dxbc;
+            // std::vector<uint8_t> dxil;
             std::vector<uint32_t> spirv;
             std::string entryPoint = "main";
     };

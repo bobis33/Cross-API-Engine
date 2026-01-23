@@ -18,6 +18,7 @@ endif ()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
+        ${glm_SOURCE_DIR}
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE
         cae-compile-options
@@ -26,6 +27,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         d3d11
         dxgi
         dxguid
+        glm::glm
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 23
