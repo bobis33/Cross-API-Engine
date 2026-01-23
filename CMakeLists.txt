@@ -9,6 +9,8 @@ project(cae
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
+option(CAE_BUILD_DOC_HTML "Build html documentation" OFF)
+option(CAE_BUILD_DOC_PDF "Build pdf documentation" OFF)
 option(CAE_CLANG_FORMAT "Enable clang-format" OFF)
 
 file(GLOB_RECURSE PROJECT_FILES
@@ -30,7 +32,13 @@ include(CompileOptions)
 
 if (CAE_CLANG_FORMAT)
     format_project(${PROJECT_FILES})
-endif()
+endif ()
+
+if (CAE_BUILD_DOC_HTML)
+    cae_add_doxygen_html(cae-doc-html ${PROJECT_FILES})
+elseif (CAE_BUILD_DOC_PDF)
+    cae_add_doxygen_pdf(cae-doc-pdf ${PROJECT_FILES})
+endif ()
 
 find_package(nlohmann_json QUIET CONFIG)
 if (NOT nlohmann_json_FOUND)
