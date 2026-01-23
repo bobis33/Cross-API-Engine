@@ -54,7 +54,7 @@ cmake --build cmake-build-release --config Release
 ### Run
 
 ```bash
-./cmake-build-release/bin/cae -h          
+./cmake-build-release/bin/cae-editor -h          
 Usage: cae [options]
 
 Options:
@@ -86,7 +86,6 @@ This section targets engine developers and contributors.
 
 ### Preprocessor macros
 
-- `PLUGINS_DIR`: Path of plugins binaries directory.
 - `CAE_DEBUG`: Defined if build mode is debug.
 - `CAE_DYNAMIC_PLUGINS`: Defined if plugins are build dynamically.
 - `CAE_PLATFORM_WEB`: Defined if platform is Web.
@@ -95,6 +94,7 @@ This section targets engine developers and contributors.
 - `CAE_PLATFORM_MACOS`: Defined if platform is macOS.
 - `CAE_PLATFORM_WINDOWS`: Defined if platform is Windows.
 - `CAE_PLATFORM_LINUX`: Defined if platform is Linux.
+- `CAE_PLUGINS_DIR`: Path of plugins binaries directory.
 
 ### Testing
 
