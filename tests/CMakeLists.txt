@@ -20,10 +20,16 @@ if (CAE_BUILD_TESTS)
 
     add_executable(${PROJECT_NAME} ${SOURCES})
 
-    target_link_libraries(${PROJECT_NAME} PRIVATE GTest::gtest_main cae-compile-options)
+    target_link_libraries(${PROJECT_NAME} PRIVATE GTest::gtest_main cae-modules)
     target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
     include(GoogleTest)
     gtest_discover_tests(${PROJECT_NAME})
-    set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+            CXX_STANDARD 23
+            CXX_STANDARD_REQUIRED ON
+            POSITION_INDEPENDENT_CODE ON
+            CXX_EXTENSIONS OFF
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    )
 
 endif()

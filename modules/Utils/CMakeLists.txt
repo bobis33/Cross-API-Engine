@@ -41,6 +41,9 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${stb_SOURCE_DIR}>
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
+        CXX_STANDARD 23
+        CXX_STANDARD_REQUIRED ON
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
 )
