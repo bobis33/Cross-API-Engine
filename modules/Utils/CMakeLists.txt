@@ -10,7 +10,6 @@ set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
 file(GLOB_RECURSE HEADERS "${INCLUDE_DIR}/Utils/*.hpp")
 
-include(FetchContent)
 FetchContent_Declare(
         stb
         GIT_REPOSITORY "https://github.com/nothings/stb.git"
@@ -49,5 +48,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD_REQUIRED ON
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
 )

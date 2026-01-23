@@ -5,7 +5,6 @@ project(cae-renderer-vulkan
 
 find_package(Vulkan QUIET CONFIG)
 if(NOT Vulkan_FOUND)
-    include(FetchContent)
     set(VULKAN_VERSION "v1.4.329")
     set(VULKAN_HEADERS_ENABLE_TESTS OFF CACHE BOOL "" FORCE)
     FetchContent_Declare(
@@ -34,14 +33,16 @@ endif()
 
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+add_library(${PROJECT_NAME} MODULE ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
         ${Vulkan_INCLUDE_DIRS}
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        cae-modules
+        cae-compile-options
+        cae-interfaces
+        cae-utils
         ${Vulkan_LIBRARIES}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -49,5 +50,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD_REQUIRED ON
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
+        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
 )

@@ -10,6 +10,20 @@ set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
 file(GLOB_RECURSE HEADERS "${INCLUDE_DIR}/Engine/*.hpp")
 
+find_package(glm QUIET CONFIG)
+if (NOT glm_FOUND)
+    FetchContent_Declare(
+            glm
+            GIT_REPOSITORY "https://github.com/g-truc/glm.git"
+            GIT_TAG        1.0.3
+            GIT_SHALLOW    TRUE
+            GIT_PROGRESS   TRUE
+    )
+    set(GLM_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(glm)
+endif ()
+
 add_library(${PROJECT_NAME} STATIC)
 
 if (CAE_ENABLE_LTO)
@@ -24,17 +38,17 @@ target_sources(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        cae-utils
         cae-compile-options
+        cae-interfaces
+        cae-utils
         glm::glm
 )
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${INCLUDE_DIR}>
         $<INSTALL_INTERFACE:include>
-        ${glm_SOURCE_DIR}
         PRIVATE
-        "${CMAKE_SOURCE_DIR}/modules/Interfaces/include"
+        ${glm_SOURCE_DIR}
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -42,5 +56,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD_REQUIRED ON
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
 )

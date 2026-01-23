@@ -6,7 +6,6 @@ if (CAE_BUILD_TESTS)
             LANGUAGES CXX
     )
 
-    include(FetchContent)
     FetchContent_Declare(
             googletest
             GIT_REPOSITORY "https://github.com/google/googletest.git"
@@ -20,7 +19,12 @@ if (CAE_BUILD_TESTS)
 
     add_executable(${PROJECT_NAME} ${SOURCES})
 
-    target_link_libraries(${PROJECT_NAME} PRIVATE GTest::gtest_main cae-modules)
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+            cae-compile-options
+            cae-interfaces
+            cae-utils
+            GTest::gtest_main
+    )
     target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
     include(GoogleTest)
     gtest_discover_tests(${PROJECT_NAME})

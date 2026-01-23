@@ -5,7 +5,6 @@ project(cae-shaders-frontend-glsl
 
 find_package(glslang QUIET CONFIG)
 if (NOT glslang_FOUND)
-    include(FetchContent)
     set(BUILD_EXTERNAL OFF CACHE BOOL "" FORCE)
     set(ENABLE_HLSL OFF CACHE BOOL "" FORCE)
     set(ENABLE_OPT OFF CACHE BOOL "" FORCE)
@@ -25,13 +24,15 @@ endif ()
 
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+add_library(${PROJECT_NAME} MODULE ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        cae-modules
+        cae-compile-options
+        cae-interfaces
+        cae-utils
         glslang::glslang
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -39,5 +40,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD_REQUIRED ON
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
+        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
 )
