@@ -58,9 +58,10 @@ namespace cae
     {
             ShaderID id;
             ShaderStage stage;
+            ShaderSourceType irType;
             // std::vector<uint8_t> dxbc;
             // std::vector<uint8_t> dxil;
-            std::vector<uint32_t> spirv;
+            std::vector<uint8_t> bytecode;
             std::string entryPoint = "main";
     };
 

@@ -8,9 +8,12 @@
 
 #include "Interfaces/Renderer/ARenderer.hpp"
 
-#include <glm/glm.hpp>
+#include <directx/d3dx12.h>
+
 #include <d3d12.h>
 #include <dxgi1_6.h>
+#include <glm/glm.hpp>
+#include <windows.h>
 #include <wrl/client.h>
 
 namespace cae
@@ -46,9 +49,19 @@ namespace cae
             void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                 const ShaderIRModule &fragment) override
             {
+                if (m_pipelines.contains(id))
+                    return;
+
+                PipelineDX12 pipe{};
+                // (PSO plus tard)
+                m_pipelines.emplace(id, std::move(pipe));
             }
             void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override;
-            void createMesh(const std::vector<float> &vertices) override {}
+            void createMesh(const std::vector<float> &vertices) override
+            {
+                m_meshes.emplace_back(MeshDX12{});
+
+            }
 
         private:
             static constexpr uint32_t FrameCount = 2;
@@ -70,6 +83,21 @@ namespace cae
 
             bool  m_vsync = true;
             Color m_clearColor{};
+
+            struct PipelineDX12 {
+                Microsoft::WRL::ComPtr<ID3D12PipelineState> pso;
+                Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSig;
+            };
+
+            std::unordered_map<ShaderID, PipelineDX12> m_pipelines;
+
+            struct MeshDX12 {
+                Microsoft::WRL::ComPtr<ID3D12Resource> vertexBuffer;
+                D3D12_VERTEX_BUFFER_VIEW view{};
+            };
+
+            std::vector<MeshDX12> m_meshes;
+
 
     }; // class DirectX12
 

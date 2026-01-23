@@ -96,8 +96,8 @@ void cae::DirectX11::createPipeline(
 
     // Vertex shader
     HRESULT hr = m_device->CreateVertexShader(
-        vertex.dxbc.data(),
-        vertex.dxbc.size(),
+        vertex.bytecode.data(),
+        vertex.bytecode.size(),
         nullptr,
         &pipeline.vs
     );
@@ -106,8 +106,8 @@ void cae::DirectX11::createPipeline(
 
     // Pixel shader
     hr = m_device->CreatePixelShader(
-        fragment.dxbc.data(),
-        fragment.dxbc.size(),
+        fragment.bytecode.data(),
+        fragment.bytecode.size(),
         nullptr,
         &pipeline.ps
     );
@@ -125,8 +125,8 @@ void cae::DirectX11::createPipeline(
     hr = m_device->CreateInputLayout(
         layout,
         2,
-        vertex.dxbc.data(),
-        vertex.dxbc.size(),
+        vertex.bytecode.data(),
+        vertex.bytecode.size(),
         &pipeline.inputLayout
     );
     if (FAILED(hr))

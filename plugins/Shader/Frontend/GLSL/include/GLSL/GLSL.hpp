@@ -46,7 +46,8 @@ namespace cae
                 ir.id = desc.id;
                 ir.stage = desc.stage;
                 ir.entryPoint = "main";
-                ir.spirv = compileGLSLtoSPIRV(desc.source, desc.stage);
+                ir.irType = ShaderSourceType::SPIRV;
+                ir.bytecode = toBytecode(compileGLSLtoSPIRV(desc.source, desc.stage));
                 return ir;
             }
 
@@ -66,6 +67,14 @@ namespace cae
                     default:
                         throw std::runtime_error("Unsupported ShaderStage");
                 }
+            }
+
+            std::vector<uint8_t> toBytecode(const std::vector<uint32_t>& spirv)
+            {
+                std::vector<uint8_t> bytes;
+                bytes.resize(spirv.size() * sizeof(uint32_t));
+                std::memcpy(bytes.data(), spirv.data(), bytes.size());
+                return bytes;
             }
 
             static std::vector<std::uint32_t> compileGLSLtoSPIRV(const std::string &src, ShaderStage stage);

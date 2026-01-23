@@ -57,7 +57,7 @@ cae::ShaderIRModule cae::HLSL::compile(const ShaderSourceDesc & desc)
     CComPtr<IDxcBlob> shaderBlob;
     result->GetResult(&shaderBlob);
 
-    ir.dxil.assign(
+    ir.bytecode.assign(
         static_cast<const uint8_t*>(shaderBlob->GetBufferPointer()),
         static_cast<const uint8_t*>(shaderBlob->GetBufferPointer()) + shaderBlob->GetBufferSize()
     );
