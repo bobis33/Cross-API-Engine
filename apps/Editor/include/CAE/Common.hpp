@@ -29,20 +29,28 @@ namespace cae
     {
         namespace RENDERER
         {
+            inline constexpr auto DIRECTX11 = "DirectX11";
+            inline constexpr auto DIRECTX12 = "DirectX12";
             inline constexpr auto OPENGL = "OpenGL";
             inline constexpr auto VULKAN = "Vulkan";
+            inline constexpr auto WEB_GPU = "WebGPU";
         } // namespace RENDERER
 
         namespace SHADER
         {
             namespace IR
             {
+                inline constexpr auto DXBC = "DXBC";
+                inline constexpr auto DXIL = "DXIL";
                 inline constexpr auto SPIRV = "SPIRV";
             } // namespace IR
 
             namespace FRONTEND
             {
                 inline constexpr auto GLSL = "GLSL";
+                inline constexpr auto HLSL = "HLSL";
+                inline constexpr auto MSL = "MSL";
+                inline constexpr auto WGL = "WGL";
             } // namespace FRONTEND
 
         } // namespace SHADER

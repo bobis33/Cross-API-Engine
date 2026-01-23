@@ -45,8 +45,14 @@ namespace cae::eng
                                                                const ShaderSourceType targetIR) const
             {
                 std::unordered_map<ShaderID, ShaderIRModule> out;
-
-                const auto irProcessor = m_irs.at(targetIR);
+                auto it = m_irs.find(targetIR);
+                if (it == m_irs.end())
+                {
+                    throw std::runtime_error(
+                        "No ShaderIR registered for specified target type"
+                    );
+                }
+                const auto& irProcessor = it->second;
                 for (const auto &src : sources)
                 {
                     const auto f = m_frontends.at(src.type);

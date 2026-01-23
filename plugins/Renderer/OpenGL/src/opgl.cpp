@@ -109,8 +109,8 @@ GLuint cae::OPGL::createGLShader(const GLenum type, const ShaderIRModule &data, 
 {
     const GLuint shader = gl.CreateShader(type);
 
-    gl.ShaderBinary(1, &shader, GL_SHADER_BINARY_FORMAT_SPIR_V, data.spirv.data(),
-                    static_cast<GLsizei>(data.spirv.size() * sizeof(std::uint32_t)));
+    gl.ShaderBinary(1, &shader, GL_SHADER_BINARY_FORMAT_SPIR_V, data.bytecode.data(),
+                    static_cast<GLsizei>(data.bytecode.size() * sizeof(std::uint8_t)));
 
     gl.SpecializeShader(shader, data.entryPoint.c_str(), 0, nullptr, nullptr);
 

@@ -94,7 +94,7 @@ namespace cae::eng
             /// @brief Initialize render resources
             ///
             void initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
-                                           const std::vector<float> &vertices) const;
+                                           const std::vector<float> &vertices, const ShaderSourceType &type) const;
 
             ///
             /// @param fpsBuffer
@@ -138,7 +138,7 @@ namespace cae::eng
             /// @param shaderSources Shader sources to initialize
             /// @brief Initialize shaders
             ///
-            void initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const;
+            void initShaders(const std::vector<ShaderSourceDesc> &shaderSources, const ShaderSourceType &type) const;
 
     }; // class Engine
 

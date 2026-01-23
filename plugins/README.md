@@ -17,11 +17,12 @@
 | Renderer        | Metal     | ❌       | ❌     | ✅     |     | ❌      |
 | Renderer        | OpenGL    | ✅       | ✅     | 🚧    |     | 🚧     |
 | Renderer        | Vulkan    | ✅       | ✅     | ✅     |     | 🚧     |
-| Renderer        | WebGPU    |         |       |       |     |        |
+| Renderer        | WebGPU    | ❌       | ❌     | ❌     | ✅   | ❌      |
+| Shader IR       | DXBC      | ✅       | ❌     | ❌     |     | ❌      |
+| Shader IR       | DXIL      | ✅       | ❌     | ❌     |     | ❌      |
 | Shader IR       | SPIR-V    | ✅       | ✅     | ✅     |     | 🚧     |
-| Shader IR       | DXC       | ✅       | ❌     | ❌     |     | ❌      |
 | Shader Frontend | GLSL      | ✅       | ✅     | ✅     |     | 🚧     |
-| Shader Frontend | HLSL      |         |       |       |     | ❌      |
+| Shader Frontend | HLSL      | ✅       |       |       |     | ❌      |
 | Shader Frontend | MSL       |         |       |       |     | ❌      |
 | Shader Frontend | WGSL      |         |       |       |     | ❌      |
 | UI              | Imgui     | ✅       | ✅     | ✅     |     | ❌      |

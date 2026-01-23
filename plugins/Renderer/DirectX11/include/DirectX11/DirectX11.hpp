@@ -9,9 +9,19 @@
 #include "Interfaces/Renderer/ARenderer.hpp"
 
 #include <glm/glm.hpp>
+#include <d3d11.h>
+#include <dxgi.h>
+#include <wrl/client.h>
 
 namespace cae
 {
+
+    struct PipelineDX11
+    {
+        Microsoft::WRL::ComPtr<ID3D11VertexShader>   vs;
+        Microsoft::WRL::ComPtr<ID3D11PixelShader>    ps;
+        Microsoft::WRL::ComPtr<ID3D11InputLayout>    inputLayout;
+    };
 
     ///
     /// @class DirectX11
@@ -34,18 +44,30 @@ namespace cae
             [[nodiscard]] utl::PluginType getType() const override { return utl::PluginType::RENDERER; }
             [[nodiscard]] utl::PluginPlatform getPlatform() const override { return utl::PluginPlatform::WINDOWS; }
 
-            void setVSyncEnabled(bool enabled) override {}
-            void setClearColor(const Color &color) override {}
+            void setVSyncEnabled(const bool enabled) override { m_vsync = enabled; }
+            void setClearColor(const Color &color) override { m_clearColor = color; }
 
-            [[nodiscard]] bool isVSyncEnabled() const override { return false; }
+            [[nodiscard]] bool isVSyncEnabled() const override { return m_vsync; }
 
-            void initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor) override {}
+            void initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor) override;
             void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
-                                const ShaderIRModule &fragment) override
-            {
-            }
-            void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override {}
-            void createMesh(const std::vector<float> &vertices) override {}
+                                const ShaderIRModule &fragment) override;
+            void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override;
+            void createMesh(const std::vector<float> &vertices) override;
+
+        private:
+            Microsoft::WRL::ComPtr<ID3D11Device> m_device;
+            Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_context;
+            Microsoft::WRL::ComPtr<IDXGISwapChain>  m_swapChain;
+            Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_rtv;
+            Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
+            // constant buffer MVP
+            Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
+
+            bool  m_vsync = true;
+            Color m_clearColor{};
+
+            std::unordered_map<ShaderID, PipelineDX11> m_pipelines;
 
     }; // class DirectX11
 

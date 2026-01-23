@@ -53,9 +53,9 @@ cae::eng::Engine::Engine(const EngineConfig &config, const std::function<std::sh
 }
 
 void cae::eng::Engine::initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
-                                            const std::vector<float> &vertices) const
+                                            const std::vector<float> &vertices, const ShaderSourceType &type) const
 {
-    initShaders(shaderSources);
+    initShaders(shaderSources, type);
     m_rendererPlugin->createMesh(vertices);
 }
 
@@ -103,9 +103,9 @@ void cae::eng::Engine::initWindow(const std::string &windowName, const WindowSiz
     }
 }
 
-void cae::eng::Engine::initShaders(const std::vector<ShaderSourceDesc> &shaderSources) const
+void cae::eng::Engine::initShaders(const std::vector<ShaderSourceDesc> &shaderSources, const ShaderSourceType &type) const
 {
-    auto shaders = m_shaderManager->build(shaderSources, ShaderSourceType::SPIRV);
+    auto shaders = m_shaderManager->build(shaderSources, type);
     m_shaderManager->optimizeAll(ShaderSourceType::SPIRV, shaders | std::views::values);
     m_rendererPlugin->createPipeline("basic", shaders["basic_vertex"], shaders["basic_fragment"]);
 }
