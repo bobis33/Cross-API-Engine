@@ -75,13 +75,14 @@ This section targets engine developers and contributors.
 
 ### CMake Build options
 
-- `CAE_STRICT_WARNINGS` (default: `OFF`): Enable strict warning level.
-- `CAE_ENABLE_SANITIZERS` (default: `OFF`): Enable address and undefined sanitizers.
-- `CAE_ENABLE_LTO` (default: `OFF`): Enable LTO on final targets.
+- `CAE_BUILD_DOC_HTML` (default: `OFF`): Enable building doxygen html documentation.
+- `CAE_BUILD_DOC_PDF` (default: `OFF`): Enable building doxygen pdf documentation.
 - `CAE_BUILD_TESTS` (default: `OFF`): Enable building unit tests.
-- `CAE_CLANG_TIDY` (default: `OFF`): Enable clang tidy usage.
 - `CAE_CLANG_FORMAT` (default: `OFF`): Enable clang format usage.
-- `CAE_BUILD_DOC` (default: `OFF`): Enable building doxygen documentation.
+- `CAE_CLANG_TIDY` (default: `OFF`): Enable clang tidy usage.
+- `CAE_ENABLE_LTO` (default: `OFF`): Enable LTO on final targets.
+- `CAE_ENABLE_SANITIZERS` (default: `OFF`): Enable address and undefined sanitizers.
+- `CAE_STRICT_WARNINGS` (default: `OFF`): Enable strict warning level.
 
 ### Preprocessor macros
 
@@ -109,7 +110,7 @@ Use the `CAE_BUILD_TESTS` option.
 
 documentation is generated using [Doxygen](https://www.doxygen.nl/).
 
-Use the `CAE_BUILD_DOC` option.
+Use the `CAE_BUILD_DOC_HTML` or/and `CAE_BUILD_DOC_PDF` option.
 
 ## Third-party libraries
 

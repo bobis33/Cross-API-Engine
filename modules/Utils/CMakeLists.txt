@@ -10,7 +10,6 @@ set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
 file(GLOB_RECURSE HEADERS "${INCLUDE_DIR}/Utils/*.hpp")
 
-include(FetchContent)
 FetchContent_Declare(
         stb
         GIT_REPOSITORY "https://github.com/nothings/stb.git"
@@ -21,6 +20,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(stb)
 
 add_library(${PROJECT_NAME} STATIC)
+
+if (CAE_ENABLE_LTO)
+    cae_enable_lto(${PROJECT_NAME})
+endif ()
 
 target_sources(${PROJECT_NAME}
         PRIVATE ${SOURCES}
@@ -45,5 +48,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD_REQUIRED ON
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
 )

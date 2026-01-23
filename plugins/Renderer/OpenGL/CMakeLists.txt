@@ -9,7 +9,6 @@ if (NOT OPENGL_FOUND)
     return()
 endif ()
 
-include(FetchContent)
 FetchContent_Declare(
         glad
         GIT_REPOSITORY "https://github.com/bobis33/glad"
@@ -36,7 +35,11 @@ if (APPLE)
     list(APPEND SOURCES ${SOURCES_MM})
 endif ()
 
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+add_library(${PROJECT_NAME} MODULE ${SOURCES})
+
+if (CAE_ENABLE_LTO)
+    cae_enable_lto(${PROJECT_NAME})
+endif ()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
@@ -47,7 +50,7 @@ if (UNIX AND NOT APPLE)
     target_include_directories(${PROJECT_NAME} PRIVATE ${EGL_INCLUDE_DIRS})
 endif ()
 
-set(PLATFORM_LIBS cae-modules OpenGL::GL glad glm::glm)
+set(PLATFORM_LIBS cae-compile-options cae-interfaces cae-utils OpenGL::GL glad glm::glm)
 if (UNIX AND NOT APPLE)
     list(APPEND PLATFORM_LIBS ${EGL_LIBRARIES})
 elseif (APPLE)
@@ -60,5 +63,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD_REQUIRED ON
         POSITION_INDEPENDENT_CODE ON
         CXX_EXTENSIONS OFF
+        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/lib"
 )

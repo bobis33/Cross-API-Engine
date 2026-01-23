@@ -3,7 +3,7 @@ function(copy_directory_to_target TARGET SRC_DIR DST_SUBDIR)
         message(FATAL_ERROR "Target '${TARGET}' does not exist")
     endif()
 
-    set(COPY_TARGET_NAME ${TARGET}-copy-assets)
+    set(COPY_TARGET_NAME "${TARGET}-copy-assets")
 
     set(DST_DIR "$<TARGET_FILE_DIR:${TARGET}>/${DST_SUBDIR}")
 

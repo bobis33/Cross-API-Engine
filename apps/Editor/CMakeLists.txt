@@ -7,9 +7,25 @@ project(cae-editor
 
 generate_version_header("${CMAKE_BINARY_DIR}/include/CAE/VersionEditor.hpp")
 
+find_package(nlohmann_json QUIET CONFIG)
+if (NOT nlohmann_json_FOUND)
+    FetchContent_Declare(
+            nlohmann-json
+            GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+            GIT_TAG        "v3.12.0"
+            GIT_SHALLOW    TRUE
+            GIT_PROGRESS   TRUE
+    )
+    FetchContent_MakeAvailable(nlohmann-json)
+endif ()
+
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+if (CAE_ENABLE_LTO)
+    cae_enable_lto(${PROJECT_NAME})
+endif ()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE PLUGINS_DIR="${CMAKE_BINARY_DIR}/bin/lib")
 
@@ -19,9 +35,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         ${glm_SOURCE_DIR}
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        cae-modules
+        cae-compile-options
+        cae-interfaces
+        cae-utils
+        cae-engine
         nlohmann_json::nlohmann_json
-        glm::glm
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

@@ -1,35 +1,34 @@
-HTML_EXTRA_FILES       = @CMAKE_CURRENT_SOURCE_DIR@/assets/icons/favicon.ico
-HTML_EXTRA_STYLESHEET  = @CMAKE_CURRENT_BINARY_DIR@/doxygen-awesome.css \
-                         @CMAKE_CURRENT_BINARY_DIR@/doxygen-awesome-sidebar-only.css
-HTML_HEADER            = @CMAKE_CURRENT_SOURCE_DIR@/documentation/.doxygen/header.html
+HTML_EXTRA_FILES       = @CMAKE_SOURCE_DIR@/assets/icons/favicon.ico
+HTML_EXTRA_STYLESHEET  = @CMAKE_SOURCE_DIR@/documentation/.doxygen/css/doxygen-awesome.css \
+                         @CMAKE_SOURCE_DIR@/documentation/.doxygen/css/doxygen-awesome-sidebar-only.css
+HTML_HEADER            = @CMAKE_SOURCE_DIR@/documentation/.doxygen/header.html
 
-IMAGE_PATH             = @CMAKE_CURRENT_SOURCE_DIR@/assets/icons/
+IMAGE_PATH             = @CMAKE_SOURCE_DIR@/assets/icons/
 
 QUIET                  = NO
 GENERATE_HTML          = YES
 GENERATE_LATEX         = YES
 LATEX_CMD_NAME         = xelatex
 
-PROJECT_LOGO           = @CMAKE_CURRENT_SOURCE_DIR@/assets/icons/icon.svg
+PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/assets/icons/icon.svg
 PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
 PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
 PROJECT_BRIEF          = "@CMAKE_PROJECT_DESCRIPTION@"
 
-STRIP_FROM_PATH        = @CMAKE_CURRENT_SOURCE_DIR@ \
-                         @PROJECT_SOURCE_DIR@
-INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src \
-                         @CMAKE_CURRENT_SOURCE_DIR@/plugins \
-                         @CMAKE_CURRENT_SOURCE_DIR@/modules \
-                         @CMAKE_CURRENT_SOURCE_DIR@/CONTRIBUTING.md \
-                         @CMAKE_CURRENT_SOURCE_DIR@/LICENSE.md \
-                         @CMAKE_CURRENT_SOURCE_DIR@/README.md
+STRIP_FROM_PATH        = @CMAKE_SOURCE_DIR@
+INPUT                  = @CMAKE_SOURCE_DIR@/include \
+                         @CMAKE_SOURCE_DIR@/src \
+                         @CMAKE_SOURCE_DIR@/plugins \
+                         @CMAKE_SOURCE_DIR@/modules \
+                         @CMAKE_SOURCE_DIR@/CONTRIBUTING.md \
+                         @CMAKE_SOURCE_DIR@/LICENSE.md \
+                         @CMAKE_SOURCE_DIR@/README.md
 FILE_PATTERNS          = *.hpp \
                          *.cpp \
                          *.md
 EXCLUDE_PATTERNS       = third-party/*
 RECURSIVE              = YES
-USE_MDFILE_AS_MAINPAGE = "@CMAKE_CURRENT_SOURCE_DIR@/README.md"
+USE_MDFILE_AS_MAINPAGE = "@CMAKE_SOURCE_DIR@/README.md"
 
 PLANTUML_JAR_PATH      =
 DOT_PATH               =
