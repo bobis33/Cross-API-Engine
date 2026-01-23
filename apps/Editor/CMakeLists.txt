@@ -27,7 +27,7 @@ if (CAE_ENABLE_LTO)
     cae_enable_lto(${PROJECT_NAME})
 endif ()
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE PLUGINS_DIR="${CMAKE_BINARY_DIR}/bin/lib")
+target_compile_definitions(${PROJECT_NAME} PRIVATE CAE_PLUGINS_DIR="${CMAKE_BINARY_DIR}/bin/lib")
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         "${PROJECT_SOURCE_DIR}/include"
