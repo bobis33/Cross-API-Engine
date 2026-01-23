@@ -1,4 +1,4 @@
-project(cae-wgsl
+project(cae-shader-frontend-wgsl
         DESCRIPTION "CAE WGSL Shader Frontend Plugin"
         LANGUAGES C CXX
 )

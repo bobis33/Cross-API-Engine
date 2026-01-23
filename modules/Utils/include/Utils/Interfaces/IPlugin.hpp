@@ -21,20 +21,25 @@ namespace cae::utl
     enum class PluginType : std::uint8_t
     {
         AUDIO = 0,
-        NETWORK = 1,
-        RENDERER = 2,
-        SHADER_IR = 3,
-        SHADER_FRONTEND = 4,
-        WINDOW = 5,
+        MODEL = 1,
+        NETWORK = 2,
+        PHYSIC = 3,
+        RENDERER = 4,
+        SHADER_FRONTEND = 5,
+        SHADER_IR = 6,
+        WINDOW = 7,
         UNDEFINED = 255,
     };
 
     enum class PluginPlatform : std::uint8_t
     {
-        LINUX = 0,
-        MACOSX = 1,
-        WINDOWS = 2,
-        ALL = 255
+        ALL = 0,
+        ANDROID = 1,
+        LINUX = 2,
+        MACOSX = 3,
+        WEB = 4,
+        WINDOWS = 5,
+        UNDEFINED = 255
     };
 
     ///

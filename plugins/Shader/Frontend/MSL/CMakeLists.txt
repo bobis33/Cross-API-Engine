@@ -1,4 +1,4 @@
-project(cae-msl
+project(cae-shader-frontend-msl
         DESCRIPTION "CAE MSL Shader Frontend Plugin"
         LANGUAGES C CXX
 )
