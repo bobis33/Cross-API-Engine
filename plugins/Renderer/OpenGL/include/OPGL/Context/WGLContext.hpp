@@ -26,7 +26,7 @@ namespace cae
             WGLContext() = default;
             ~WGLContext() override;
 
-            void initialize(const NativeWindowHandle &window) override;
+            void initialize() override;
             void swapBuffers() override;
             void setVSyncEnabled(bool enabled) override;
             [[nodiscard]] bool isVSyncEnabled() const override

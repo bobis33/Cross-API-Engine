@@ -18,12 +18,10 @@ void printFps(std::array<float, 10> &fpsBuffer, int &fpsIndex, const float delta
 cae::eng::Engine::Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                     const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                     const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
-                    const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
-                    const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-                    const std::function<std::shared_ptr<IWindow>()> &windowFactory)
+                    const std::function<std::shared_ptr<IShaderCompiler>()> &shaderCompilerFactory)
     : m_audioPlugin(audioFactory()), m_networkPlugin(networkFactory()), m_rendererPlugin(rendererFactory()),
-      m_windowPlugin(windowFactory()), m_clock(std::make_unique<utl::Clock>()),
-      m_shaderManager(std::make_unique<ShaderManager>(shaderFrontendFactories, shaderIRFactory)),
+      m_clock(std::make_unique<utl::Clock>()),
+      m_shaderManager(std::make_unique<ShaderManager>(shaderCompilerFactory)),
       m_camera(std::make_unique<Camera>(config.camera_position, config.camera_rotation, config.camera_direction,
                                         config.camera_move_speed, config.camera_look_speed, config.camera_fov,
                                         config.camera_near_plane, config.camera_far_plane)),
@@ -49,7 +47,7 @@ cae::eng::Engine::Engine(const EngineConfig &config, const std::function<std::sh
 
     initWindow(config.window_name, {.width = config.window_width, .height = config.window_height},
                config.window_icon_path);
-    m_rendererPlugin->initialize(m_windowPlugin->getNativeHandle(), config.renderer_clear_color);
+    m_rendererPlugin->initialize(config.renderer_clear_color);
 }
 
 void cae::eng::Engine::initializeRenderResources(const std::vector<ShaderSourceDesc> &shaderSources,
@@ -63,10 +61,10 @@ void cae::eng::Engine::render()
 {
     constexpr auto model = glm::mat4(1.0F);
 
-    const glm::mat4 mvp = m_camera->getViewProjection(static_cast<float>(m_windowPlugin->getWindowSize().width) /
-                                                      m_windowPlugin->getWindowSize().height) *
+    const glm::mat4 mvp = m_camera->getViewProjection(static_cast<float>(m_rendererPlugin->getWindowSize().width) /
+                                                      m_rendererPlugin->getWindowSize().height) *
                           model;
-    m_rendererPlugin->draw(m_windowPlugin->getWindowSize(), "basic", mvp);
+    m_rendererPlugin->draw(m_rendererPlugin->getWindowSize(), "basic", mvp);
 }
 
 void cae::eng::Engine::update(std::array<float, 10> &fpsBuffer, int &fpsIndex)
@@ -81,12 +79,11 @@ void cae::eng::Engine::update(std::array<float, 10> &fpsBuffer, int &fpsIndex)
 void cae::eng::Engine::stop()
 {
     utl::Logger::log("Stopping engine...", utl::LogLevel::INFO);
-    m_windowPlugin->close();
+    m_rendererPlugin->closeWindow();
 
     m_audioPlugin = nullptr;
     m_networkPlugin = nullptr;
     m_rendererPlugin = nullptr;
-    m_windowPlugin = nullptr;
 
     m_clock = nullptr;
     m_shaderManager = nullptr;
@@ -96,10 +93,10 @@ void cae::eng::Engine::stop()
 void cae::eng::Engine::initWindow(const std::string &windowName, const WindowSize &windowSize,
                              const std::string &iconPath) const
 {
-    m_windowPlugin->create(windowName, windowSize);
+    m_rendererPlugin->createWindow(windowName, windowSize);
     if (!iconPath.empty())
     {
-        m_windowPlugin->setIcon(iconPath);
+        m_rendererPlugin->setWindowIcon(iconPath);
     }
 }
 

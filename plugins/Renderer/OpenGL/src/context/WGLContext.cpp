@@ -63,7 +63,7 @@ cae::WGLContext::~WGLContext()
 
 void cae::WGLContext::initialize(const NativeWindowHandle &window)
 {
-    m_hwnd = static_cast<HWND>(window.window);
+    // m_hwnd = static_cast<HWND>(window.window);
     m_hdc = GetDC(m_hwnd);
     if (m_hdc == nullptr)
     {

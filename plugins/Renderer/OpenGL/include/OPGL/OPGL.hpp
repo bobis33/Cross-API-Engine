@@ -53,7 +53,7 @@ namespace cae
 
             [[nodiscard]] bool isVSyncEnabled() const override { return m_context->isVSyncEnabled(); }
 
-            void initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor) override;
+            void initialize(const Color &clearColor) override;
             void createPipeline(const ShaderID &id, const ShaderIRModule &vertex,
                                 const ShaderIRModule &fragment) override;
             void draw(const WindowSize &windowSize, const ShaderID &shaderId, glm::mat4 mvp) override;

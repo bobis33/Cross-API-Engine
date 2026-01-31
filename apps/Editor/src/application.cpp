@@ -65,10 +65,8 @@ cae::Application::Application(const ArgsConfig &argsConfig, const EnvConfig &env
 void cae::Application::setupEngine(const std::string &rendererName, const std::string &windowName,
                                    const std::string &shaderFrontendName, const std::string &shaderIRName)
 {
-    std::shared_ptr<IWindow> windowPlugin = nullptr;
     std::shared_ptr<IRenderer> rendererPlugin = nullptr;
-    std::shared_ptr<IShaderIR> shaderIRPlugin = nullptr;
-    std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> shaderFactories;
+    std::shared_ptr<IShaderCompiler> shaderCompilerPlugin = nullptr;
 
     for (auto &plugin : loadPlugins(m_pluginLoader))
     {
@@ -79,65 +77,74 @@ void cae::Application::setupEngine(const std::string &rendererName, const std::s
                 rendererPlugin = renderer;
             }
         }
-        if (const auto window = std::dynamic_pointer_cast<IWindow>(plugin))
-        {
-            if (window->getName() == windowName)
-            {
-                windowPlugin = window;
-            }
-        }
-        if (const auto shader = std::dynamic_pointer_cast<IShaderFrontend>(plugin))
+        if (const auto shader = std::dynamic_pointer_cast<IShaderCompiler>(plugin))
         {
             if (shader->getName() == shaderFrontendName)
             {
-                shaderFactories.emplace_back([shader]() { return shader; });
+                shaderCompilerPlugin = shader;
             }
         }
-        if (const auto shaderIR = std::dynamic_pointer_cast<IShaderIR>(plugin))
-        {
-            if (shaderIR->getName() == shaderIRName)
-            {
-                shaderIRPlugin = shaderIR;
-            }
-        }
-    }
-    if (windowPlugin == nullptr)
-    {
-        utl::Logger::log("No window plugin found with name: " + windowName, utl::LogLevel::WARNING);
     }
     if (rendererPlugin == nullptr)
     {
         utl::Logger::log("No renderer plugin found with name: " + rendererName, utl::LogLevel::WARNING);
     }
-    if (shaderFactories.empty())
+    if (shaderCompilerPlugin == nullptr)
     {
         utl::Logger::log("No shader plugin found with name: " + shaderFrontendName, utl::LogLevel::WARNING);
     }
     m_engine = std::make_unique<eng::Engine>(
         m_appConfig.engineConfig, []() { return nullptr; }, []() { return nullptr; },
-        [rendererPlugin]() { return rendererPlugin; }, [shaderIRPlugin]() { return shaderIRPlugin; }, shaderFactories,
-        [windowPlugin]() { return windowPlugin; });
+        [rendererPlugin]() { return rendererPlugin; }, [shaderCompilerPlugin]() { return shaderCompilerPlugin; });
 }
 
+// 36 vertices, 6 faces, couleur uniforme par face
 static const std::vector<float> cubeVertices = {
-    // positions          // colors
-    -0.5f, -0.5f, -0.5f, 1, 0, 0, 0.5f,  -0.5f, -0.5f, 0, 1, 0, 0.5f,  0.5f,  -0.5f, 0, 0, 1,
-    0.5f,  0.5f,  -0.5f, 0, 0, 1, -0.5f, 0.5f,  -0.5f, 1, 1, 0, -0.5f, -0.5f, -0.5f, 1, 0, 0,
+    // ===== Face -Z (rouge)
+    -0.5f, -0.5f, -0.5f, 1, 0, 0,
+     0.5f, -0.5f, -0.5f, 1, 0, 0,
+     0.5f,  0.5f, -0.5f, 1, 0, 0,
+     0.5f,  0.5f, -0.5f, 1, 0, 0,
+    -0.5f,  0.5f, -0.5f, 1, 0, 0,
+    -0.5f, -0.5f, -0.5f, 1, 0, 0,
 
-    -0.5f, -0.5f, 0.5f,  1, 0, 1, 0.5f,  -0.5f, 0.5f,  0, 1, 1, 0.5f,  0.5f,  0.5f,  1, 1, 1,
-    0.5f,  0.5f,  0.5f,  1, 1, 1, -0.5f, 0.5f,  0.5f,  0, 0, 0, -0.5f, -0.5f, 0.5f,  1, 0, 1,
+    // ===== Face +Z (vert)
+    -0.5f, -0.5f,  0.5f, 0, 1, 0,
+     0.5f, -0.5f,  0.5f, 0, 1, 0,
+     0.5f,  0.5f,  0.5f, 0, 1, 0,
+     0.5f,  0.5f,  0.5f, 0, 1, 0,
+    -0.5f,  0.5f,  0.5f, 0, 1, 0,
+    -0.5f, -0.5f,  0.5f, 0, 1, 0,
 
-    -0.5f, 0.5f,  0.5f,  1, 0, 0, -0.5f, 0.5f,  -0.5f, 0, 1, 0, -0.5f, -0.5f, -0.5f, 0, 0, 1,
-    -0.5f, -0.5f, -0.5f, 0, 0, 1, -0.5f, -0.5f, 0.5f,  1, 1, 0, -0.5f, 0.5f,  0.5f,  1, 0, 0,
+    -0.5f,  0.5f,  0.5f, 0, 0, 1,
+    -0.5f,  0.5f, -0.5f, 0, 0, 1,
+    -0.5f, -0.5f, -0.5f, 0, 0, 1,
+    -0.5f, -0.5f, -0.5f, 0, 0, 1,
+    -0.5f, -0.5f,  0.5f, 0, 0, 1,
+    -0.5f,  0.5f,  0.5f, 0, 0, 1,
 
-    0.5f,  0.5f,  0.5f,  1, 0, 1, 0.5f,  0.5f,  -0.5f, 0, 1, 1, 0.5f,  -0.5f, -0.5f, 1, 1, 1,
-    0.5f,  -0.5f, -0.5f, 1, 1, 1, 0.5f,  -0.5f, 0.5f,  0, 0, 0, 0.5f,  0.5f,  0.5f,  1, 0, 1,
+     0.5f,  0.5f,  0.5f, 1, 1, 0,
+     0.5f,  0.5f, -0.5f, 1, 1, 0,
+     0.5f, -0.5f, -0.5f, 1, 1, 0,
+     0.5f, -0.5f, -0.5f, 1, 1, 0,
+     0.5f, -0.5f,  0.5f, 1, 1, 0,
+     0.5f,  0.5f,  0.5f, 1, 1, 0,
 
-    -0.5f, -0.5f, -0.5f, 1, 0, 0, 0.5f,  -0.5f, -0.5f, 0, 1, 0, 0.5f,  -0.5f, 0.5f,  0, 0, 1,
-    0.5f,  -0.5f, 0.5f,  0, 0, 1, -0.5f, -0.5f, 0.5f,  1, 1, 0, -0.5f, -0.5f, -0.5f, 1, 0, 0,
+    -0.5f, -0.5f, -0.5f, 0, 1, 1,
+     0.5f, -0.5f, -0.5f, 0, 1, 1,
+     0.5f, -0.5f,  0.5f, 0, 1, 1,
+     0.5f, -0.5f,  0.5f, 0, 1, 1,
+    -0.5f, -0.5f,  0.5f, 0, 1, 1,
+    -0.5f, -0.5f, -0.5f, 0, 1, 1,
 
-    -0.5f, 0.5f,  -0.5f, 1, 0, 1, 0.5f,  0.5f,  -0.5f, 0, 1, 1, 0.5f,  0.5f,  0.5f,  1, 1, 1,
-    0.5f,  0.5f,  0.5f,  1, 1, 1, -0.5f, 0.5f,  0.5f,  0, 0, 0, -0.5f, 0.5f,  -0.5f, 1, 0, 1};
+    -0.5f,  0.5f, -0.5f, 1, 0, 1,
+     0.5f,  0.5f, -0.5f, 1, 0, 1,
+     0.5f,  0.5f,  0.5f, 1, 0, 1,
+     0.5f,  0.5f,  0.5f, 1, 0, 1,
+    -0.5f,  0.5f,  0.5f, 1, 0, 1,
+    -0.5f,  0.5f, -0.5f, 1, 0, 1,
+};
+
 
 void cae::Application::start()
 {
@@ -170,13 +177,13 @@ void cae::Application::mainLoop()
     int fpsIndex = 0;
     WindowEvent e{};
 
-    while (!m_engine->getWindow()->shouldClose())
+    while (!m_engine->getRenderer()->windowShouldClose())
     {
         m_engine->render();
         glm::vec3 moveDir(0.0F);
         glm::vec2 lookDir(0.0F);
-        m_engine->getWindow()->pollEvents();
-        while (m_engine->getWindow()->pollEvent(e))
+        m_engine->getRenderer()->windowPollEvents();
+        while (m_engine->getRenderer()->windowPollEvent(e))
         {
             if (e.type == WindowEventType::KeyDown)
             {

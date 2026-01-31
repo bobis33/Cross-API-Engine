@@ -13,8 +13,8 @@ cae::NSGLContext::~NSGLContext() {
     }
 }
 
-void cae::NSGLContext::initialize(const NativeWindowHandle &window) {
-    NSView* nsview = (__bridge NSView*)window.display;
+void cae::NSGLContext::initialize() {
+    // NSView* nsview = (__bridge NSView*)window.display;
 
     NSOpenGLPixelFormatAttribute attrs[] = {
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,

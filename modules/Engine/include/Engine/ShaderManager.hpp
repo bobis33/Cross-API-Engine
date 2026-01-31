@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Interfaces/Shader/IR/IShaderIR.hpp"
+#include "Interfaces/Shader/IShaderCompiler.hpp"
 
 #include <memory>
 
@@ -21,17 +21,11 @@ namespace cae::eng
     {
         public:
             explicit ShaderManager(
-                const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-                const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory = nullptr)
+                const std::function<std::shared_ptr<IShaderCompiler>()> &shaderCompilerFactory)
             {
-                for (const auto &factory : shaderFrontendFactories)
+                if (shaderCompilerFactory)
                 {
-                    auto frontend = factory();
-                    registerFrontend(frontend);
-                }
-                if (shaderIRFactory)
-                {
-                    registerIR(shaderIRFactory());
+                    m_compiler = shaderCompilerFactory();
                 }
             }
             ~ShaderManager() = default;
@@ -46,13 +40,9 @@ namespace cae::eng
             {
                 std::unordered_map<ShaderID, ShaderIRModule> out;
 
-                const auto irProcessor = m_irs.at(targetIR);
                 for (const auto &src : sources)
                 {
-                    const auto f = m_frontends.at(src.type);
-                    ShaderIRModule ir = f->compile(src);
-                    const ShaderIRModule final = irProcessor->process(ir);
-                    out[src.id] = final;
+                    out[src.id] = m_compiler->compile(src);;
                 }
 
                 return out;
@@ -85,11 +75,8 @@ namespace cae::eng
             }
 
         private:
-            void registerFrontend(const std::shared_ptr<IShaderFrontend> &f) { m_frontends[f->sourceType()] = f; }
-            void registerIR(const std::shared_ptr<IShaderIR> &ir) { m_irs[ir->irType()] = ir; }
 
-            std::unordered_map<ShaderSourceType, std::shared_ptr<IShaderFrontend>> m_frontends;
-            std::unordered_map<ShaderSourceType, std::shared_ptr<IShaderIR>> m_irs;
+            std::shared_ptr<IShaderCompiler> m_compiler;
 
     }; // class ShaderManager
 

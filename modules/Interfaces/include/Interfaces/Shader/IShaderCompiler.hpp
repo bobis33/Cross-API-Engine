@@ -1,6 +1,6 @@
 ///
-/// @file IShaderFrontend.hpp
-/// @brief This file contains the ShaderFrontend interface
+/// @file IShaderCompiler.hpp
+/// @brief This file contains the IShaderCompiler interface
 /// @namespace cae
 ///
 
@@ -73,15 +73,15 @@ namespace cae
     };
 
     ///
-    /// @interface IShaderFrontend
-    /// @brief Interface for shaders frontend
+    /// @interface IShaderCompiler
+    /// @brief Interface for shader compiler
     /// @namespace cae
     ///
-    class IShaderFrontend : public utl::IPlugin
+    class IShaderCompiler: public utl::IPlugin
     {
 
         public:
-            ~IShaderFrontend() override = default;
+            ~IShaderCompiler() override = default;
 
             ///
             /// @return The source type this frontend handles
@@ -96,6 +96,6 @@ namespace cae
             ///
             virtual ShaderIRModule compile(const ShaderSourceDesc &desc) = 0;
 
-    }; // interface IShaderFrontend
+    }; // interface IShaderCompiler
 
 } // namespace cae

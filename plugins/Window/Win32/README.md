@@ -1,1 +1,0 @@
-# Window plugin - Win32

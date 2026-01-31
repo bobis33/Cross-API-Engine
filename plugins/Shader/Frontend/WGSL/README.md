@@ -1,1 +1,0 @@
-# ShaderFrontend plugin - WGSL

@@ -12,7 +12,7 @@
 
 #include <stdexcept>
 
-void cae::OPGL::initialize(const NativeWindowHandle &nativeWindowHandle, const Color &clearColor)
+void cae::OPGL::initialize(const Color &clearColor)
 {
 #ifdef __linux__
     m_context = std::make_unique<EGLContext_>();

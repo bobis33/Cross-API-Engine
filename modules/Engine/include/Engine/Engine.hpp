@@ -69,9 +69,7 @@ namespace cae::eng
             Engine(const EngineConfig &config, const std::function<std::shared_ptr<IAudio>()> &audioFactory,
                    const std::function<std::shared_ptr<INetwork>()> &networkFactory,
                    const std::function<std::shared_ptr<IRenderer>()> &rendererFactory,
-                   const std::function<std::shared_ptr<IShaderIR>()> &shaderIRFactory,
-                   const std::vector<std::function<std::shared_ptr<IShaderFrontend>()>> &shaderFrontendFactories,
-                   const std::function<std::shared_ptr<IWindow>()> &windowFactory);
+                   const std::function<std::shared_ptr<IShaderCompiler>()> &shaderCompilerFactory);
             ~Engine() = default;
 
             Engine(const Engine &) = delete;
@@ -82,7 +80,6 @@ namespace cae::eng
             [[nodiscard]] const std::shared_ptr<IAudio> &getAudio() const { return m_audioPlugin; }
             [[nodiscard]] const std::shared_ptr<INetwork> &getNetwork() const { return m_networkPlugin; }
             [[nodiscard]] const std::shared_ptr<IRenderer> &getRenderer() const { return m_rendererPlugin; }
-            [[nodiscard]] const std::shared_ptr<IWindow> &getWindow() const { return m_windowPlugin; }
 
             [[nodiscard]] const std::unique_ptr<utl::Clock> &getClock() { return m_clock; }
             [[nodiscard]] const std::unique_ptr<ShaderManager> &getShaderManager() const { return m_shaderManager; }
@@ -117,7 +114,6 @@ namespace cae::eng
             std::shared_ptr<IAudio> m_audioPlugin = nullptr;
             std::shared_ptr<INetwork> m_networkPlugin = nullptr;
             std::shared_ptr<IRenderer> m_rendererPlugin = nullptr;
-            std::shared_ptr<IWindow> m_windowPlugin = nullptr;
 
             std::unique_ptr<utl::Clock> m_clock = nullptr;
             std::unique_ptr<ShaderManager> m_shaderManager = nullptr;

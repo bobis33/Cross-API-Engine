@@ -1,2 +1,2 @@
-add_subdirectory(Frontend)
-add_subdirectory(IR)
+## add_subdirectory(DXC)
+add_subdirectory(SPIRV)

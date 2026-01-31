@@ -24,7 +24,7 @@ namespace cae
             NSGLContext() = default;
             ~NSGLContext() override;
 
-            void initialize(const NativeWindowHandle &window) override;
+            void initialize() override;
 
             void swapBuffers() override;
 

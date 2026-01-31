@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include "Interfaces/Window/IWindow.hpp"
-
 #include <glad/gl.h>
 
 namespace cae
@@ -26,7 +24,7 @@ namespace cae
             /// @param window The native window handle
             /// @brief Initialize the OpenGL context with the given window
             ///
-            virtual void initialize(const NativeWindowHandle &window) = 0;
+            virtual void initialize() = 0;
 
             ///
             /// @brief Swap the front and back buffers

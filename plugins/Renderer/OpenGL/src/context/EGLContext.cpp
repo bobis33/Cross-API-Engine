@@ -23,14 +23,14 @@ cae::EGLContext_::~EGLContext_()
     }
 }
 
-void cae::EGLContext_::initialize(const NativeWindowHandle &window)
+void cae::EGLContext_::initialize()
 {
     if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE)
     {
         throw std::runtime_error("Failed to bind OpenGL API");
     }
 
-    m_display = eglGetDisplay(window.display);
+    //m_display = eglGetDisplay(window.display);
     if (m_display == EGL_NO_DISPLAY)
     {
         throw std::runtime_error("Failed to get EGL display");
@@ -62,8 +62,7 @@ void cae::EGLContext_::initialize(const NativeWindowHandle &window)
         throw std::runtime_error("Failed to choose EGL config");
     }
 
-    m_surface =
-        eglCreateWindowSurface(m_display, config, reinterpret_cast<EGLNativeWindowType>(window.window), nullptr);
+    // m_surface = eglCreateWindowSurface(m_display, config, reinterpret_cast<EGLNativeWindowType>(window.window), nullptr);
     if (m_surface == EGL_NO_SURFACE)
     {
         throw std::runtime_error("Failed to create EGL surface");

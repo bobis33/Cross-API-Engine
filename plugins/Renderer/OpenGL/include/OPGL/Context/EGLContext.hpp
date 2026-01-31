@@ -26,7 +26,7 @@ namespace cae
             explicit EGLContext_() = default;
             ~EGLContext_() override;
 
-            void initialize(const NativeWindowHandle &window) override;
+            void initialize() override;
 
             void swapBuffers() override;
 
